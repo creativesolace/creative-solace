@@ -1,11 +1,8 @@
 import { config, fields, collection, singleton } from '@keystatic/core';
 
 export default config({
-  storage: {
-    kind: 'github',
-    branchPrefix: 'keystatic/',
-    repo: 'creativesolace/creative-solace',
-  },
+  storage: { kind: 'cloud' },
+  cloud: { project: 'creative-solace/creative-solace' },
 
   collections: {
     events: collection({
