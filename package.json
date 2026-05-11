@@ -9,8 +9,11 @@
   },
   "dependencies": {
     "@astrojs/cloudflare": "^11.0.0",
-    "astro": "^4.15.0",
+    "@keystatic/astro": "^5.0.0",
     "@keystatic/core": "^0.5.0",
-    "@keystatic/astro": "^5.0.0"
+    "astro": "^4.15.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.90.0"
   }
 }
