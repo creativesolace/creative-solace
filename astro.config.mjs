@@ -4,6 +4,8 @@ import keystatic from '@keystatic/astro';
 
 export default defineConfig({
   output: 'hybrid',
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    platformProxy: { enabled: true },
+  }),
   integrations: [keystatic()],
 });
