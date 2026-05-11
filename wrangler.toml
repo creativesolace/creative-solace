@@ -8,7 +8,7 @@ database_name = "creative-solace-db"
 database_id = "2919a24a-d5ff-48f6-860d-c79541834c38"
 
 [[r2_buckets]]
-binding = "ASSETS"
+binding = "R2_ASSETS"
 bucket_name = "creative-solace-assets"
 
 [vars]
