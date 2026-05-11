@@ -1,0 +1,19 @@
+name = "creative-solace"
+compatibility_date = "2024-09-23"
+pages_build_output_dir = "./dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "creative-solace-db"
+database_id = "2919a24a-d5ff-48f6-860d-c79541834c38"
+
+[[r2_buckets]]
+binding = "ASSETS"
+bucket_name = "creative-solace-assets"
+
+[vars]
+POSTMARK_FROM = "hello@creativesolace.com"
+R2_PUBLIC_URL = "https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev"
+NOTION_BOOKINGS_DB = "35db6c5274a98055b938c156e7a69139"
+NOTION_B2B_DB = "35db6c5274a980c3990fdea69fb91611"
+STRIPE_PUBLISHABLE_KEY = "pk_live_51TVx4IC1ZOnsxU8kBY7mcTOIMKBzTMoK4OA1sjAl77HFEobLC1BMznlWoHele1Y8yN1fbM6i3da1yQr02yxbbF5u00pbTwj2VU"
