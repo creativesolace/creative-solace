@@ -1,0 +1,11 @@
+{
+  "title": "Chanel Lipstick",
+  "description": "Iconic fashion meets rhinestone art. A statement piece for the fashion lover.",
+  "price": 44.99,
+  "originalPrice": 69,
+  "badge": "Sale",
+  "image": "/images/products/chanel-lipstick/image.png",
+  "stripeProductId": "prod_UVIyKh6cNKK04Q",
+  "stripePriceId": "price_1TWIMkC1ZOnsxU8kmwQwnYRR",
+  "available": true
+}
