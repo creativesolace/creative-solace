@@ -15,3 +15,6 @@ bucket_name = "creative-solace-assets"
 POSTMARK_FROM = "hello@creativesolace.com"
 R2_PUBLIC_URL = "https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev"
 STRIPE_PUBLISHABLE_KEY = "pk_live_51TVx4IC1ZOnsxU8kBY7mcTOIMKBzTMoK4OA1sjAl77HFEobLC1BMznlWoHele1Y8yN1fbM6i3da1yQr02yxbbF5u00pbTwj2VU"
+
+[build]
+command = "npm install && npm run build"
