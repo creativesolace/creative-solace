@@ -146,14 +146,17 @@ body {
 }
 
 .nav-logo {
-  font-family: 'Dancing Script', cursive;
-  font-size: 24px;
-  color: var(--dark);
+  display: inline-flex;
+  align-items: center;
   text-decoration: none;
-  background: var(--grad-pink);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  flex-shrink: 0;
+}
+
+.nav-logo img {
+  height: 40px;
+  width: auto;
+  display: block;
+  object-fit: contain;
 }
 
 .mobile-nav-actions {
@@ -643,16 +646,17 @@ section { padding: 56px 20px; }
 .product-img-wrap {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 1/1;
+  aspect-ratio: 4/5;
   background: var(--pink-pale);
 }
 
 .product-img-wrap img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   transition: transform .5s;
   display: block;
+  padding: 8px;
 }
 
 .product-card:hover .product-img-wrap img { transform: scale(1.06); }
@@ -1284,7 +1288,7 @@ footer {
 }
 
 .footer-brand { margin-bottom: 36px; }
-.footer-brand .nav-logo { display: block; margin-bottom: 14px; font-size: 28px; }
+.footer-brand .nav-logo { display: block; margin-bottom: 14px; }
 
 .footer-tagline {
   font-size: 13px;
@@ -1496,7 +1500,7 @@ footer {
     height: 70px;
   }
 
-  .desktop-nav .nav-logo { font-size: 28px; }
+  .desktop-nav .nav-logo img { height: 44px; }
 
   .nav-links {
     display: flex;
@@ -1666,6 +1670,8 @@ footer {
 
   .footer-brand { margin-bottom: 0; }
 
+  .footer-brand .nav-logo img { height: 48px; }
+
   .footer-grid {
     display: grid;
     grid-template-columns: 1.8fr 1fr 1fr 1fr;
@@ -1711,7 +1717,7 @@ footer {
 
 <!-- DESKTOP NAV -->
 <nav class="desktop-nav">
-  <a href="#" class="nav-logo">Creative Solace</a>
+  <a href="#" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
   <ul class="nav-links">
     <li><a href="#" class="active" onclick="scrollTo(0,0);return false;">Home</a></li>
     <li><a href="#kits" onclick="scrollToSection('kits');return false;">Kits</a></li>
@@ -1727,7 +1733,7 @@ footer {
 
 <!-- MOBILE NAV (top bar) -->
 <nav class="mobile-nav">
-  <a href="#" class="nav-logo">Creative Solace</a>
+  <a href="#" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
   <div class="mobile-nav-actions">
     <button class="nav-icon" onclick="toggleCart()" title="Cart">🛒</button>
     <button class="btn-cart-mobile" onclick="toggleCart()">Cart (<span class="cart-count">0</span>)</button>
@@ -1941,32 +1947,32 @@ footer {
   </div>
   <div class="gallery-scroll">
     <div class="gallery-item">
-      <img src="https://images.unsplash.com/photo-1576749872435-ff88df6ea8fa?w=400&q=80" alt="Creative Solace workshop night"/>
-      <div class="gallery-item-overlay"><span class="gallery-tag">Workshop Night</span></div>
+      <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSbuffalo/event-buffalo-1.png" alt="Creative Solace at Mr Buffalo"/>
+      <div class="gallery-item-overlay"><span class="gallery-tag">Mr Buffalo</span></div>
     </div>
     <div class="gallery-item">
-      <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=400&q=80" alt="Creative Solace DIY kit"/>
-      <div class="gallery-item-overlay"><span class="gallery-tag">DIY Kit</span></div>
+      <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSgreyspace/event-greyspace-1.png" alt="Creative Solace at The Grey Space"/>
+      <div class="gallery-item-overlay"><span class="gallery-tag">The Grey Space</span></div>
     </div>
     <div class="gallery-item">
-      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80" alt="Creative Solace bedazzle night"/>
-      <div class="gallery-item-overlay"><span class="gallery-tag">Bedazzle Night</span></div>
+      <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSfoodhallen/event-foodhallen-1.png" alt="Creative Solace at Foodhallen"/>
+      <div class="gallery-item-overlay"><span class="gallery-tag">Foodhallen</span></div>
     </div>
     <div class="gallery-item">
-      <img src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400&q=80" alt="Creative Solace festival stand"/>
-      <div class="gallery-item-overlay"><span class="gallery-tag">Festival Stand</span></div>
+      <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS3house/event-3house-1.png" alt="Creative Solace at 3House"/>
+      <div class="gallery-item-overlay"><span class="gallery-tag">3House</span></div>
     </div>
     <div class="gallery-item">
-      <img src="https://images.unsplash.com/photo-1499728603263-13726abce5fd?w=400&q=80" alt="Creative Solace market day"/>
-      <div class="gallery-item-overlay"><span class="gallery-tag">Market Day</span></div>
+      <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSthriftpark/event-thriftpark-1.png" alt="Creative Solace at ThriftPark"/>
+      <div class="gallery-item-overlay"><span class="gallery-tag">ThriftPark</span></div>
     </div>
     <div class="gallery-item">
-      <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&q=80" alt="Creative Solace custom order"/>
-      <div class="gallery-item-overlay"><span class="gallery-tag">Custom Order</span></div>
+      <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSbuffalo/event-buffalo-2.png" alt="Creative Solace at Mr Buffalo"/>
+      <div class="gallery-item-overlay"><span class="gallery-tag">Mr Buffalo</span></div>
     </div>
     <div class="gallery-item">
-      <img src="https://images.unsplash.com/photo-1529165980561-f19d4acc4f3f?w=400&q=80" alt="Creative Solace girls night"/>
-      <div class="gallery-item-overlay"><span class="gallery-tag">Girls Night</span></div>
+      <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSgreyspace/event-greyspace-2.png" alt="Creative Solace at The Grey Space"/>
+      <div class="gallery-item-overlay"><span class="gallery-tag">The Grey Space</span></div>
     </div>
   </div>
 </section>
@@ -1996,7 +2002,7 @@ footer {
         </div>
         {(w.data.title === 'Bachelorette & Birthday Packages' || w.data.title === 'Bachelorette and Birthday Packages') && (
           <div class="workshop-img">
-            <img src="https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&q=80" alt="Private workshop event"/>
+            <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/event-private.png" alt="Private workshop event"/>
           </div>
         )}
       </div>
@@ -2040,7 +2046,7 @@ footer {
             <a href="#" class="btn-workshop" onclick="event.preventDefault();openQuote('Private Event')">Plan my event</a>
           </div>
           <div class="workshop-img">
-            <img src="https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=800&q=80" alt="Private workshop event"/>
+            <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/event-private.png" alt="Private workshop event"/>
           </div>
         </div>
       </>
@@ -2258,7 +2264,7 @@ footer {
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
-      <a href="#" class="nav-logo">Creative Solace</a>
+      <a href="#" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
       <p class="footer-tagline">Bringing sparkle, creativity, and good vibes to workshops, markets, festivals, and living rooms across the Netherlands and beyond.</p>
       <div class="footer-social">
         <a href="https://www.instagram.com/creativesolace__/" target="_blank" rel="noopener" class="social-btn" title="Instagram">📸</a>
