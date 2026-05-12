@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
+import react from '@astrojs/react';
 import keystatic from '@keystatic/astro';
 
 export default defineConfig({
@@ -7,5 +8,5 @@ export default defineConfig({
   adapter: cloudflare({
     platformProxy: { enabled: true },
   }),
-  integrations: [keystatic()],
+  integrations: [react(), keystatic()],
 });
