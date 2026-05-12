@@ -1864,7 +1864,7 @@ footer {
     </div>
     <div class="products-header-row">
       <p class="section-sub reveal">All kits include rhinestones, canvas, precision pen, wax pad and craft glue. Ships in 1 to 2 business days.</p>
-      <a href="#" class="btn-outline reveal" style="white-space:nowrap;flex-shrink:0;">View all →</a>
+      <a href="#kits" onclick="scrollToSection('kits');return false;" class="btn-outline reveal" style="white-space:nowrap;flex-shrink:0;">View all →</a>
     </div>
   </div>
 
@@ -2483,7 +2483,7 @@ footer {
   </div>
 </div>
 
-<script>
+<script is:inline>
 // ── CART ──
 let cart = [];
 let cartOpen = false;
