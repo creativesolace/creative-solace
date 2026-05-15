@@ -4,6 +4,6 @@
   "location": "Centrale Markthal",
   "city": "Amsterdam",
   "type": "market",
-  "image": "/images/events/creative-solace-x-thriftpark/image.png",
+  "images": ["/images/events/creative-solace-x-thriftpark/image.png"],
   "featured": true
 }

@@ -26,11 +26,17 @@ export default config({
           defaultValue: 'festival',
         }),
         ticketUrl: fields.url({ label: 'Ticket / Info URL (optional)' }),
-        image: fields.image({
-          label: 'Event Image',
-          directory: 'public/images/events',
-          publicPath: '/images/events/',
-        }),
+        images: fields.array(
+          fields.image({
+            label: 'Image',
+            directory: 'public/images/events',
+            publicPath: '/images/events/',
+          }),
+          {
+            label: 'Event Images',
+            itemLabel: props => props.value ?? 'Image',
+          }
+        ),
         featured: fields.checkbox({ label: 'Show on homepage', defaultValue: true }),
       },
     }),
@@ -48,6 +54,11 @@ export default config({
         duration: fields.text({ label: 'Duration (e.g. 2–3 hours)' }),
         groupSize: fields.text({ label: 'Group size (e.g. 6–25 people)' }),
         location: fields.text({ label: 'Location info (e.g. We come to you)' }),
+        image: fields.image({
+          label: 'Workshop Image (optional)',
+          directory: 'public/images/workshops',
+          publicPath: '/images/workshops/',
+        }),
         available: fields.checkbox({ label: 'Currently available', defaultValue: true }),
       },
     }),
@@ -85,6 +96,23 @@ export default config({
         text: fields.text({ label: 'Review text', multiline: true }),
         emoji: fields.text({ label: 'Avatar emoji', defaultValue: '🌸' }),
         featured: fields.checkbox({ label: 'Show on homepage', defaultValue: true }),
+      },
+    }),
+
+    gallery: collection({
+      label: 'Gallery',
+      slugField: 'tag',
+      path: 'src/content/gallery/*',
+      format: { data: 'json' },
+      schema: {
+        tag: fields.slug({ name: { label: 'Label (e.g. Mr Buffalo, DIY Kits)' } }),
+        image: fields.image({
+          label: 'Photo',
+          directory: 'public/images/gallery',
+          publicPath: '/images/gallery/',
+        }),
+        order: fields.number({ label: 'Display order', defaultValue: 10 }),
+        visible: fields.checkbox({ label: 'Show in gallery', defaultValue: true }),
       },
     }),
   },

@@ -9,6 +9,8 @@ try { events = (await getCollection('events')).filter(e => e.data.featured).sort
 try { workshops = await getCollection('workshops'); } catch(e) {}
 try { products = (await getCollection('products')).filter(p => p.data.available); } catch(e) {}
 try { testimonials = (await getCollection('testimonials')).filter(t => t.data.featured); } catch(e) {}
+let galleryItems = [];
+try { galleryItems = (await getCollection('gallery')).filter(g => g.data.visible).sort((a,b) => a.data.order - b.data.order); } catch(e) {}
 
 const STRIPE_PK = import.meta.env.STRIPE_PUBLISHABLE_KEY || 'pk_live_51TVx4IC1ZOnsxU8kBY7mcTOIMKBzTMoK4OA1sjAl77HFEobLC1BMznlWoHele1Y8yN1fbM6i3da1yQr02yxbbF5u00pbTwj2VU';
 
@@ -1950,50 +1952,39 @@ footer {
     <h2 class="section-title reveal">Your creations <em>IRL</em></h2>
   </div>
   <div class="gallery-scroll">
-    <div class="gallery-item">
-      <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSbuffalo/event-buffalo-1.png" alt="Creative Solace at Mr Buffalo"/>
-      <div class="gallery-item-overlay"><span class="gallery-tag">Mr Buffalo</span></div>
-    </div>
-    <div class="gallery-item">
-      <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSgreyspace/event-greyspace-1.png" alt="Creative Solace at The Grey Space"/>
-      <div class="gallery-item-overlay"><span class="gallery-tag">The Grey Space</span></div>
-    </div>
-    <div class="gallery-item">
-      <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/group-kit.png" alt="Creative Solace rhinestone kits"/>
-      <div class="gallery-item-overlay"><span class="gallery-tag">DIY Kits</span></div>
-    </div>
-    <div class="gallery-item">
-      <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSfoodhallen/event-foodhallen-1.png" alt="Creative Solace at Foodhallen"/>
-      <div class="gallery-item-overlay"><span class="gallery-tag">Foodhallen</span></div>
-    </div>
-    <div class="gallery-item">
-      <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSthriftpark/event-thriftpark-4.png" alt="Creative Solace at ThriftPark"/>
-      <div class="gallery-item-overlay"><span class="gallery-tag">ThriftPark</span></div>
-    </div>
-    <div class="gallery-item">
-      <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSfoodhallen/event-foodhallen-2.png" alt="Creative Solace at Foodhallen"/>
-      <div class="gallery-item-overlay"><span class="gallery-tag">ThriftPark</span></div>
-    </div>
-    <div class="gallery-item">
-      <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS3house/event-3house-1.png" alt="Creative Solace at 3House"/>
-      <div class="gallery-item-overlay"><span class="gallery-tag">3House</span></div>
-    </div>
-    <div class="gallery-item">
-      <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSthriftpark/event-thriftpark-4.png" alt="Creative Solace at ThriftPark"/>
-      <div class="gallery-item-overlay"><span class="gallery-tag">ThriftPark</span></div>
-    </div>
-    <div class="gallery-item">
-      <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSfoodhallen/event-foodhallen-3.png" alt="Creative Solace at Foodhallen"/>
-      <div class="gallery-item-overlay"><span class="gallery-tag">Foodhallen</span></div>
-    </div>
-    <div class="gallery-item">
-      <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSgreyspace/event-greyspace-2.png" alt="Creative Solace at The Grey Space"/>
-      <div class="gallery-item-overlay"><span class="gallery-tag">The Grey Space</span></div>
-    </div>
-    <div class="gallery-item">
-      <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSbuffalo/event-buffalo-2.png" alt="Creative Solace at Mr Buffalo"/>
-      <div class="gallery-item-overlay"><span class="gallery-tag">Mr Buffalo</span></div>
-    </div>
+    {galleryItems.length > 0 ? galleryItems.map(item => (
+      <div class="gallery-item">
+        <img src={item.data.image} alt={`Creative Solace — ${item.data.tag}`} />
+        <div class="gallery-item-overlay"><span class="gallery-tag">{item.data.tag}</span></div>
+      </div>
+    )) : (
+      <>
+        <div class="gallery-item">
+          <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSbuffalo/event-buffalo-1.png" alt="Creative Solace at Mr Buffalo"/>
+          <div class="gallery-item-overlay"><span class="gallery-tag">Mr Buffalo</span></div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSgreyspace/event-greyspace-1.png" alt="Creative Solace at The Grey Space"/>
+          <div class="gallery-item-overlay"><span class="gallery-tag">The Grey Space</span></div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/group-kit.png" alt="Creative Solace rhinestone kits"/>
+          <div class="gallery-item-overlay"><span class="gallery-tag">DIY Kits</span></div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSfoodhallen/event-foodhallen-1.png" alt="Creative Solace at Foodhallen"/>
+          <div class="gallery-item-overlay"><span class="gallery-tag">Foodhallen</span></div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSthriftpark/event-thriftpark-4.png" alt="Creative Solace at ThriftPark"/>
+          <div class="gallery-item-overlay"><span class="gallery-tag">ThriftPark</span></div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS3house/event-3house-1.png" alt="Creative Solace at 3House"/>
+          <div class="gallery-item-overlay"><span class="gallery-tag">3House</span></div>
+        </div>
+      </>
+    )}
   </div>
 </section>
 
