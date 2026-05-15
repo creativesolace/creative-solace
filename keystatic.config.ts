@@ -26,17 +26,11 @@ export default config({
           defaultValue: 'festival',
         }),
         ticketUrl: fields.url({ label: 'Ticket / Info URL (optional)' }),
-        images: fields.array(
-          fields.image({
-            label: 'Image',
-            directory: 'public/images/events',
-            publicPath: '/images/events/',
-          }),
-          {
-            label: 'Event Images',
-            itemLabel: props => props.value ?? 'Image',
-          }
-        ),
+        image: fields.image({
+          label: 'Event Image',
+          directory: 'public/images/events',
+          publicPath: '/images/events/',
+        }),
         featured: fields.checkbox({ label: 'Show on homepage', defaultValue: true }),
       },
     }),

@@ -4,6 +4,6 @@
   "location": "Mr Buffalo",
   "city": "The Hague",
   "type": "popup",
-  "images": ["/images/events/creative-solace-x-mr-buffalo/image.png"],
-  "featured": true
+  "featured": true,
+  "image": "/images/events/creative-solace-x-mr-buffalo/image.png"
 }

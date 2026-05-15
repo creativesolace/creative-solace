@@ -4,6 +4,6 @@
   "location": "The Grey Space In The Middle",
   "city": "The Hague",
   "type": "workshop",
-  "images": ["/images/events/creative-solace-x-greyspace/image.png"],
-  "featured": true
+  "featured": true,
+  "image": "/images/events/creative-solace-x-greyspace/image.png"
 }
