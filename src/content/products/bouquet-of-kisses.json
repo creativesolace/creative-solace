@@ -5,6 +5,7 @@
   "originalPrice": 69,
   "badge": "Sale",
   "image": "/images/products/bouquet-of-kisses/image.png",
+  "imageIRL": "/images/products/bouquet-of-kisses/imageIRL.png",
   "stripeProductId": "prod_UVIwq8TgSltOY2",
   "stripePriceId": "price_1TWIKwC1ZOnsxU8kWIPsZGY1",
   "available": true
