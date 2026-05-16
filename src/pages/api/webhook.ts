@@ -72,6 +72,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
         });
 
         const myparcelData = await myparcelRes.json() as any;
+        console.log('MyParcel key present:', !!env.MYPARCEL_API_KEY);
+        console.log('MyParcel key length:', env.MYPARCEL_API_KEY?.length);
         console.log('MyParcel status:', myparcelRes.status);
         console.log('MyParcel response:', JSON.stringify(myparcelData));
         myparcelShipmentId = myparcelData?.data?.ids?.[0]?.id || null;
