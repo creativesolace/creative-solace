@@ -41,34 +41,55 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }),
     });
 
-    await fetch('https://api.postmarkapp.com/email', {
+    const tokenRes = await fetch('https://accounts.zoho.eu/oauth/v2/token', {
       method: 'POST',
-      headers: { 'X-Postmark-Server-Token': env.POSTMARK_TOKEN, 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: env.ZOHO_REFRESH_TOKEN,
+        client_id: env.ZOHO_CLIENT_ID,
+        client_secret: env.ZOHO_CLIENT_SECRET,
+      }),
+    });
+    const tokenData = await tokenRes.json() as any;
+    const access_token = tokenData.access_token;
+
+    const orgId = '20114664605';
+
+    const contactRes = await fetch('https://desk.zoho.eu/api/v1/contacts/search?email=' + encodeURIComponent(email), {
+      headers: { 'Authorization': `Zoho-oauthtoken ${access_token}`, 'orgId': orgId },
+    });
+    const contactData = await contactRes.json() as any;
+
+    let contactId: string;
+    if (contactData?.data?.length > 0) {
+      contactId = contactData.data[0].id;
+    } else {
+      const newContact = await fetch('https://desk.zoho.eu/api/v1/contacts', {
+        method: 'POST',
+        headers: { 'Authorization': `Zoho-oauthtoken ${access_token}`, 'orgId': orgId, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lastName: name, email }),
+      });
+      const newContactData = await newContact.json() as any;
+      contactId = newContactData.id;
+    }
+
+    await fetch('https://desk.zoho.eu/api/v1/tickets', {
+      method: 'POST',
+      headers: { 'Authorization': `Zoho-oauthtoken ${access_token}`, 'orgId': orgId, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        From: `Creative Solace <${env.POSTMARK_FROM}>`,
-        To: `${env.POSTMARK_FROM}, support@creativesolace.zohodesk.eu`,
-        ReplyTo: email,
-        Subject: `💼 New enquiry: ${resolvedEventType} — ${name}`,
-        HtmlBody: `
-          <div style="font-family: sans-serif;">
-            <h2>New Enquiry 💼</h2>
-            <table style="border-collapse: collapse; width: 100%;">
-              <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Name</strong></td><td style="padding: 8px; border: 1px solid #eee;">${name}</td></tr>
-              <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Email</strong></td><td style="padding: 8px; border: 1px solid #eee;">${email}</td></tr>
-              <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Event Type</strong></td><td style="padding: 8px; border: 1px solid #eee;">${resolvedEventType}</td></tr>
-              <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Date</strong></td><td style="padding: 8px; border: 1px solid #eee;">${resolvedDate || 'Flexible'}</td></tr>
-              <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Guests</strong></td><td style="padding: 8px; border: 1px solid #eee;">${guests || 'TBC'}</td></tr>
-              <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Message</strong></td><td style="padding: 8px; border: 1px solid #eee;">${message || '—'}</td></tr>
-            </table>
-          </div>
-        `,
+        subject: `New enquiry: ${resolvedEventType} — ${name}`,
+        description: `Name: ${name}\nEmail: ${email}\nEvent Type: ${resolvedEventType}\nDate: ${resolvedDate || 'Flexible'}\nGuests: ${guests || 'TBC'}\nMessage: ${message || '—'}`,
+        contactId,
+        departmentId: '237675000000007061',
+        channel: 'Web',
       }),
     });
 
     return new Response(JSON.stringify({ success: true }), { status: 200 });
 
   } catch (err: any) {
-    console.error('Enquiry error:', err);
+    console.error('Enquiry error:', err.message);
     return new Response(JSON.stringify({ error: err.message }), { status: 500 });
   }
 };

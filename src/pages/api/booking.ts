@@ -88,6 +88,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
         subject: `New booking: ${workshopType} — ${name}`,
         description: `Name: ${name}\nEmail: ${email}\nWorkshop: ${workshopType}\nDate: ${resolvedDate || 'Flexible'}\nGuests: ${guests || 'TBC'}\nMessage: ${message || '—'}`,
         contactId,
+        departmentId: '237675000000007061',
         channel: 'Web',
       }),
     });
