@@ -50,6 +50,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       body: JSON.stringify({
         From: `Creative Solace <${env.POSTMARK_FROM}>`,
         To: `${env.POSTMARK_FROM}, support@creativesolace.zohodesk.eu`,
+        ReplyTo: email,
         Subject: `🎨 New booking: ${workshopType} — ${name}`,
         HtmlBody: `
           <div style="font-family: sans-serif;">
