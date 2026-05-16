@@ -71,7 +71,12 @@ export default config({
         originalPrice: fields.number({ label: 'Original price (€, for sale badge)', defaultValue: 69 }),
         badge: fields.text({ label: 'Badge text (e.g. Sale, New, Bestseller)' }),
         image: fields.image({
-          label: 'Product Image',
+          label: 'Product Image (design / art)',
+          directory: 'public/images/products',
+          publicPath: '/images/products/',
+        }),
+        imageIRL: fields.image({
+          label: 'Product Image IRL (on wall, shown on hover)',
           directory: 'public/images/products',
           publicPath: '/images/products/',
         }),

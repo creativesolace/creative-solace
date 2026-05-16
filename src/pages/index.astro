@@ -659,12 +659,17 @@ section { padding: 56px 20px; }
   width: 100%;
   height: 100%;
   object-fit: contain;
-  transition: transform .5s;
+  transition: transform .5s, opacity .4s;
   display: block;
   padding: 8px;
+  position: absolute;
+  top: 0; left: 0;
 }
 
-.product-card:hover .product-img-wrap img { transform: scale(1.06); }
+.product-img-design { opacity: 1; }
+.product-img-irl { opacity: 0; object-fit: cover; padding: 0; }
+.product-card:hover .product-img-design { opacity: 0; transform: scale(1.04); }
+.product-card:hover .product-img-irl { opacity: 1; transform: scale(1.06); }
 
 .product-badge {
   position: absolute;
@@ -1908,7 +1913,8 @@ footer {
       <div class="product-card reveal" style={i > 0 ? `transition-delay:${i * 0.1}s` : ''} onclick={`addToCart('${p.data.title.replace(/'/g, "\\'")}',${p.data.price},'${p.data.stripePriceId || ''}')`}>
         <div class="product-img-wrap">
           {p.data.badge && <span class={`product-badge${p.data.badge.toLowerCase() === 'sale' ? ' sale' : ''}`}>{p.data.badge}</span>}
-          <img src={p.data.image} alt={`${p.data.title} DIY rhinestone canvas kit`} onerror="this.src='https://images.unsplash.com/photo-1490750967868-88df5691cc5f?w=600&q=80'"/>
+          <img class="product-img-design" src={p.data.image} alt={`${p.data.title} DIY rhinestone canvas kit`} onerror="this.src='https://images.unsplash.com/photo-1490750967868-88df5691cc5f?w=600&q=80'"/>
+          {p.data.imageIRL && <img class="product-img-irl" src={p.data.imageIRL} alt={`${p.data.title} on wall`}/>}
           <button class="product-quick-add">+ Quick Add</button>
         </div>
         <div class="product-info">
@@ -1926,7 +1932,7 @@ footer {
         <div class="product-card reveal" onclick="addToCart('Bouquet of Kisses',44.99)">
           <div class="product-img-wrap">
             <span class="product-badge sale">Bestseller</span>
-            <img src="/images/Bouquet_of_Kisses.webp" alt="Bouquet of Kisses DIY rhinestone canvas kit" onerror="this.src='https://images.unsplash.com/photo-1490750967868-88df5691cc5f?w=600&q=80'"/>
+            <img class="product-img-design" src="/images/Bouquet_of_Kisses.webp" alt="Bouquet of Kisses DIY rhinestone canvas kit" onerror="this.src='https://images.unsplash.com/photo-1490750967868-88df5691cc5f?w=600&q=80'"/>
             <button class="product-quick-add">+ Quick Add</button>
           </div>
           <div class="product-info">
@@ -1939,7 +1945,7 @@ footer {
         <div class="product-card reveal" style="transition-delay:.1s" onclick="addToCart('Chanel Lipstick',44.99)">
           <div class="product-img-wrap">
             <span class="product-badge sale">Fan Favourite</span>
-            <img src="/images/Chanel_Lipstick.webp" alt="Chanel Lipstick DIY rhinestone canvas kit" onerror="this.src='https://images.unsplash.com/photo-1586495777744-4e6232bf2b18?w=600&q=80'"/>
+            <img class="product-img-design" src="/images/Chanel_Lipstick.webp" alt="Chanel Lipstick DIY rhinestone canvas kit" onerror="this.src='https://images.unsplash.com/photo-1586495777744-4e6232bf2b18?w=600&q=80'"/>
             <button class="product-quick-add">+ Quick Add</button>
           </div>
           <div class="product-info">
@@ -1952,7 +1958,7 @@ footer {
         <div class="product-card reveal" style="transition-delay:.2s" onclick="addToCart('Dior Heels',44.99)">
           <div class="product-img-wrap">
             <span class="product-badge sale">Limited</span>
-            <img src="/images/Dior_Heels.webp" alt="Dior Heels DIY rhinestone canvas kit" onerror="this.src='https://images.unsplash.com/photo-1515347619252-60a4bf4fff4f?w=600&q=80'"/>
+            <img class="product-img-design" src="/images/Dior_Heels.webp" alt="Dior Heels DIY rhinestone canvas kit" onerror="this.src='https://images.unsplash.com/photo-1515347619252-60a4bf4fff4f?w=600&q=80'"/>
             <button class="product-quick-add">+ Quick Add</button>
           </div>
           <div class="product-info">
@@ -1965,7 +1971,7 @@ footer {
         <div class="product-card reveal" style="transition-delay:.3s" onclick="addToCart('Lucky 777',44.99)">
           <div class="product-img-wrap">
             <span class="product-badge sale">New In</span>
-            <img src="/images/Lucky_777.webp" alt="Lucky 777 DIY rhinestone canvas kit" onerror="this.src='https://images.unsplash.com/photo-1612187765456-db7a38bdb20d?w=600&q=80'"/>
+            <img class="product-img-design" src="/images/Lucky_777.webp" alt="Lucky 777 DIY rhinestone canvas kit" onerror="this.src='https://images.unsplash.com/photo-1612187765456-db7a38bdb20d?w=600&q=80'"/>
             <button class="product-quick-add">+ Quick Add</button>
           </div>
           <div class="product-info">
@@ -2361,10 +2367,7 @@ footer {
         <div class="footer-col-title">Shop</div>
         <ul class="footer-links">
           <li><a href="/#kits">All Kits</a></li>
-          <li><a href="/#kits">New Arrivals</a></li>
-          <li><a href="/#kits">Best Sellers</a></li>
-          <li><a href="mailto:hello@creativesolace.com">Gift Cards</a></li>
-          <li><a href="/#kits">Bundles</a></li>
+          <li><a href="/services">Our Services</a></li>
         </ul>
       </div>
       <div>
@@ -2384,7 +2387,6 @@ footer {
           <li><a href="/faq">FAQ</a></li>
           <li><a href="/shipping">Shipping and Returns</a></li>
           <li><a href="/privacy">Privacy Policy</a></li>
-          <li><a href="/privacy">Cookie Preferences</a></li>
         </ul>
       </div>
     </div>
