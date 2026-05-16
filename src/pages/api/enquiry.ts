@@ -41,6 +41,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }),
     });
 
+    console.log('Using refresh token:', env.ZOHO_REFRESH_TOKEN?.slice(-8));
     const tokenRes = await fetch('https://accounts.zoho.eu/oauth/v2/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
