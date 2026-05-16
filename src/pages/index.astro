@@ -2680,7 +2680,8 @@ async function handleBookingSubmit(e) {
       body: JSON.stringify({
         name: nameEl.value.trim(),
         email: emailEl.value.trim(),
-        enquiryType: typeEl.value
+        enquiryType: typeEl.value,
+        message: btn.closest('.modal').querySelector('textarea')?.value.trim()
       })
     });
   } catch { /* graceful fallback */ }
