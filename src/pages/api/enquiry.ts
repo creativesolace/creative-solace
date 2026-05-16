@@ -46,7 +46,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       headers: { 'X-Postmark-Server-Token': env.POSTMARK_TOKEN, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         From: `Creative Solace <${env.POSTMARK_FROM}>`,
-        To: env.POSTMARK_FROM,
+        To: `${env.POSTMARK_FROM}, support@creativesolace.zohodesk.eu`,
         Subject: `💼 New enquiry: ${resolvedEventType} — ${name}`,
         HtmlBody: `
           <div style="font-family: sans-serif;">
