@@ -4,7 +4,7 @@ import type { APIRoute } from 'astro';
 
 export const POST: APIRoute = async ({ request, locals }) => {
   const env = (locals as any).runtime?.env;
-  
+
   try {
     const body = await request.json();
     const { firstName, lastName, email, workshopType, date, guests, message } = body;
@@ -15,35 +15,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     const name = `${firstName} ${lastName}`.trim();
 
-    // 1. Save to D1
     await env.DB.prepare(
       `INSERT INTO bookings (name, email, workshop_type, preferred_date, guests, message, status, created_at)
        VALUES (?, ?, ?, ?, ?, ?, 'pending', datetime('now'))`
     ).bind(name, email, workshopType, date || null, guests || null, message || null).run();
 
-    // 2. Save to Notion
-    await fetch('https://api.notion.com/v1/pages', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${env.NOTION_TOKEN}`,
-        'Content-Type': 'application/json',
-        'Notion-Version': '2022-06-28',
-      },
-      body: JSON.stringify({
-        parent: { database_id: env.NOTION_BOOKINGS_DB },
-        properties: {
-          Name: { title: [{ text: { content: name } }] },
-          Email: { email },
-          'Workshop Type': { select: { name: workshopType } },
-          'Preferred Date': date ? { date: { start: date } } : undefined,
-          Guests: guests ? { number: parseInt(guests) } : undefined,
-          Message: { rich_text: [{ text: { content: message || '' } }] },
-          Status: { select: { name: 'Pending' } },
-        },
-      }),
-    });
-
-    // 3. Send confirmation to customer via Postmark
     await fetch('https://api.postmarkapp.com/email', {
       method: 'POST',
       headers: {
@@ -58,7 +34,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
             <h2 style="color: #FF6B9D;">Hi ${firstName}! ✨</h2>
             <p>We've received your booking request for <strong>${workshopType}</strong>.</p>
-            <p>Here's what you submitted:</p>
             <ul>
               <li><strong>Date:</strong> ${date || 'Flexible'}</li>
               <li><strong>Guests:</strong> ${guests || 'TBC'}</li>
@@ -71,7 +46,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }),
     });
 
-    // 4. Send notification to hello@creativesolace.com
     await fetch('https://api.postmarkapp.com/email', {
       method: 'POST',
       headers: {
@@ -93,7 +67,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
               <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Guests</strong></td><td style="padding: 8px; border: 1px solid #eee;">${guests || 'TBC'}</td></tr>
               <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Message</strong></td><td style="padding: 8px; border: 1px solid #eee;">${message || '—'}</td></tr>
             </table>
-            <p><a href="https://notion.so">View in Notion →</a></p>
           </div>
         `,
       }),

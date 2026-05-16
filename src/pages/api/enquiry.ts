@@ -15,35 +15,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     const name = `${firstName} ${lastName}`.trim();
 
-    // 1. Save to D1
     await env.DB.prepare(
       `INSERT INTO enquiries (name, email, event_type, preferred_date, guests, message, status, created_at)
        VALUES (?, ?, ?, ?, ?, ?, 'new', datetime('now'))`
     ).bind(name, email, eventType, date || null, guests || null, message || null).run();
 
-    // 2. Save to Notion
-    await fetch('https://api.notion.com/v1/pages', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${env.NOTION_TOKEN}`,
-        'Content-Type': 'application/json',
-        'Notion-Version': '2022-06-28',
-      },
-      body: JSON.stringify({
-        parent: { database_id: env.NOTION_B2B_DB },
-        properties: {
-          Name: { title: [{ text: { content: name } }] },
-          Email: { email },
-          'Event Type': { select: { name: eventType } },
-          'Preferred Date': date ? { date: { start: date } } : undefined,
-          Guests: guests ? { number: parseInt(guests) } : undefined,
-          Message: { rich_text: [{ text: { content: message || '' } }] },
-          Status: { select: { name: 'New' } },
-        },
-      }),
-    });
-
-    // 3. Confirmation to customer
     await fetch('https://api.postmarkapp.com/email', {
       method: 'POST',
       headers: {
@@ -65,7 +41,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }),
     });
 
-    // 4. Notification to hello@
     await fetch('https://api.postmarkapp.com/email', {
       method: 'POST',
       headers: {
@@ -75,10 +50,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
       body: JSON.stringify({
         From: `Creative Solace <${env.POSTMARK_FROM}>`,
         To: env.POSTMARK_FROM,
-        Subject: `💼 New B2B enquiry: ${eventType} — ${name}`,
+        Subject: `💼 New enquiry: ${eventType} — ${name}`,
         HtmlBody: `
           <div style="font-family: sans-serif;">
-            <h2>New B2B Enquiry 💼</h2>
+            <h2>New Enquiry 💼</h2>
             <table style="border-collapse: collapse; width: 100%;">
               <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Name</strong></td><td style="padding: 8px; border: 1px solid #eee;">${name}</td></tr>
               <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Email</strong></td><td style="padding: 8px; border: 1px solid #eee;">${email}</td></tr>
