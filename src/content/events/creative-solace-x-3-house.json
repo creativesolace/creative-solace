@@ -4,6 +4,9 @@
   "location": "3House",
   "city": "The Hague",
   "type": "popup",
+  "image": "/images/events/creative-solace-x-3-house/image.png",
   "featured": true,
-  "image": "/images/events/creative-solace-x-3-house/image.png"
+  "photo1": "/images/events/creative-solace-x-3-house/photo1.png",
+  "photo2": "/images/events/creative-solace-x-3-house/photo2.png",
+  "photo3": "/images/events/creative-solace-x-3-house/photo3.png"
 }
