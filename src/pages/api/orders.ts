@@ -2,10 +2,12 @@ import type { APIContext } from 'astro';
 
 export const prerender = false;
 
+const PASSWORD = 'igurE-jkc23-TIy?!';
+
 export async function GET({ request, locals }: APIContext) {
   const url = new URL(request.url);
   const password = url.searchParams.get('password');
-  if (password !== locals.runtime.env.CHECKIN_PASSWORD) {
+  if (password !== PASSWORD) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
   const db = locals.runtime.env.DB;
@@ -18,7 +20,7 @@ export async function GET({ request, locals }: APIContext) {
 export async function PATCH({ request, locals }: APIContext) {
   const url = new URL(request.url);
   const password = url.searchParams.get('password');
-  if (password !== locals.runtime.env.CHECKIN_PASSWORD) {
+  if (password !== PASSWORD) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
   const { id, fulfillment_status } = await request.json();
