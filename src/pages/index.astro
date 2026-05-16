@@ -2124,7 +2124,7 @@ footer {
               <h3 class="event-title">{ev.data.title}</h3>
               <div class="event-location">📍 {ev.data.location}{ev.data.city ? `, ${ev.data.city}` : ''}</div>
               {ev.data.ticketPrice ? (
-                <button class="btn-ticket" onclick={`buyTicket('${ev.slug}', ${ev.data.ticketPrice})`}>
+                <button class="btn-ticket" onclick={`buyTicket('${ev.id}', ${ev.data.ticketPrice})`}>
                   Get tickets — €{ev.data.ticketPrice} ✨
                 </button>
               ) : ev.data.ticketUrl ? (
