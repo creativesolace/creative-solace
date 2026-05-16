@@ -9,160 +9,93 @@ export const prerender = false;
   <title>Admin — Creative Solace</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Dancing+Script:wght@700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
   <style is:global>
     :root {
-      --pink: #FF6B9D;
-      --pink-light: #FFB3CF;
-      --pink-pale: #FFF0F5;
-      --yellow: #FFD166;
-      --yellow-warm: #FFBC42;
-      --cream: #FFF8F0;
-      --dark: #1A0A14;
-      --mid: #5C3049;
-      --text: #3D1A2C;
-      --white: #FFFFFF;
-      --grad-main: linear-gradient(135deg, #FFD166 0%, #FF9EC4 50%, #C084FC 100%);
+      --pink: #FF6B9D; --pink-light: #FFB3CF; --pink-pale: #FFF0F5;
+      --yellow: #FFD166; --yellow-warm: #FFBC42; --cream: #FFF8F0;
+      --dark: #1A0A14; --mid: #5C3049; --text: #3D1A2C; --white: #FFFFFF;
       --grad-pink: linear-gradient(135deg, #FF6B9D, #FFBC42);
-      --shadow-soft: 0 8px 40px rgba(255,107,157,0.18);
       --shadow-card: 0 4px 24px rgba(60,20,40,0.10);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
-
-    /* LOGIN */
-    .login-wrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: var(--cream); }
-    .login-card {
-      background: white; border-radius: 24px; padding: 48px 40px; width: 100%; max-width: 380px;
-      box-shadow: var(--shadow-card); text-align: center; border: 1px solid rgba(255,107,157,0.12);
-    }
+    .login-wrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .login-card { background: white; border-radius: 24px; padding: 48px 40px; width: 100%; max-width: 380px; box-shadow: var(--shadow-card); text-align: center; border: 1px solid rgba(255,107,157,0.12); }
     .login-gem { font-size: 2.5rem; margin-bottom: 12px; }
     .login-title { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--dark); margin-bottom: 6px; }
     .login-sub { color: var(--mid); font-size: 0.9rem; margin-bottom: 28px; }
-    .login-input {
-      width: 100%; padding: 14px 18px; border: 1.5px solid rgba(60,20,40,0.15);
-      border-radius: 12px; font-size: 1rem; font-family: 'DM Sans', sans-serif;
-      color: var(--text); background: var(--cream); outline: none; margin-bottom: 14px; transition: border-color 0.2s;
-    }
+    .login-input { width: 100%; padding: 14px 18px; border: 1.5px solid rgba(60,20,40,0.15); border-radius: 12px; font-size: 1rem; font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--cream); outline: none; margin-bottom: 14px; transition: border-color 0.2s; }
     .login-input:focus { border-color: var(--pink); }
-    .login-btn {
-      width: 100%; padding: 14px; background: var(--dark); color: white;
-      border: none; border-radius: 12px; font-size: 1rem; font-family: 'DM Sans', sans-serif;
-      font-weight: 600; cursor: pointer; transition: background 0.2s;
-    }
+    .login-btn { width: 100%; padding: 14px; background: var(--dark); color: white; border: none; border-radius: 12px; font-size: 1rem; font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; transition: background 0.2s; }
     .login-btn:hover { background: var(--pink); }
     .login-error { color: var(--pink); font-size: 0.85rem; margin-top: 10px; min-height: 20px; }
-
-    /* HEADER */
-    header {
-      background: rgba(255,248,240,0.95); backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255,107,157,0.12);
-      padding: 0 32px; height: 64px; display: flex; align-items: center; justify-content: space-between;
-      position: sticky; top: 0; z-index: 100;
-    }
+    header { background: rgba(255,248,240,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,107,157,0.12); padding: 0 32px; height: 64px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
     .header-logo { display: flex; align-items: center; gap: 10px; }
     .header-logo span { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--dark); font-weight: 700; }
-    .header-logo .gem { font-size: 1.3rem; }
     .header-right { display: flex; align-items: center; gap: 16px; }
     .last-updated { color: var(--mid); font-size: 0.8rem; opacity: 0.7; }
-
-    /* TABS */
     .tabs { display: flex; gap: 4px; background: rgba(60,20,40,0.07); border-radius: 12px; padding: 4px; }
-    .tab {
-      padding: 8px 22px; border-radius: 9px; border: none; cursor: pointer;
-      font-size: 0.875rem; font-weight: 500; font-family: 'DM Sans', sans-serif;
-      background: transparent; color: var(--mid); transition: all 0.2s;
-    }
+    .tab { padding: 8px 22px; border-radius: 9px; border: none; cursor: pointer; font-size: 0.875rem; font-weight: 500; font-family: 'DM Sans', sans-serif; background: transparent; color: var(--mid); transition: all 0.2s; }
     .tab.active { background: white; color: var(--dark); box-shadow: 0 1px 6px rgba(60,20,40,0.12); }
-    .refresh-btn {
-      padding: 8px 16px; background: transparent; border: 1.5px solid rgba(60,20,40,0.15);
-      border-radius: 10px; cursor: pointer; font-size: 0.82rem; color: var(--mid);
-      font-family: 'DM Sans', sans-serif; transition: all 0.2s;
-    }
+    .refresh-btn { padding: 8px 16px; background: transparent; border: 1.5px solid rgba(60,20,40,0.15); border-radius: 10px; cursor: pointer; font-size: 0.82rem; color: var(--mid); font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
     .refresh-btn:hover { border-color: var(--pink); color: var(--pink); }
-
-    /* LAYOUT */
     .container { padding: 28px 32px; max-width: 1280px; margin: 0 auto; }
-
-    /* STAT CARDS */
     .stats { display: flex; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
-    .stat {
-      background: white; border-radius: 16px; padding: 20px 24px; flex: 1; min-width: 130px;
-      box-shadow: var(--shadow-card); border: 1px solid rgba(255,107,157,0.08); position: relative; overflow: hidden;
-    }
+    .stat { background: white; border-radius: 16px; padding: 20px 24px; flex: 1; min-width: 130px; box-shadow: var(--shadow-card); border: 1px solid rgba(255,107,157,0.08); position: relative; overflow: hidden; }
     .stat::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--grad-pink); }
     .stat-value { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--dark); line-height: 1; }
     .stat-label { color: var(--mid); font-size: 0.78rem; margin-top: 6px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
-
-    /* TABLE CARD */
-    .card {
-      background: white; border-radius: 20px; box-shadow: var(--shadow-card);
-      border: 1px solid rgba(255,107,157,0.08); overflow: hidden; margin-bottom: 24px;
-    }
-    .card-header {
-      padding: 20px 24px; border-bottom: 1px solid rgba(60,20,40,0.06);
-      display: flex; align-items: center; justify-content: space-between;
-    }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
+    .filter-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+    .chip { padding: 7px 16px; border-radius: 20px; border: 1.5px solid rgba(60,20,40,0.15); background: white; font-size: 0.8rem; font-weight: 500; font-family: 'DM Sans', sans-serif; color: var(--mid); cursor: pointer; transition: all 0.2s; }
+    .chip:hover { border-color: var(--pink); color: var(--pink); }
+    .chip.active { background: var(--dark); color: white; border-color: var(--dark); }
+    .chip.archive-chip { border-color: rgba(60,20,40,0.15); }
+    .chip.archive-chip.active { background: var(--mid); border-color: var(--mid); }
+    .action-bar { display: flex; align-items: center; gap: 10px; }
+    .archive-btn { padding: 8px 18px; background: var(--mid); color: white; border: none; border-radius: 10px; font-size: 0.82rem; font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; transition: all 0.2s; display: none; }
+    .archive-btn:hover { background: var(--dark); }
+    .unarchive-btn { padding: 8px 18px; background: #6b7280; color: white; border: none; border-radius: 10px; font-size: 0.82rem; font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; transition: all 0.2s; display: none; }
+    .unarchive-btn:hover { background: #374151; }
+    .selected-count { font-size: 0.82rem; color: var(--mid); display: none; }
+    .card { background: white; border-radius: 20px; box-shadow: var(--shadow-card); border: 1px solid rgba(255,107,157,0.08); overflow: hidden; margin-bottom: 24px; }
+    .card-header { padding: 20px 24px; border-bottom: 1px solid rgba(60,20,40,0.06); display: flex; align-items: center; justify-content: space-between; }
     .card-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--dark); font-weight: 700; }
     .card-meta { font-size: 0.82rem; color: var(--mid); opacity: 0.8; }
-
     table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
-    th {
-      text-align: left; padding: 12px 20px; color: var(--mid);
-      font-weight: 600; font-size: 0.72rem; text-transform: uppercase;
-      letter-spacing: 0.06em; border-bottom: 1px solid rgba(60,20,40,0.06); background: rgba(255,248,240,0.5);
-    }
+    th { text-align: left; padding: 12px 20px; color: var(--mid); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid rgba(60,20,40,0.06); background: rgba(255,248,240,0.5); }
+    th.check-col { width: 40px; padding-left: 20px; }
     td { padding: 16px 20px; border-bottom: 1px solid rgba(60,20,40,0.05); vertical-align: middle; }
+    td.check-col { padding-left: 20px; }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: rgba(255,240,245,0.4); }
-
+    tr.selected td { background: rgba(255,107,157,0.06); }
+    input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--pink); cursor: pointer; }
     .customer-name { font-weight: 600; color: var(--dark); }
     .customer-email { color: var(--mid); font-size: 0.8rem; opacity: 0.8; margin-top: 2px; }
     .amount { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--dark); font-size: 1rem; }
     .address-text { font-size: 0.82rem; color: var(--mid); line-height: 1.5; }
     .date-text { color: var(--mid); font-size: 0.82rem; white-space: nowrap; }
-
-    .shipment-link {
-      color: var(--pink); text-decoration: none; font-size: 0.82rem; font-weight: 600;
-      background: var(--pink-pale); padding: 3px 8px; border-radius: 6px; display: inline-block;
-    }
+    .shipment-link { color: var(--pink); text-decoration: none; font-size: 0.82rem; font-weight: 600; background: var(--pink-pale); padding: 3px 8px; border-radius: 6px; display: inline-block; }
     .shipment-link:hover { background: var(--pink-light); }
     .track-link { color: var(--mid); text-decoration: none; font-size: 0.78rem; margin-top: 4px; display: inline-block; }
     .track-link:hover { color: var(--pink); }
     .no-val { color: rgba(60,20,40,0.2); }
-
-    /* STATUS SELECT */
-    select.ss {
-      padding: 7px 12px; border-radius: 10px; border: 1.5px solid rgba(60,20,40,0.15);
-      font-size: 0.8rem; cursor: pointer; font-family: 'DM Sans', sans-serif;
-      font-weight: 600; outline: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235C3049' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px; transition: border-color 0.2s;
-    }
+    select.ss { padding: 7px 28px 7px 12px; border-radius: 10px; border: 1.5px solid rgba(60,20,40,0.15); font-size: 0.8rem; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 600; outline: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235C3049' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; background-color: white; transition: border-color 0.2s; }
     select.ss:focus { border-color: var(--pink); }
-    select.ss:disabled { opacity: 0.7; cursor: default; }
     select.ss.paid { color: #166534; background-color: #dcfce7; border-color: #86efac; }
     select.ss.picked_and_packed { color: #92400e; background-color: #fef3c7; border-color: #fcd34d; }
     select.ss.label_printed { color: #78350f; background-color: #fff7ed; border-color: #fed7aa; }
     select.ss.dropped_off { color: #1e40af; background-color: #dbeafe; border-color: #93c5fd; }
     select.ss.shipped { color: #6b21a8; background-color: #f3e8ff; border-color: #d8b4fe; }
     select.ss.delivered { color: #374151; background-color: #f3f4f6; border-color: #d1d5db; }
-
-    /* TICKET BADGES */
-    .badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 5px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 600;
-    }
+    .badge { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; }
     .badge-valid { background: #dcfce7; color: #166534; }
     .badge-used { background: #f3f4f6; color: #374151; }
-    .ticket-code {
-      font-family: monospace; font-size: 0.85rem; background: var(--pink-pale);
-      color: var(--pink); padding: 3px 8px; border-radius: 6px; font-weight: 700; letter-spacing: 0.05em;
-    }
+    .ticket-code { font-family: monospace; font-size: 0.85rem; background: var(--pink-pale); color: var(--pink); padding: 3px 8px; border-radius: 6px; font-weight: 700; letter-spacing: 0.05em; }
     .event-card-meta { font-size: 0.82rem; color: var(--mid); margin-top: 2px; }
-
     .empty { text-align: center; padding: 60px 20px; color: var(--mid); opacity: 0.6; }
-    .empty-icon { font-size: 2.5rem; margin-bottom: 12px; }
-
     #app { display: none; }
     .panel { display: none; }
     .panel.active { display: block; }
@@ -184,7 +117,7 @@ export const prerender = false;
 <div id="app">
   <header>
     <div class="header-logo">
-      <span class="gem">💎</span>
+      <span>💎</span>
       <span>Creative Solace Admin</span>
     </div>
     <div class="header-right">
@@ -200,9 +133,17 @@ export const prerender = false;
   <div class="container">
     <div id="panel-orders" class="panel active">
       <div class="stats" id="order-stats"></div>
+      <div class="toolbar">
+        <div class="filter-chips" id="filter-chips"></div>
+        <div class="action-bar">
+          <span class="selected-count" id="selected-count"></span>
+          <button class="archive-btn" id="archive-btn" onclick="archiveSelected()">Archive selected</button>
+          <button class="unarchive-btn" id="unarchive-btn" onclick="unarchiveSelected()">Unarchive selected</button>
+        </div>
+      </div>
       <div class="card">
         <div class="card-header">
-          <span class="card-title">All Orders</span>
+          <span class="card-title" id="orders-title">All Orders</span>
         </div>
         <div id="orders-table-container"></div>
       </div>
@@ -217,6 +158,20 @@ export const prerender = false;
 
 <script is:inline>
   let pw = '';
+  let allOrders = [];
+  let activeFilter = 'all';
+  let showArchived = false;
+
+  const STATUS_LABELS = {
+    paid: 'Paid',
+    picked_and_packed: 'Picked & Packed',
+    label_printed: 'Label Printed',
+    dropped_off: 'Dropped Off',
+    shipped: 'Shipped',
+    delivered: 'Delivered'
+  };
+  const ALL_STATUSES = ['paid','picked_and_packed','label_printed','dropped_off','shipped','delivered'];
+  const AUTO_STATUSES = ['shipped','delivered'];
 
   function switchTab(name, el) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -238,7 +193,7 @@ export const prerender = false;
 
   async function loadAll(isLogin) {
     const [oRes, tRes] = await Promise.all([
-      fetch('/api/orders?password=' + encodeURIComponent(pw)),
+      fetch('/api/orders?password=' + encodeURIComponent(pw) + (showArchived ? '&archived=1' : '')),
       fetch('/api/tickets?password=' + encodeURIComponent(pw))
     ]);
     if (oRes.status === 401) {
@@ -246,14 +201,15 @@ export const prerender = false;
       pw = '';
       return;
     }
-    const orders = await oRes.json();
+    allOrders = await oRes.json();
     const tickets = await tRes.json();
     if (isLogin) {
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('app').style.display = 'block';
     }
-    renderOrderStats(orders);
-    renderOrdersTable(orders);
+    renderOrderStats(allOrders);
+    renderFilterChips(allOrders);
+    applyFilter(activeFilter);
     renderTicketStats(tickets);
     renderTickets(tickets);
     document.getElementById('last-updated').textContent = 'Updated ' + new Date().toLocaleTimeString('nl-NL');
@@ -276,20 +232,41 @@ export const prerender = false;
       stat('\u20ac' + (revenue / 100).toFixed(2), 'Revenue');
   }
 
-  const STATUS_LABELS = {
-    paid: 'Paid',
-    picked_and_packed: 'Picked & Packed',
-    label_printed: 'Label Printed',
-    dropped_off: 'Dropped Off',
-    shipped: 'Shipped \u2192 auto',
-    delivered: 'Delivered \u2192 auto'
-  };
-  const AUTO_STATUSES = ['paid', 'shipped', 'delivered'];
-  const MANUAL_STATUSES = ['picked_and_packed', 'label_printed', 'dropped_off'];
+  function renderFilterChips(orders) {
+    const counts = {};
+    ALL_STATUSES.forEach(s => { counts[s] = 0; });
+    orders.forEach(o => { if (counts[o.fulfillment_status] !== undefined) counts[o.fulfillment_status]++; });
+    let html = '<button class="chip' + (activeFilter === 'all' ? ' active' : '') + '" onclick="applyFilter('all', this)">All (' + orders.length + ')</button>';
+    ALL_STATUSES.forEach(s => {
+      if (counts[s] > 0 || activeFilter === s) {
+        html += '<button class="chip' + (activeFilter === s ? ' active' : '') + '" onclick="applyFilter('' + s + '', this)">' + STATUS_LABELS[s] + ' (' + counts[s] + ')</button>';
+      }
+    });
+    html += '<button class="chip archive-chip' + (showArchived ? ' active' : '') + '" onclick="toggleArchived(this)">' + (showArchived ? 'Hide archived' : 'Archived') + '</button>';
+    document.getElementById('filter-chips').innerHTML = html;
+  }
+
+  function applyFilter(filter, el) {
+    activeFilter = filter;
+    if (el) {
+      document.querySelectorAll('.filter-chips .chip:not(.archive-chip)').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+    }
+    const filtered = filter === 'all' ? allOrders : allOrders.filter(o => o.fulfillment_status === filter);
+    document.getElementById('orders-title').textContent = filter === 'all' ? 'All Orders' : STATUS_LABELS[filter] + ' Orders';
+    renderOrdersTable(filtered);
+    clearSelection();
+  }
+
+  function toggleArchived(el) {
+    showArchived = !showArchived;
+    activeFilter = 'all';
+    loadAll();
+  }
 
   function renderOrdersTable(orders) {
     if (!orders.length) {
-      document.getElementById('orders-table-container').innerHTML = '<div class="empty"><div class="empty-icon">\uD83D\uDCE6</div>No orders yet</div>';
+      document.getElementById('orders-table-container').innerHTML = '<div class="empty">No orders found</div>';
       return;
     }
     const rows = orders.map(o => {
@@ -297,19 +274,20 @@ export const prerender = false;
       const addr = [o.shipping_street, o.shipping_number, o.shipping_postal_code, o.shipping_city, o.shipping_country].filter(Boolean).join(' ');
       const shipCell = o.myparcel_shipment_id
         ? '<a class="shipment-link" href="https://backoffice.myparcel.nl" target="_blank">' + o.myparcel_shipment_id + '</a>'
-          + (o.tracking_url ? '<br><a class="track-link" href="' + o.tracking_url + '" target="_blank">\uD83D\uDCE6 Track & Trace</a>' : '')
+          + (o.tracking_url ? '<br><a class="track-link" href="' + o.tracking_url + '" target="_blank">Track & Trace \u2197</a>' : '')
         : '<span class="no-val">\u2014</span>';
       const isAuto = AUTO_STATUSES.includes(o.fulfillment_status);
       let statusCell;
       if (isAuto) {
         statusCell = '<select class="ss ' + o.fulfillment_status + '" disabled><option>' + STATUS_LABELS[o.fulfillment_status] + '</option></select>';
       } else {
-        const opts = MANUAL_STATUSES.map(k =>
+        const opts = ALL_STATUSES.filter(k => !AUTO_STATUSES.includes(k)).map(k =>
           '<option value="' + k + '"' + (k === o.fulfillment_status ? ' selected' : '') + '>' + STATUS_LABELS[k] + '</option>'
         ).join('');
         statusCell = '<select class="ss ' + o.fulfillment_status + '" onchange="updateStatus(' + o.id + ', this)">' + opts + '</select>';
       }
-      return '<tr>' +
+      return '<tr id="row-' + o.id + '">' +
+        '<td class="check-col"><input type="checkbox" onchange="onCheck(this, ' + o.id + ')" /></td>' +
         '<td class="date-text">' + date + '</td>' +
         '<td><div class="customer-name">' + (o.customer_name || '\u2014') + '</div><div class="customer-email">' + (o.customer_email || '') + '</div></td>' +
         '<td class="amount">\u20ac' + ((parseFloat(o.amount) || 0) / 100).toFixed(2) + '</td>' +
@@ -319,7 +297,79 @@ export const prerender = false;
         '</tr>';
     }).join('');
     document.getElementById('orders-table-container').innerHTML =
-      '<table><thead><tr><th>Date</th><th>Customer</th><th>Amount</th><th>Address</th><th>Shipment</th><th>Status</th></tr></thead><tbody>' + rows + '</tbody></table>';
+      '<table><thead><tr>' +
+      '<th class="check-col"><input type="checkbox" id="select-all" onchange="toggleSelectAll(this)" /></th>' +
+      '<th>Date</th><th>Customer</th><th>Amount</th><th>Address</th><th>Shipment</th><th>Status</th>' +
+      '</tr></thead><tbody>' + rows + '</tbody></table>';
+  }
+
+  let selectedIds = new Set();
+
+  function clearSelection() {
+    selectedIds.clear();
+    updateSelectionUI();
+  }
+
+  function onCheck(cb, id) {
+    if (cb.checked) selectedIds.add(id);
+    else selectedIds.delete(id);
+    const row = document.getElementById('row-' + id);
+    if (row) row.classList.toggle('selected', cb.checked);
+    updateSelectionUI();
+  }
+
+  function toggleSelectAll(cb) {
+    document.querySelectorAll('#orders-table-container tbody input[type=checkbox]').forEach(box => {
+      box.checked = cb.checked;
+      const id = parseInt(box.getAttribute('onchange').match(/\d+/)[0]);
+      if (cb.checked) selectedIds.add(id);
+      else selectedIds.delete(id);
+      const row = document.getElementById('row-' + id);
+      if (row) row.classList.toggle('selected', cb.checked);
+    });
+    updateSelectionUI();
+  }
+
+  function updateSelectionUI() {
+    const n = selectedIds.size;
+    const countEl = document.getElementById('selected-count');
+    const archiveBtn = document.getElementById('archive-btn');
+    const unarchiveBtn = document.getElementById('unarchive-btn');
+    if (n > 0) {
+      countEl.style.display = 'inline';
+      countEl.textContent = n + ' selected';
+      if (showArchived) {
+        unarchiveBtn.style.display = 'inline-block';
+        archiveBtn.style.display = 'none';
+      } else {
+        archiveBtn.style.display = 'inline-block';
+        unarchiveBtn.style.display = 'none';
+      }
+    } else {
+      countEl.style.display = 'none';
+      archiveBtn.style.display = 'none';
+      unarchiveBtn.style.display = 'none';
+    }
+  }
+
+  async function archiveSelected() {
+    if (!selectedIds.size) return;
+    await fetch('/api/orders?password=' + encodeURIComponent(pw), {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'archive', ids: [...selectedIds] })
+    });
+    loadAll();
+  }
+
+  async function unarchiveSelected() {
+    if (!selectedIds.size) return;
+    await fetch('/api/orders?password=' + encodeURIComponent(pw), {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'unarchive', ids: [...selectedIds] })
+    });
+    loadAll();
   }
 
   async function updateStatus(id, sel) {
@@ -346,7 +396,7 @@ export const prerender = false;
 
   function renderTickets(tickets) {
     if (!tickets.length) {
-      document.getElementById('tickets-container').innerHTML = '<div class="card"><div class="empty"><div class="empty-icon">\uD83C\uDFAB</div>No tickets sold yet</div></div>';
+      document.getElementById('tickets-container').innerHTML = '<div class="card"><div class="empty">No tickets sold yet</div></div>';
       return;
     }
     const byEvent = {};
@@ -362,21 +412,16 @@ export const prerender = false;
         const badge = t.status === 'used'
           ? '<span class="badge badge-used">\u2713 Checked in' + (checkinTime ? ' \u00b7 ' + checkinTime : '') + '</span>'
           : '<span class="badge badge-valid">\u2713 Valid</span>';
-        return '<tr>' +
-          '<td class="date-text">' + date + '</td>' +
+        return '<tr><td class="date-text">' + date + '</td>' +
           '<td><div class="customer-name">' + (t.customer_name || '\u2014') + '</div><div class="customer-email">' + (t.customer_email || '') + '</div></td>' +
           '<td><span class="ticket-code">' + t.ticket_code + '</span></td>' +
           '<td class="amount">\u20ac' + ((parseFloat(t.amount) || 0) / 100).toFixed(2) + '</td>' +
-          '<td>' + badge + '</td>' +
-          '</tr>';
+          '<td>' + badge + '</td></tr>';
       }).join('');
       html += '<div class="card">' +
-        '<div class="card-header">' +
-          '<div><div class="card-title">' + slug + '</div>' +
-          '<div class="event-card-meta">' + sold + ' sold \u00b7 ' + checkedIn + ' checked in \u00b7 \u20ac' + (revenue / 100).toFixed(2) + ' revenue</div></div>' +
-        '</div>' +
-        '<table><thead><tr><th>Date</th><th>Customer</th><th>Ticket code</th><th>Amount</th><th>Status</th></tr></thead><tbody>' + rows + '</tbody></table>' +
-        '</div>';
+        '<div class="card-header"><div><div class="card-title">' + slug + '</div>' +
+        '<div class="event-card-meta">' + sold + ' sold \u00b7 ' + checkedIn + ' checked in \u00b7 \u20ac' + (revenue / 100).toFixed(2) + ' revenue</div></div></div>' +
+        '<table><thead><tr><th>Date</th><th>Customer</th><th>Ticket code</th><th>Amount</th><th>Status</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
     }
     document.getElementById('tickets-container').innerHTML = html;
   }
