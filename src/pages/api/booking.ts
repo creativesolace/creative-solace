@@ -7,35 +7,33 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
   try {
     const body = await request.json();
-    const { firstName, lastName, email, workshopType, date, guests, message } = body;
+    const { firstName, lastName, name: fullName, email, workshopType, preferredDate, date, guests, message } = body;
 
-    if (!email || !firstName || !workshopType) {
+    if (!email || !workshopType) {
       return new Response(JSON.stringify({ error: 'Missing required fields' }), { status: 400 });
     }
 
-    const name = `${firstName} ${lastName}`.trim();
+    const name = fullName || `${firstName || ''} ${lastName || ''}`.trim() || 'Customer';
+    const resolvedDate = preferredDate || date || null;
 
     await env.DB.prepare(
       `INSERT INTO bookings (name, email, workshop_type, preferred_date, guests, message, status, created_at)
        VALUES (?, ?, ?, ?, ?, ?, 'pending', datetime('now'))`
-    ).bind(name, email, workshopType, date || null, guests || null, message || null).run();
+    ).bind(name, email, workshopType, resolvedDate, guests || null, message || null).run();
 
     await fetch('https://api.postmarkapp.com/email', {
       method: 'POST',
-      headers: {
-        'X-Postmark-Server-Token': env.POSTMARK_TOKEN,
-        'Content-Type': 'application/json',
-      },
+      headers: { 'X-Postmark-Server-Token': env.POSTMARK_TOKEN, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         From: `Creative Solace <${env.POSTMARK_FROM}>`,
         To: email,
         Subject: `✨ Booking request received — ${workshopType}`,
         HtmlBody: `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #FF6B9D;">Hi ${firstName}! ✨</h2>
+            <h2 style="color: #FF6B9D;">Hi ${name}! ✨</h2>
             <p>We've received your booking request for <strong>${workshopType}</strong>.</p>
             <ul>
-              <li><strong>Date:</strong> ${date || 'Flexible'}</li>
+              <li><strong>Date:</strong> ${resolvedDate || 'Flexible'}</li>
               <li><strong>Guests:</strong> ${guests || 'TBC'}</li>
               <li><strong>Message:</strong> ${message || '—'}</li>
             </ul>
@@ -48,10 +46,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     await fetch('https://api.postmarkapp.com/email', {
       method: 'POST',
-      headers: {
-        'X-Postmark-Server-Token': env.POSTMARK_TOKEN,
-        'Content-Type': 'application/json',
-      },
+      headers: { 'X-Postmark-Server-Token': env.POSTMARK_TOKEN, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         From: `Creative Solace <${env.POSTMARK_FROM}>`,
         To: env.POSTMARK_FROM,
@@ -63,7 +58,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
               <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Name</strong></td><td style="padding: 8px; border: 1px solid #eee;">${name}</td></tr>
               <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Email</strong></td><td style="padding: 8px; border: 1px solid #eee;">${email}</td></tr>
               <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Workshop</strong></td><td style="padding: 8px; border: 1px solid #eee;">${workshopType}</td></tr>
-              <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Date</strong></td><td style="padding: 8px; border: 1px solid #eee;">${date || 'Flexible'}</td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Date</strong></td><td style="padding: 8px; border: 1px solid #eee;">${resolvedDate || 'Flexible'}</td></tr>
               <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Guests</strong></td><td style="padding: 8px; border: 1px solid #eee;">${guests || 'TBC'}</td></tr>
               <tr><td style="padding: 8px; border: 1px solid #eee;"><strong>Message</strong></td><td style="padding: 8px; border: 1px solid #eee;">${message || '—'}</td></tr>
             </table>
