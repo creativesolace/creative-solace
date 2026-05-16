@@ -2543,8 +2543,8 @@ async function handleCheckout() {
   const btn = document.querySelector('#cartFooter .btn-submit');
   if (!btn) return;
 
-  const firstItem = cart.find(i => i.priceId);
-  if (!firstItem || !firstItem.priceId) {
+  const itemsWithPrice = cart.filter(i => i.priceId);
+  if (itemsWithPrice.length === 0) {
     alert('Checkout is not available for this item yet. Please contact us at hello@creativesolace.com');
     return;
   }
@@ -2556,7 +2556,7 @@ async function handleCheckout() {
     const res = await fetch('/api/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ priceId: firstItem.priceId, productName: firstItem.name })
+      body: JSON.stringify({ items: itemsWithPrice.map(i => ({ priceId: i.priceId, qty: i.qty })) })
     });
     const data = await res.json();
     if (data.url) {
