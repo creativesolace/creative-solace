@@ -18,11 +18,19 @@ export const prerender = false;
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="emoji">💎</div>
-    <h1>Order confirmed!</h1>
-    <p>Thank you for your purchase! Your rhinestone kit is being prepared with love and will ship within 1–2 business days. You'll receive a confirmation email shortly.</p>
+  <div class="card" id="card">
+    <div class="emoji" id="emoji">💎</div>
+    <h1 id="title">Order confirmed!</h1>
+    <p id="msg">Thank you for your purchase! Your rhinestone kit is being prepared with love and will ship within 1–2 business days. You'll receive a confirmation email shortly.</p>
     <a href="/">Back to Creative Solace ✨</a>
   </div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('ticket') === '1') {
+      document.getElementById('emoji').textContent = '🎟️';
+      document.getElementById('title').textContent = "You're in!";
+      document.getElementById('msg').textContent = "Your ticket is confirmed! Check your email for your ticket code and QR code. See you there! ✨";
+    }
+  </script>
 </body>
 </html>
