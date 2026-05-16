@@ -41,7 +41,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }),
     });
 
-    console.log('Using refresh token:', env.ZOHO_REFRESH_TOKEN?.slice(-8));
     const tokenRes = await fetch('https://accounts.zoho.eu/oauth/v2/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -61,7 +60,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
       headers: { 'Authorization': `Zoho-oauthtoken ${access_token}`, 'orgId': orgId },
     });
     const contactData = await contactRes.json() as any;
-    console.log('Zoho contact search:', JSON.stringify(contactData));
 
     let contactId: string;
     if (contactData?.data?.length > 0 && !contactData.errorCode) {
