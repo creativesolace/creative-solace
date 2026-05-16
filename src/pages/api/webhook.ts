@@ -24,6 +24,61 @@ export const POST: APIRoute = async ({ request, locals }) => {
       const shippingStreet = streetMatch ? streetMatch[1] : addressLine1;
       const shippingNumber = streetMatch ? streetMatch[2] : '';
 
+      // Handle ticket purchases separately
+      if (session.metadata?.isTicket === 'true') {
+        const eventSlug = session.metadata?.eventSlug || '';
+        const ticketCode = crypto.randomUUID().split('-')[0].toUpperCase();
+        await env.DB.prepare(
+          `INSERT INTO tickets (ticket_code, stripe_session_id, event_slug, customer_email, customer_name, amount, status, created_at)
+           VALUES (?, ?, ?, ?, ?, ?, 'valid', datetime('now'))`
+        ).bind(ticketCode, session.id, eventSlug, customerEmail, customerName, amount).run();
+
+        // Send ticket email with QR code
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${ticketCode}`;
+        await fetch('https://api.postmarkapp.com/email', {
+          method: 'POST',
+          headers: { 'X-Postmark-Server-Token': env.POSTMARK_TOKEN, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            From: `Creative Solace <${env.POSTMARK_FROM}>`,
+            To: customerEmail,
+            Subject: `🎟️ Your ticket is confirmed! — Creative Solace`,
+            HtmlBody: `
+              <div style="font-family:sans-serif;max-width:600px;margin:0 auto;text-align:center;">
+                <h2 style="color:#FF6B9D;">You're in! 🎟️</h2>
+                <p>Hi ${customerName},</p>
+                <p>Your ticket for <strong>${eventSlug.replace(/-/g, ' ')}</strong> is confirmed. All materials are included!</p>
+                <p style="font-size:32px;font-weight:900;letter-spacing:4px;color:#1A0A14;">${ticketCode}</p>
+                <img src="${qrUrl}" alt="Your ticket QR code" style="margin:16px auto;display:block;"/>
+                <p style="font-size:13px;color:#888;">Show this QR code or ticket code at the entrance.</p>
+                <p>With sparkle,<br><strong>Creative Solace</strong></p>
+              </div>
+            `,
+          }),
+        });
+
+        // Notify Nikki
+        await fetch('https://api.postmarkapp.com/email', {
+          method: 'POST',
+          headers: { 'X-Postmark-Server-Token': env.POSTMARK_TOKEN, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            From: `Creative Solace <${env.POSTMARK_FROM}>`,
+            To: env.POSTMARK_FROM,
+            Subject: `🎟️ New ticket — ${eventSlug} — ${customerName}`,
+            HtmlBody: `
+              <div style="font-family:sans-serif;">
+                <h2>New Ticket Sale 🎟️</h2>
+                <p><strong>Event:</strong> ${eventSlug}</p>
+                <p><strong>Customer:</strong> ${customerName} (${customerEmail})</p>
+                <p><strong>Amount:</strong> €${amount}</p>
+                <p><strong>Ticket code:</strong> ${ticketCode}</p>
+              </div>
+            `,
+          }),
+        });
+
+        return new Response('ok', { status: 200 });
+      }
+
       // Save order to D1 with shipping details
       await env.DB.prepare(
         `INSERT INTO orders (

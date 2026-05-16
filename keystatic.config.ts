@@ -32,6 +32,8 @@ export default config({
           publicPath: '/images/events/',
         }),
         featured: fields.checkbox({ label: 'Show on homepage', defaultValue: true }),
+        ticketPrice: fields.number({ label: 'Ticket price in EUR (leave empty if no tickets)', validation: { isRequired: false } }),
+        ticketCapacity: fields.number({ label: 'Max attendees (leave empty for unlimited)', validation: { isRequired: false } }),
       },
     }),
 

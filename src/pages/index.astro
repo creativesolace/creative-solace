@@ -6,6 +6,9 @@ import { getCollection } from 'astro:content';
 // Load CMS content with fallbacks
 let events = [], workshops = [], products = [], testimonials = [];
 try { events = (await getCollection('events')).filter(e => e.data.featured).sort((a,b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime()); } catch(e) {}
+const _today = new Date(); _today.setHours(0,0,0,0);
+const upcomingEvents = events.filter(e => new Date(e.data.date) >= _today);
+const pastEvents = events.filter(e => new Date(e.data.date) < _today);
 try { workshops = await getCollection('workshops'); } catch(e) {}
 try { products = (await getCollection('products')).filter(p => p.data.available); } catch(e) {}
 try { testimonials = (await getCollection('testimonials')).filter(t => t.data.featured); } catch(e) {}
@@ -905,6 +908,37 @@ section { padding: 56px 20px; }
    EVENTS
 ───────────────────────────────────────── */
 .events-section { background: white; }
+
+.event-ticket-price {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: var(--dark);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 50px;
+  letter-spacing: 0.5px;
+}
+
+.btn-ticket {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  background: var(--grad-pink);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 11px 20px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .2s;
+  text-align: center;
+}
+.btn-ticket:hover { transform: translateY(-2px); box-shadow: var(--shadow-soft); }
 
 .events-grid {
   display: flex;
@@ -2067,14 +2101,52 @@ footer {
 
 <!-- EVENTS -->
 <section class="events-section" id="events">
+
+  {upcomingEvents.length > 0 && (
+    <div style="margin-bottom:64px;">
+      <div class="reveal">
+        <div class="section-label">Coming Up</div>
+        <h2 class="section-title">Upcoming <em>events</em></h2>
+        <p class="section-sub">Grab your ticket and come meet us in real life — materials included.</p>
+      </div>
+      <div class="events-grid" style="margin-top:40px;">
+        {upcomingEvents.map((ev, i) => (
+          <div class="event-card reveal" style={i > 0 ? `transition-delay:${i * 0.1}s` : ''}>
+            <div class="event-img" data-slider>
+              <div class="event-img-slider">
+                <img class="event-img-slide" src={ev.data.image} alt={ev.data.title} onerror="this.src='https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80'"/>
+              </div>
+              <div class="event-type-badge">{typeLabel(ev.data.type)}</div>
+              {ev.data.ticketPrice && <div class="event-ticket-price">€{ev.data.ticketPrice}</div>}
+            </div>
+            <div class="event-content">
+              <div class="event-date">{fmtDate(ev.data.date)}</div>
+              <h3 class="event-title">{ev.data.title}</h3>
+              <div class="event-location">📍 {ev.data.location}{ev.data.city ? `, ${ev.data.city}` : ''}</div>
+              {ev.data.ticketPrice ? (
+                <button class="btn-ticket" onclick={`buyTicket('${ev.slug}', ${ev.data.ticketPrice})`}>
+                  Get tickets — €{ev.data.ticketPrice} ✨
+                </button>
+              ) : ev.data.ticketUrl ? (
+                <a href={ev.data.ticketUrl} target="_blank" rel="noopener" class="event-cta">More info →</a>
+              ) : (
+                <span class="event-cta" style="color:var(--mid);cursor:default;">Free entry</span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
   <div class="reveal">
     <div class="section-label">Find Us IRL</div>
     <h2 class="section-title">Where we've <em>been</em></h2>
-    <p class="section-sub">From thrift markets to festivals and corporate events, we show up across the Netherlands with our kits, our energy, and our glam. Come find us.</p>
+    <p class="section-sub">From thrift markets to festivals and corporate events, we show up across the Netherlands with our kits, our energy, and our glam.</p>
   </div>
 
-  <div class="events-grid">
-    {events.length > 0 ? events.map((ev, i) => (
+  <div class="events-grid" style="margin-top:40px;">
+    {pastEvents.length > 0 ? pastEvents.map((ev, i) => (
       <div class="event-card reveal" style={i > 0 ? `transition-delay:${i * 0.1}s` : ''}>
         <div class="event-img" data-slider>
           <div class="event-img-slider">
@@ -2097,18 +2169,13 @@ footer {
           <div class="event-img" data-slider>
             <div class="event-img-slider">
               <img class="event-img-slide" src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80" alt="Kingsland Festival"/>
-              <img class="event-img-slide" src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&q=80" alt="Kingsland Festival 2"/>
             </div>
             <div class="event-type-badge">Festival</div>
-            <button class="event-img-nav prev" onclick="slideEvent(event,-1)">‹</button>
-            <button class="event-img-nav next" onclick="slideEvent(event,1)">›</button>
-            <div class="event-img-dots"></div>
           </div>
           <div class="event-content">
             <div class="event-date">Kingsland Festival 2024</div>
             <h3 class="event-title">Kingsland Festival</h3>
             <div class="event-location">📍 Netherlands</div>
-            <p class="event-desc">A full day of rhinestone magic at one of the Netherlands' biggest King's Day festivals.</p>
           </div>
         </div>
         <div class="event-card reveal" style="transition-delay:.1s">
@@ -2117,13 +2184,11 @@ footer {
               <img class="event-img-slide" src="https://images.unsplash.com/photo-1551818255-e6e10975bc17?w=600&q=80" alt="ThriftPark Amsterdam"/>
             </div>
             <div class="event-type-badge">Thrift Market</div>
-            <div class="event-img-dots"></div>
           </div>
           <div class="event-content">
             <div class="event-date">ThriftPark Amsterdam</div>
             <h3 class="event-title">ThriftPark Amsterdam</h3>
             <div class="event-location">📍 Amsterdam</div>
-            <p class="event-desc">Our stand at Amsterdam's favourite thrift and vintage market.</p>
           </div>
         </div>
         <div class="event-card reveal" style="transition-delay:.2s">
@@ -2132,13 +2197,11 @@ footer {
               <img class="event-img-slide" src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80" alt="Foodhallen Den Haag"/>
             </div>
             <div class="event-type-badge">Pop-up</div>
-            <div class="event-img-dots"></div>
           </div>
           <div class="event-content">
             <div class="event-date">Foodhallen Den Haag</div>
             <h3 class="event-title">Foodhallen Den Haag</h3>
             <div class="event-location">📍 Den Haag</div>
-            <p class="event-desc">A creative pop-up inside one of the Netherlands' most iconic food and culture venues.</p>
           </div>
         </div>
       </>
@@ -2537,6 +2600,31 @@ function toggleCart() {
   document.getElementById('cartDrawer').classList.toggle('open', cartOpen);
   document.getElementById('cartOverlay').classList.toggle('active', cartOpen);
   document.body.style.overflow = cartOpen ? 'hidden' : '';
+}
+
+async function buyTicket(eventSlug, ticketPrice) {
+  const btn = event.target;
+  btn.textContent = 'Redirecting to Stripe...';
+  btn.disabled = true;
+  try {
+    const res = await fetch('/api/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: [{ priceId: 'ticket_' + eventSlug, qty: 1 }], eventSlug, isTicket: true, ticketPrice })
+    });
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      alert('Something went wrong. Please try again or contact us at hello@creativesolace.com');
+      btn.textContent = 'Get tickets — €' + ticketPrice + ' ✨';
+      btn.disabled = false;
+    }
+  } catch(e) {
+    alert('Something went wrong. Please try again or contact us at hello@creativesolace.com');
+    btn.textContent = 'Get tickets — €' + ticketPrice + ' ✨';
+    btn.disabled = false;
+  }
 }
 
 async function handleCheckout() {
