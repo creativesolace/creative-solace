@@ -1,7 +1,6 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { createZohoTicket } from './zoho';
 
 export const POST: APIRoute = async ({ request, locals }) => {
   const env = (locals as any).runtime?.env;
@@ -22,7 +21,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
        VALUES (?, ?, ?, ?, ?, ?, 'pending', datetime('now'))`
     ).bind(name, email, workshopType, resolvedDate, guests || null, message || null).run();
 
-    await fetch('https://api.postmarkapp.com/email', {
+    const pmRes = await fetch('https://api.postmarkapp.com/email', {
       method: 'POST',
       headers: { 'X-Postmark-Server-Token': env.POSTMARK_TOKEN, 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -44,18 +43,60 @@ export const POST: APIRoute = async ({ request, locals }) => {
         `,
       }),
     });
+    console.log('Postmark response:', await pmRes.text());
 
-    await createZohoTicket(env, {
-      name,
-      email,
-      subject: `New booking: ${workshopType} — ${name}`,
-      description: `Name: ${name}\nEmail: ${email}\nWorkshop: ${workshopType}\nDate: ${resolvedDate || 'Flexible'}\nGuests: ${guests || 'TBC'}\nMessage: ${message || '—'}`,
+    const tokenRes = await fetch('https://accounts.zoho.eu/oauth/v2/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: env.ZOHO_REFRESH_TOKEN,
+        client_id: env.ZOHO_CLIENT_ID,
+        client_secret: env.ZOHO_CLIENT_SECRET,
+      }),
     });
+    const tokenData = await tokenRes.json() as any;
+    console.log('Zoho token:', JSON.stringify(tokenData));
+    const access_token = tokenData.access_token;
+
+    const orgId = '20114664605';
+
+    const contactRes = await fetch('https://desk.zoho.eu/api/v1/contacts/search?email=' + encodeURIComponent(email), {
+      headers: { 'Authorization': `Zoho-oauthtoken ${access_token}`, 'orgId': orgId },
+    });
+    const contactData = await contactRes.json() as any;
+    console.log('Zoho contact search:', JSON.stringify(contactData));
+
+    let contactId: string;
+    if (contactData?.data?.length > 0) {
+      contactId = contactData.data[0].id;
+    } else {
+      const newContact = await fetch('https://desk.zoho.eu/api/v1/contacts', {
+        method: 'POST',
+        headers: { 'Authorization': `Zoho-oauthtoken ${access_token}`, 'orgId': orgId, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lastName: name, email }),
+      });
+      const newContactData = await newContact.json() as any;
+      console.log('Zoho new contact:', JSON.stringify(newContactData));
+      contactId = newContactData.id;
+    }
+
+    const ticketRes = await fetch('https://desk.zoho.eu/api/v1/tickets', {
+      method: 'POST',
+      headers: { 'Authorization': `Zoho-oauthtoken ${access_token}`, 'orgId': orgId, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        subject: `New booking: ${workshopType} — ${name}`,
+        description: `Name: ${name}\nEmail: ${email}\nWorkshop: ${workshopType}\nDate: ${resolvedDate || 'Flexible'}\nGuests: ${guests || 'TBC'}\nMessage: ${message || '—'}`,
+        contactId,
+        channel: 'Web',
+      }),
+    });
+    console.log('Zoho ticket:', await ticketRes.text());
 
     return new Response(JSON.stringify({ success: true }), { status: 200 });
 
   } catch (err: any) {
-    console.error('Booking error:', err);
+    console.error('Booking error:', err.message, err.stack);
     return new Response(JSON.stringify({ error: err.message }), { status: 500 });
   }
 };
