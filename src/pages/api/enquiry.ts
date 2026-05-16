@@ -60,6 +60,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       headers: { 'Authorization': `Zoho-oauthtoken ${access_token}`, 'orgId': orgId },
     });
     const contactData = await contactRes.json() as any;
+    console.log('Zoho contact search:', JSON.stringify(contactData));
 
     let contactId: string;
     if (contactData?.data?.length > 0 && !contactData.errorCode) {
