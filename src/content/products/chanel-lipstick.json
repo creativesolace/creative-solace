@@ -5,6 +5,7 @@
   "originalPrice": 69,
   "badge": "Sale",
   "image": "/images/products/chanel-lipstick/image.png",
+  "imageIRL": "/images/products/chanel-lipstick/imageIRL.png",
   "stripeProductId": "prod_UVIyKh6cNKK04Q",
   "stripePriceId": "price_1TWIMkC1ZOnsxU8kmwQwnYRR",
   "available": true
