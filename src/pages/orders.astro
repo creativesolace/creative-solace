@@ -1,0 +1,292 @@
+---
+export const prerender = false;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Creative Solace</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #faf9f7; color: #1a1a1a; min-height: 100vh; }
+    .login { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .login-box { background: white; border-radius: 16px; padding: 40px; width: 100%; max-width: 360px; box-shadow: 0 2px 20px rgba(0,0,0,0.08); text-align: center; }
+    .login-box h1 { font-size: 1.4rem; margin-bottom: 8px; }
+    .login-box p { color: #888; font-size: 0.9rem; margin-bottom: 24px; }
+    .login-box input { width: 100%; padding: 12px 16px; border: 1.5px solid #e5e5e5; border-radius: 10px; font-size: 1rem; margin-bottom: 12px; outline: none; }
+    .login-box input:focus { border-color: #c9a96e; }
+    .btn { width: 100%; padding: 12px; background: #1a1a1a; color: white; border: none; border-radius: 10px; font-size: 1rem; cursor: pointer; font-weight: 500; }
+    .btn:hover { background: #333; }
+    .error-msg { color: #e53e3e; font-size: 0.85rem; margin-top: 8px; }
+    header { background: white; border-bottom: 1px solid #eee; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
+    header h1 { font-size: 1.2rem; font-weight: 600; }
+    .tabs { display: flex; gap: 4px; background: #f0f0f0; border-radius: 10px; padding: 4px; }
+    .tab { padding: 7px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 0.875rem; font-weight: 500; background: transparent; color: #666; }
+    .tab.active { background: white; color: #1a1a1a; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+    .header-right { display: flex; gap: 12px; align-items: center; }
+    .container { padding: 24px; max-width: 1200px; margin: 0 auto; }
+    .stats { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+    .stat { background: white; border-radius: 12px; padding: 16px 20px; flex: 1; min-width: 140px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+    .stat-value { font-size: 1.8rem; font-weight: 700; }
+    .stat-label { color: #888; font-size: 0.8rem; margin-top: 2px; }
+    .card { background: white; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; margin-bottom: 20px; }
+    .card-header { padding: 16px 20px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; }
+    .card-header h2 { font-size: 1rem; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    th { text-align: left; padding: 12px 16px; color: #888; font-weight: 500; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid #f0f0f0; }
+    td { padding: 14px 16px; border-bottom: 1px solid #f7f7f7; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafafa; }
+    .customer { font-weight: 500; }
+    .email { color: #888; font-size: 0.8rem; }
+    .amount { font-weight: 600; }
+    .address { font-size: 0.82rem; color: #555; line-height: 1.4; }
+    .shipment-link { color: #c9a96e; text-decoration: none; font-size: 0.82rem; font-weight: 500; }
+    .shipment-link:hover { text-decoration: underline; }
+    .track-link { color: #4a90e2; text-decoration: none; font-size: 0.78rem; }
+    .track-link:hover { text-decoration: underline; }
+    .date { color: #888; font-size: 0.82rem; }
+    select.status-select { padding: 6px 10px; border-radius: 8px; border: 1.5px solid #e5e5e5; font-size: 0.82rem; cursor: pointer; background: white; outline: none; font-weight: 500; }
+    select.status-select:focus { border-color: #c9a96e; }
+    select.status-select.paid { color: #2d6a4f; background: #d8f3dc; border-color: #b7e4c7; }
+    select.status-select.picked_and_packed { color: #7b5800; background: #fff3cd; border-color: #ffd97d; }
+    select.status-select.label_printed { color: #5a4a00; background: #fff0a0; border-color: #ffe066; }
+    select.status-select.dropped_off { color: #1a4a7a; background: #cce5ff; border-color: #99caff; }
+    select.status-select.shipped { color: #6a1a7a; background: #f0d9ff; border-color: #d9aaff; }
+    select.status-select.delivered { color: #1a1a1a; background: #e5e5e5; border-color: #ccc; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; }
+    .badge-valid { background: #d8f3dc; color: #2d6a4f; }
+    .badge-used { background: #e5e5e5; color: #555; }
+    .progress-bar { height: 6px; background: #f0f0f0; border-radius: 4px; overflow: hidden; margin-top: 4px; }
+    .progress-fill { height: 100%; background: #c9a96e; border-radius: 4px; }
+    .event-slug { font-size: 0.78rem; color: #888; font-family: monospace; }
+    .capacity-text { font-size: 0.82rem; color: #555; }
+    .empty { text-align: center; padding: 60px 20px; color: #888; }
+    .refresh-btn { padding: 8px 16px; background: #f5f5f5; border: none; border-radius: 8px; cursor: pointer; font-size: 0.85rem; color: #555; }
+    .refresh-btn:hover { background: #eee; }
+    #app { display: none; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+  </style>
+</head>
+<body>
+
+<div id="login-screen" class="login">
+  <div class="login-box">
+    <h1>💎 Admin</h1>
+    <p>Creative Solace — Staff only</p>
+    <input type="password" id="password-input" placeholder="Enter password" />
+    <button class="btn" onclick="doLogin()">Unlock</button>
+    <div class="error-msg" id="login-error"></div>
+  </div>
+</div>
+
+<div id="app">
+  <header>
+    <h1>💎 Creative Solace Admin</h1>
+    <div class="header-right">
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('orders', this)">Orders</button>
+        <button class="tab" onclick="switchTab('tickets', this)">Tickets</button>
+      </div>
+      <button class="refresh-btn" onclick="loadAll()">↻ Refresh</button>
+      <span id="last-updated" style="color:#888;font-size:0.85rem;"></span>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <div id="panel-orders" class="panel active">
+      <div class="stats" id="order-stats"></div>
+      <div class="card">
+        <div class="card-header"><h2>All Orders</h2></div>
+        <div id="orders-table-container"></div>
+      </div>
+    </div>
+
+    <div id="panel-tickets" class="panel">
+      <div class="stats" id="ticket-stats"></div>
+      <div id="tickets-container"></div>
+    </div>
+
+  </div>
+</div>
+
+<script is:inline>
+  let pw = '';
+
+  function switchTab(name, el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+  }
+
+  function doLogin() {
+    const val = document.getElementById('password-input').value;
+    if (!val) return;
+    pw = val;
+    loadAll(true);
+  }
+
+  document.getElementById('password-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doLogin();
+  });
+
+  async function loadAll(isLogin) {
+    const [ordersRes, ticketsRes] = await Promise.all([
+      fetch('/api/orders?password=' + encodeURIComponent(pw)),
+      fetch('/api/tickets?password=' + encodeURIComponent(pw))
+    ]);
+    if (ordersRes.status === 401) {
+      document.getElementById('login-error').textContent = 'Incorrect password';
+      pw = '';
+      return;
+    }
+    const orders = await ordersRes.json();
+    const tickets = await ticketsRes.json();
+    if (isLogin) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+    }
+    renderOrderStats(orders);
+    renderOrdersTable(orders);
+    renderTicketStats(tickets);
+    renderTickets(tickets);
+    document.getElementById('last-updated').textContent = 'Updated ' + new Date().toLocaleTimeString('nl-NL');
+  }
+
+  function stat(val, label) {
+    return '<div class="stat"><div class="stat-value">' + val + '</div><div class="stat-label">' + label + '</div></div>';
+  }
+
+  function renderOrderStats(orders) {
+    const total = orders.length;
+    const toProcess = orders.filter(o => !['shipped','delivered'].includes(o.fulfillment_status)).length;
+    const shipped = orders.filter(o => o.fulfillment_status === 'shipped').length;
+    const delivered = orders.filter(o => o.fulfillment_status === 'delivered').length;
+    const revenue = orders.reduce((sum, o) => sum + (parseFloat(o.amount) || 0), 0);
+    document.getElementById('order-stats').innerHTML =
+      stat(total, 'Total orders') +
+      stat(toProcess, 'To process') +
+      stat(shipped, 'Shipped') +
+      stat(delivered, 'Delivered') +
+      stat('\u20ac' + (revenue / 100).toFixed(2), 'Revenue');
+  }
+
+  const STATUS_LABELS = {
+    paid: 'Paid',
+    picked_and_packed: 'Picked & Packed',
+    label_printed: 'Label Printed',
+    dropped_off: 'Dropped Off',
+    shipped: 'Shipped',
+    delivered: 'Delivered'
+  };
+  const AUTO_STATUSES = ['paid', 'shipped', 'delivered'];
+  const MANUAL_STATUSES = ['picked_and_packed', 'label_printed', 'dropped_off'];
+
+  function renderOrdersTable(orders) {
+    if (orders.length === 0) {
+      document.getElementById('orders-table-container').innerHTML = '<div class="empty">No orders yet</div>';
+      return;
+    }
+    const rows = orders.map(o => {
+      const date = new Date(o.created_at).toLocaleDateString('nl-NL', { day: '2-digit', month: 'short', year: 'numeric' });
+      const address = [o.shipping_street, o.shipping_number, o.shipping_city, o.shipping_postal_code, o.shipping_country].filter(Boolean).join(', ');
+      const shipmentCell = o.myparcel_shipment_id
+        ? '<a class="shipment-link" href="https://backoffice.myparcel.nl" target="_blank">' + o.myparcel_shipment_id + '</a>'
+        : '<span style="color:#ccc">\u2014</span>';
+      const trackCell = o.tracking_url
+        ? '<br><a class="track-link" href="' + o.tracking_url + '" target="_blank">Track & Trace</a>'
+        : '';
+      const isAuto = AUTO_STATUSES.includes(o.fulfillment_status);
+      let statusCell;
+      if (isAuto) {
+        statusCell = '<select class="status-select ' + o.fulfillment_status + '" disabled><option>' + STATUS_LABELS[o.fulfillment_status] + '</option></select>';
+      } else {
+        const opts = MANUAL_STATUSES.map(k =>
+          '<option value="' + k + '"' + (k === o.fulfillment_status ? ' selected' : '') + '>' + STATUS_LABELS[k] + '</option>'
+        ).join('');
+        statusCell = '<select class="status-select ' + o.fulfillment_status + '" onchange="updateStatus(' + o.id + ', this)">' + opts + '</select>';
+      }
+      return '<tr>' +
+        '<td class="date">' + date + '</td>' +
+        '<td><div class="customer">' + (o.customer_name || '\u2014') + '</div><div class="email">' + (o.customer_email || '') + '</div></td>' +
+        '<td class="amount">\u20ac' + ((parseFloat(o.amount) || 0) / 100).toFixed(2) + '</td>' +
+        '<td class="address">' + (address || '\u2014') + '</td>' +
+        '<td>' + shipmentCell + trackCell + '</td>' +
+        '<td>' + statusCell + '</td>' +
+        '</tr>';
+    }).join('');
+    document.getElementById('orders-table-container').innerHTML =
+      '<table><thead><tr><th>Date</th><th>Customer</th><th>Amount</th><th>Address</th><th>Shipment</th><th>Status</th></tr></thead><tbody>' + rows + '</tbody></table>';
+  }
+
+  async function updateStatus(id, selectEl) {
+    const newStatus = selectEl.value;
+    selectEl.className = 'status-select ' + newStatus;
+    const res = await fetch('/api/orders?password=' + encodeURIComponent(pw), {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, fulfillment_status: newStatus })
+    });
+    if (!res.ok) { alert('Failed to update status'); loadAll(); }
+  }
+
+  function renderTicketStats(tickets) {
+    const totalTickets = tickets.length;
+    const totalEvents = [...new Set(tickets.map(t => t.event_slug))].length;
+    const checkedIn = tickets.filter(t => t.status === 'used').length;
+    const revenue = tickets.reduce((sum, t) => sum + (parseFloat(t.amount) || 0), 0);
+    document.getElementById('ticket-stats').innerHTML =
+      stat(totalEvents, 'Events') +
+      stat(totalTickets, 'Tickets sold') +
+      stat(checkedIn, 'Checked in') +
+      stat('\u20ac' + (revenue / 100).toFixed(2), 'Ticket revenue');
+  }
+
+  function renderTickets(tickets) {
+    if (tickets.length === 0) {
+      document.getElementById('tickets-container').innerHTML = '<div class="card"><div class="empty">No tickets sold yet</div></div>';
+      return;
+    }
+    const byEvent = {};
+    tickets.forEach(t => {
+      if (!byEvent[t.event_slug]) byEvent[t.event_slug] = [];
+      byEvent[t.event_slug].push(t);
+    });
+    let html = '';
+    for (const [slug, evTickets] of Object.entries(byEvent)) {
+      const sold = evTickets.length;
+      const checkedIn = evTickets.filter(t => t.status === 'used').length;
+      const revenue = evTickets.reduce((sum, t) => sum + (parseFloat(t.amount) || 0), 0);
+      const rows = evTickets.map(t => {
+        const date = new Date(t.created_at).toLocaleDateString('nl-NL', { day: '2-digit', month: 'short' });
+        const checkinTime = t.checked_in_at ? new Date(t.checked_in_at).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' }) : null;
+        const badge = t.status === 'used'
+          ? '<span class="badge badge-used">\u2713 Checked in' + (checkinTime ? ' ' + checkinTime : '') + '</span>'
+          : '<span class="badge badge-valid">Valid</span>';
+        return '<tr>' +
+          '<td class="date">' + date + '</td>' +
+          '<td><div class="customer">' + (t.customer_name || '\u2014') + '</div><div class="email">' + (t.customer_email || '') + '</div></td>' +
+          '<td><code style="font-size:0.82rem;background:#f5f5f5;padding:2px 6px;border-radius:4px;">' + t.ticket_code + '</code></td>' +
+          '<td class="amount">\u20ac' + ((parseFloat(t.amount) || 0) / 100).toFixed(2) + '</td>' +
+          '<td>' + badge + '</td>' +
+          '</tr>';
+      }).join('');
+      html += '<div class="card" style="margin-bottom:20px;">' +
+        '<div class="card-header">' +
+          '<div>' +
+            '<h2>' + slug + '</h2>' +
+            '<div class="event-slug">' + sold + ' tickets sold &middot; ' + checkedIn + ' checked in &middot; \u20ac' + (revenue / 100).toFixed(2) + ' revenue</div>' +
+          '</div>' +
+        '</div>' +
+        '<table><thead><tr><th>Date</th><th>Customer</th><th>Ticket code</th><th>Amount</th><th>Status</th></tr></thead><tbody>' + rows + '</tbody></table>' +
+        '</div>';
+    }
+    document.getElementById('tickets-container').innerHTML = html;
+  }
+</script>
+</body>
+</html>
