@@ -5,6 +5,7 @@
   "originalPrice": 69,
   "badge": "Sale",
   "image": "/images/products/lucky-777/image.png",
+  "imageIRL": "/images/products/lucky-777/imageIRL.png",
   "stripeProductId": "prod_UVJ0eczL9j3b8Z",
   "stripePriceId": "price_1TWIOPC1ZOnsxU8kKtUlZFkR",
   "available": true
