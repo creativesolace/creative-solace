@@ -1,0 +1,265 @@
+---
+export const prerender = true;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Privacy Policy | Creative Solace</title>
+<meta name="description" content="Privacy policy for Creative Solace. How we collect, use, and protect your personal data in line with GDPR and Dutch law."/>
+<meta name="robots" content="noindex"/>
+<link rel="canonical" href="https://creativesolace.com/privacy"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --pink:#FF6B9D;--pink-pale:#FFF0F5;--yellow:#FFD166;
+  --cream:#FFF8F0;--dark:#1A0A14;--mid:#5C3049;--text:#3D1A2C;
+  --grad-main:linear-gradient(135deg,#FFD166 0%,#FF9EC4 50%,#C084FC 100%);
+  --grad-pink:linear-gradient(135deg,#FF6B9D,#FFBC42);
+  --shadow-card:0 4px 24px rgba(60,20,40,.10);
+  --radius:20px;--radius-sm:12px;--nav-h:60px;--tab-h:64px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;padding-bottom:var(--tab-h);}
+.announcement{background:var(--grad-main);color:var(--dark);text-align:center;padding:9px 16px;font-size:12px;font-weight:500;letter-spacing:.4px;position:relative;z-index:100;}
+.announcement .sep{margin:0 6px;opacity:.35;}
+.desktop-nav{display:none;}
+.mobile-nav{position:sticky;top:0;z-index:200;background:rgba(255,248,240,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,107,157,.12);height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 20px;}
+.nav-logo{display:inline-flex;align-items:center;text-decoration:none;flex-shrink:0;}
+.nav-logo img{height:40px;width:auto;display:block;object-fit:contain;}
+.mobile-nav-actions{display:flex;align-items:center;gap:12px;}
+.btn-cart-mobile{background:var(--grad-pink);color:white;border:none;border-radius:50px;padding:8px 16px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;cursor:pointer;text-decoration:none;display:inline-block;}
+.page-hero{background:var(--dark);padding:52px 20px 48px;position:relative;overflow:hidden;text-align:center;}
+.page-hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:500px;height:300px;background:var(--grad-main);opacity:.07;border-radius:50%;filter:blur(60px);}
+.page-hero-label{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--yellow);margin-bottom:12px;position:relative;z-index:1;}
+.page-hero h1{font-family:'Playfair Display',serif;font-size:clamp(32px,8vw,56px);font-weight:900;color:white;line-height:1.1;margin-bottom:16px;position:relative;z-index:1;}
+.page-hero h1 em{font-style:italic;background:var(--grad-pink);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.page-hero-sub{font-size:15px;line-height:1.65;color:rgba(255,255,255,.6);max-width:540px;margin:0 auto;position:relative;z-index:1;font-weight:300;}
+.breadcrumb{padding:14px 20px;font-size:12px;color:var(--mid);border-bottom:1px solid rgba(60,20,40,.07);background:white;}
+.breadcrumb a{color:var(--pink);text-decoration:none;}
+.breadcrumb a:hover{text-decoration:underline;}
+.content-wrap{max-width:760px;margin:0 auto;padding:48px 20px 80px;}
+.last-updated{font-size:12px;color:var(--mid);margin-bottom:40px;padding:10px 16px;background:white;border-radius:var(--radius-sm);display:inline-block;}
+.content-section{margin-bottom:44px;}
+.content-section h2{font-family:'Playfair Display',serif;font-size:clamp(18px,4vw,24px);font-weight:700;color:var(--dark);margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--pink-pale);}
+.content-section h3{font-size:14px;font-weight:600;color:var(--dark);margin:18px 0 6px;}
+.content-section p{font-size:14px;line-height:1.75;color:var(--mid);margin-bottom:10px;font-weight:300;}
+.content-section p:last-child{margin-bottom:0;}
+.content-section a{color:var(--pink);}
+.content-section ul{margin:8px 0 10px 0;padding-left:20px;}
+.content-section ul li{font-size:14px;line-height:1.75;color:var(--mid);margin-bottom:4px;}
+.content-section strong{color:var(--text);font-weight:600;}
+.bottom-tab-bar{position:fixed;bottom:0;left:0;right:0;height:var(--tab-h);background:rgba(255,248,240,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(255,107,157,.12);display:flex;align-items:stretch;z-index:300;padding-bottom:env(safe-area-inset-bottom);}
+.tab-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;cursor:pointer;padding:6px 4px;text-decoration:none;color:var(--mid);-webkit-tap-highlight-color:transparent;}
+.tab-icon{font-size:20px;line-height:1;}
+.tab-label{font-size:9px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;font-family:'DM Sans',sans-serif;}
+footer{background:var(--dark);border-top:1px solid rgba(255,255,255,.06);padding:48px 20px 24px;}
+.footer-brand{margin-bottom:36px;}
+.footer-brand .nav-logo{display:block;margin-bottom:14px;}
+.footer-tagline{font-size:13px;line-height:1.65;color:rgba(255,255,255,.45);margin-bottom:20px;}
+.footer-social{display:flex;gap:10px;}
+.social-btn{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.07);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s;color:white;text-decoration:none;}
+.social-btn:hover{background:var(--pink);transform:translateY(-3px);}
+.footer-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-bottom:32px;}
+.footer-col-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:14px;}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-links a{text-decoration:none;font-size:13px;color:rgba(255,255,255,.55);transition:color .2s;}
+.footer-links a:hover{color:var(--pink);}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:20px;display:flex;flex-direction:column;gap:6px;font-size:11px;color:rgba(255,255,255,.3);}
+@media(min-width:1024px){
+  body{padding-bottom:0;}
+  .mobile-nav{display:none;}
+  .bottom-tab-bar{display:none;}
+  .desktop-nav{display:flex;position:sticky;top:0;z-index:200;background:rgba(255,248,240,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,107,157,.12);padding:0 60px;align-items:center;justify-content:space-between;height:70px;}
+  .desktop-nav .nav-logo img{height:44px;}
+  .nav-links{display:flex;gap:32px;list-style:none;align-items:center;}
+  .nav-links a{text-decoration:none;color:var(--text);font-size:14px;font-weight:500;position:relative;transition:color .2s;}
+  .nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:2px;background:var(--grad-pink);border-radius:2px;transform:scaleX(0);transition:transform .25s;}
+  .nav-links a:hover::after{transform:scaleX(1);}
+  .nav-links a:hover{color:var(--pink);}
+  .nav-actions{display:flex;align-items:center;gap:16px;}
+  .btn-cart-desktop{background:var(--grad-pink);color:white;border:none;border-radius:50px;padding:9px 22px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;cursor:pointer;box-shadow:0 4px 16px rgba(255,107,157,.3);text-decoration:none;}
+  .page-hero{padding:80px 40px 72px;}
+  .page-hero-sub{font-size:17px;}
+  .breadcrumb{padding:14px 80px;}
+  .content-wrap{padding:64px 40px 100px;}
+  .content-section p,.content-section ul li{font-size:15px;}
+  footer{padding:60px 80px 30px;}
+  .footer-brand{margin-bottom:0;}
+  .footer-brand .nav-logo img{height:48px;}
+  .footer-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;}
+  .footer-cols{display:contents;}
+  .footer-bottom{flex-direction:row;}
+}
+</style>
+</head>
+<body>
+
+<div class="announcement">
+  ✨ Free shipping on all orders in the Netherlands
+  <span class="sep">|</span>
+  🎉 Workshop spots are limited, book yours now
+  <span class="sep">|</span>
+  💌 Custom corporate events available
+</div>
+
+<nav class="desktop-nav">
+  <a href="/" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/#kits">Kits</a></li>
+    <li><a href="/#workshops">Workshops</a></li>
+    <li><a href="/#events">Events</a></li>
+    <li><a href="/#b2b">B2B</a></li>
+    <li><a href="/services">Our Services</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="/#kits" class="btn-cart-desktop">Shop Kits ✨</a>
+  </div>
+</nav>
+
+<nav class="mobile-nav">
+  <a href="/" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
+  <div class="mobile-nav-actions">
+    <a href="/#kits" class="btn-cart-mobile">Shop Kits ✨</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-label">Legal</div>
+  <h1>Privacy <em>policy</em></h1>
+  <p class="page-hero-sub">We only collect what we genuinely need. Here is exactly what we do with your data.</p>
+</div>
+
+<div class="breadcrumb">
+  <a href="/">Home</a> &rsaquo; Privacy Policy
+</div>
+
+<div class="content-wrap">
+  <div class="last-updated">Last updated: May 2026</div>
+
+  <div class="content-section">
+    <p>Creative Solace is registered in the Netherlands under KVK number 93777337. We are the data controller for the personal data described in this policy. Our contact address is <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a>.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>What data we collect and why</h2>
+
+    <h3>When you place an order</h3>
+    <p>We collect your name, email address, shipping address, and payment information. Payment is handled by Stripe. We do not store your card details. We use this data to process and ship your order, send you order confirmation and shipping updates, and handle any returns or queries.</p>
+
+    <h3>When you fill in a booking or enquiry form</h3>
+    <p>We collect your name, email address, event type, preferred date, number of guests, and any message you choose to include. We use this to respond to your enquiry and, if a booking is confirmed, to manage your event.</p>
+
+    <h3>When you sign up for our newsletter</h3>
+    <p>We collect your email address to send you updates about new products, upcoming events, and workshop dates. You can unsubscribe at any time by clicking the unsubscribe link in any email.</p>
+
+    <h3>When you visit our website</h3>
+    <p>We may collect basic analytics data (such as which pages are visited) to understand how our site is used. We do not use advertising trackers.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Who we share your data with</h2>
+    <p>We share your data only with the services required to operate our business:</p>
+    <ul>
+      <li><strong>Stripe</strong> &mdash; to process your payment securely.</li>
+      <li><strong>MyParcel (PostNL)</strong> &mdash; to create and manage your shipping label.</li>
+      <li><strong>Postmark</strong> &mdash; to send transactional emails (order and booking confirmations).</li>
+      <li><strong>Zoho Desk</strong> &mdash; to manage customer enquiries and support tickets.</li>
+    </ul>
+    <p>We do not sell your data. We do not share it with advertisers. All third-party providers operate under their own privacy policies and, where required by EU law, under data processing agreements with us.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>How long we keep your data</h2>
+    <ul>
+      <li>Order and customer data: 7 years, in line with Dutch tax and accounting law.</li>
+      <li>Enquiry and booking data: 2 years after the enquiry is closed.</li>
+      <li>Newsletter data: until you unsubscribe.</li>
+    </ul>
+  </div>
+
+  <div class="content-section">
+    <h2>Your rights under GDPR</h2>
+    <p>As a resident of the EU or EEA, you have the following rights:</p>
+    <ul>
+      <li><strong>Access</strong> &mdash; you can ask us what personal data we hold about you.</li>
+      <li><strong>Correction</strong> &mdash; you can ask us to correct inaccurate data.</li>
+      <li><strong>Deletion</strong> &mdash; you can ask us to delete your data, subject to legal retention requirements.</li>
+      <li><strong>Restriction</strong> &mdash; you can ask us to limit how we use your data.</li>
+      <li><strong>Portability</strong> &mdash; you can ask us to provide your data in a portable format.</li>
+      <li><strong>Objection</strong> &mdash; you can object to how we process your data, including for marketing.</li>
+    </ul>
+    <p>To exercise any of these rights, email us at <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a>. We will respond within one month.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Cookies</h2>
+    <p>Our website uses a session cookie required for the shopping cart to function. We do not use advertising or tracking cookies by default. You can manage cookie preferences using the cookie settings in our website footer.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Data security</h2>
+    <p>Our website is hosted on Cloudflare Pages with HTTPS encryption. Payments are processed over secure Stripe infrastructure. No method of transmission over the internet is 100% secure. If you have concerns about a specific data interaction, contact us at <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a>.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Changes to this policy</h2>
+    <p>We may update this policy from time to time. The updated version will always be posted on this page with a revised date at the top.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Contact and complaints</h2>
+    <p>For any privacy questions or requests, contact us at <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a>.</p>
+    <p>If you believe we have handled your data incorrectly, you have the right to lodge a complaint with the Dutch Data Protection Authority (Autoriteit Persoonsgegevens) at <a href="https://autoriteitpersoonsgegevens.nl" target="_blank" rel="noopener">autoriteitpersoonsgegevens.nl</a>.</p>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="/" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
+      <p class="footer-tagline">Bringing sparkle, creativity, and good vibes to workshops, markets, festivals, and living rooms across the Netherlands and beyond.</p>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/creativesolace__/" target="_blank" rel="noopener" class="social-btn" title="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></a>
+        <a href="https://www.tiktok.com/@creativesolace_" target="_blank" rel="noopener" class="social-btn" title="TikTok"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></a>
+        <a href="https://www.facebook.com/creativesolace/" target="_blank" rel="noopener" class="social-btn" title="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="https://www.linkedin.com/company/creative-solace/" target="_blank" rel="noopener" class="social-btn" title="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <div class="footer-col-title">Shop</div>
+        <ul class="footer-links"><li><a href="/#kits">All Kits</a></li><li><a href="/services">Our Services</a></li></ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Experiences</div>
+        <ul class="footer-links"><li><a href="/#workshops">Paint and Sip</a></li><li><a href="/#workshops">Bedazzle and Sip</a></li><li><a href="/#workshops">Private Events</a></li><li><a href="/#b2b">Corporate B2B</a></li></ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Help</div>
+        <ul class="footer-links"><li><a href="mailto:hello@creativesolace.com">Contact Us</a></li><li><a href="/faq">FAQ</a></li><li><a href="/shipping">Shipping and Returns</a></li><li><a href="/privacy">Privacy Policy</a></li></ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Creative Solace. Made with 💎 in the Netherlands.</span>
+    <span>KVK: 93777337 &nbsp;·&nbsp; hello@creativesolace.com</span>
+  </div>
+</footer>
+
+<nav class="bottom-tab-bar">
+  <a href="/" class="tab-item"><span class="tab-icon">🏠</span><span class="tab-label">Home</span></a>
+  <a href="/#kits" class="tab-item"><span class="tab-icon">💎</span><span class="tab-label">Kits</span></a>
+  <a href="/#workshops" class="tab-item"><span class="tab-icon">🎨</span><span class="tab-label">Workshops</span></a>
+  <a href="/#events" class="tab-item"><span class="tab-icon">📍</span><span class="tab-label">Events</span></a>
+  <a href="/#b2b" class="tab-item"><span class="tab-icon">🤝</span><span class="tab-label">B2B</span></a>
+</nav>
+
+</body>
+</html>

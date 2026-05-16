@@ -1,0 +1,276 @@
+---
+export const prerender = true;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Shipping and Returns | Creative Solace</title>
+<meta name="description" content="Shipping rates, delivery times, and return policy for Creative Solace. Free shipping in the Netherlands. 14-day returns under EU consumer law. Damage reporting within 72 hours."/>
+<link rel="canonical" href="https://creativesolace.com/shipping"/>
+<meta property="og:title" content="Shipping and Returns | Creative Solace"/>
+<meta property="og:description" content="Free NL shipping, 14-day EU returns, and damage policy for Creative Solace rhinestone kits."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://creativesolace.com/shipping"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --pink:#FF6B9D;--pink-light:#FFB3CF;--pink-pale:#FFF0F5;--yellow:#FFD166;
+  --cream:#FFF8F0;--dark:#1A0A14;--mid:#5C3049;--text:#3D1A2C;
+  --grad-main:linear-gradient(135deg,#FFD166 0%,#FF9EC4 50%,#C084FC 100%);
+  --grad-pink:linear-gradient(135deg,#FF6B9D,#FFBC42);
+  --shadow-soft:0 8px 40px rgba(255,107,157,.18);--shadow-card:0 4px 24px rgba(60,20,40,.10);
+  --radius:20px;--radius-sm:12px;--nav-h:60px;--tab-h:64px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;padding-bottom:var(--tab-h);}
+.announcement{background:var(--grad-main);color:var(--dark);text-align:center;padding:9px 16px;font-size:12px;font-weight:500;letter-spacing:.4px;position:relative;z-index:100;}
+.announcement .sep{margin:0 6px;opacity:.35;}
+.desktop-nav{display:none;}
+.mobile-nav{position:sticky;top:0;z-index:200;background:rgba(255,248,240,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,107,157,.12);height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 20px;}
+.nav-logo{display:inline-flex;align-items:center;text-decoration:none;flex-shrink:0;}
+.nav-logo img{height:40px;width:auto;display:block;object-fit:contain;}
+.mobile-nav-actions{display:flex;align-items:center;gap:12px;}
+.btn-cart-mobile{background:var(--grad-pink);color:white;border:none;border-radius:50px;padding:8px 16px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;cursor:pointer;text-decoration:none;display:inline-block;}
+.page-hero{background:var(--dark);padding:52px 20px 48px;position:relative;overflow:hidden;text-align:center;}
+.page-hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:500px;height:300px;background:var(--grad-main);opacity:.07;border-radius:50%;filter:blur(60px);}
+.page-hero-label{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--yellow);margin-bottom:12px;position:relative;z-index:1;}
+.page-hero h1{font-family:'Playfair Display',serif;font-size:clamp(32px,8vw,56px);font-weight:900;color:white;line-height:1.1;margin-bottom:16px;position:relative;z-index:1;}
+.page-hero h1 em{font-style:italic;background:var(--grad-pink);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.page-hero-sub{font-size:15px;line-height:1.65;color:rgba(255,255,255,.6);max-width:540px;margin:0 auto;position:relative;z-index:1;font-weight:300;}
+.breadcrumb{padding:14px 20px;font-size:12px;color:var(--mid);border-bottom:1px solid rgba(60,20,40,.07);background:white;}
+.breadcrumb a{color:var(--pink);text-decoration:none;}
+.breadcrumb a:hover{text-decoration:underline;}
+/* CONTENT */
+.content-wrap{max-width:760px;margin:0 auto;padding:48px 20px 80px;}
+.content-section{margin-bottom:48px;}
+.content-section h2{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,26px);font-weight:700;color:var(--dark);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--pink-pale);}
+.content-section h3{font-size:15px;font-weight:600;color:var(--dark);margin:20px 0 8px;}
+.content-section p{font-size:14px;line-height:1.75;color:var(--mid);margin-bottom:10px;font-weight:300;}
+.content-section p:last-child{margin-bottom:0;}
+.content-section a{color:var(--pink);}
+.content-section strong{color:var(--text);font-weight:600;}
+/* SHIPPING TABLE */
+.shipping-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;}
+.shipping-table th{background:var(--pink-pale);color:var(--dark);font-weight:600;padding:10px 14px;text-align:left;border:1px solid rgba(255,107,157,.15);}
+.shipping-table td{padding:10px 14px;border:1px solid rgba(60,20,40,.07);color:var(--mid);}
+.shipping-table tr:nth-child(even) td{background:rgba(255,248,240,.6);}
+/* INFO BOX */
+.info-box{background:var(--pink-pale);border-left:4px solid var(--pink);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:16px 18px;margin:16px 0;font-size:14px;color:var(--mid);line-height:1.65;}
+.info-box strong{color:var(--text);}
+/* STEPS */
+.steps-list{list-style:none;counter-reset:steps;margin:12px 0;}
+.steps-list li{counter-increment:steps;display:flex;gap:14px;align-items:flex-start;margin-bottom:12px;font-size:14px;line-height:1.65;color:var(--mid);}
+.steps-list li::before{content:counter(steps);width:28px;height:28px;border-radius:50%;background:var(--grad-pink);color:white;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+/* BOTTOM TAB */
+.bottom-tab-bar{position:fixed;bottom:0;left:0;right:0;height:var(--tab-h);background:rgba(255,248,240,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(255,107,157,.12);display:flex;align-items:stretch;z-index:300;padding-bottom:env(safe-area-inset-bottom);}
+.tab-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;cursor:pointer;padding:6px 4px;text-decoration:none;color:var(--mid);-webkit-tap-highlight-color:transparent;}
+.tab-icon{font-size:20px;line-height:1;}
+.tab-label{font-size:9px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;font-family:'DM Sans',sans-serif;}
+/* FOOTER */
+footer{background:var(--dark);border-top:1px solid rgba(255,255,255,.06);padding:48px 20px 24px;}
+.footer-brand{margin-bottom:36px;}
+.footer-brand .nav-logo{display:block;margin-bottom:14px;}
+.footer-tagline{font-size:13px;line-height:1.65;color:rgba(255,255,255,.45);margin-bottom:20px;}
+.footer-social{display:flex;gap:10px;}
+.social-btn{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.07);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s;color:white;text-decoration:none;}
+.social-btn:hover{background:var(--pink);transform:translateY(-3px);}
+.footer-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-bottom:32px;}
+.footer-col-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:14px;}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-links a{text-decoration:none;font-size:13px;color:rgba(255,255,255,.55);transition:color .2s;}
+.footer-links a:hover{color:var(--pink);}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:20px;display:flex;flex-direction:column;gap:6px;font-size:11px;color:rgba(255,255,255,.3);}
+@media(min-width:1024px){
+  body{padding-bottom:0;}
+  .mobile-nav{display:none;}
+  .bottom-tab-bar{display:none;}
+  .desktop-nav{display:flex;position:sticky;top:0;z-index:200;background:rgba(255,248,240,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,107,157,.12);padding:0 60px;align-items:center;justify-content:space-between;height:70px;}
+  .desktop-nav .nav-logo img{height:44px;}
+  .nav-links{display:flex;gap:32px;list-style:none;align-items:center;}
+  .nav-links a{text-decoration:none;color:var(--text);font-size:14px;font-weight:500;position:relative;transition:color .2s;}
+  .nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:2px;background:var(--grad-pink);border-radius:2px;transform:scaleX(0);transition:transform .25s;}
+  .nav-links a:hover::after{transform:scaleX(1);}
+  .nav-links a:hover{color:var(--pink);}
+  .nav-actions{display:flex;align-items:center;gap:16px;}
+  .btn-cart-desktop{background:var(--grad-pink);color:white;border:none;border-radius:50px;padding:9px 22px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;cursor:pointer;box-shadow:0 4px 16px rgba(255,107,157,.3);text-decoration:none;}
+  .page-hero{padding:80px 40px 72px;}
+  .page-hero-sub{font-size:17px;}
+  .breadcrumb{padding:14px 80px;}
+  .content-wrap{padding:64px 40px 100px;}
+  .content-section h2{font-size:28px;}
+  .content-section p,.steps-list li,.info-box{font-size:15px;}
+  footer{padding:60px 80px 30px;}
+  .footer-brand{margin-bottom:0;}
+  .footer-brand .nav-logo img{height:48px;}
+  .footer-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;}
+  .footer-cols{display:contents;}
+  .footer-bottom{flex-direction:row;}
+}
+</style>
+</head>
+<body>
+
+<div class="announcement">
+  ✨ Free shipping on all orders in the Netherlands
+  <span class="sep">|</span>
+  🎉 Workshop spots are limited, book yours now
+  <span class="sep">|</span>
+  💌 Custom corporate events available
+</div>
+
+<nav class="desktop-nav">
+  <a href="/" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/#kits">Kits</a></li>
+    <li><a href="/#workshops">Workshops</a></li>
+    <li><a href="/#events">Events</a></li>
+    <li><a href="/#b2b">B2B</a></li>
+    <li><a href="/services">Our Services</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="/#kits" class="btn-cart-desktop">Shop Kits ✨</a>
+  </div>
+</nav>
+
+<nav class="mobile-nav">
+  <a href="/" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
+  <div class="mobile-nav-actions">
+    <a href="/#kits" class="btn-cart-mobile">Shop Kits ✨</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-label">Help</div>
+  <h1>Shipping and <em>returns</em></h1>
+  <p class="page-hero-sub">Everything you need to know about how your order gets to you, and what happens if something goes wrong.</p>
+</div>
+
+<div class="breadcrumb">
+  <a href="/">Home</a> &rsaquo; Shipping and Returns
+</div>
+
+<div class="content-wrap">
+
+  <div class="content-section">
+    <h2>Shipping</h2>
+
+    <h3>How fast do we ship?</h3>
+    <p>We aim to pack and ship every order within <strong>1 to 3 business days</strong> of payment. You will receive a confirmation email with a track and trace link once your order is dispatched.</p>
+
+    <h3>Shipping rates</h3>
+    <table class="shipping-table">
+      <thead>
+        <tr><th>Destination</th><th>Cost</th><th>Estimated delivery</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Netherlands</td><td><strong>Free</strong></td><td>1 to 3 business days</td></tr>
+        <tr><td>Belgium and Germany</td><td>Calculated at checkout</td><td>2 to 5 business days</td></tr>
+        <tr><td>Rest of Europe</td><td>Calculated at checkout</td><td>3 to 7 business days</td></tr>
+      </tbody>
+    </table>
+    <p>Shipping costs are shown at checkout before you confirm payment.</p>
+
+    <h3>Wrong shipping address</h3>
+    <p>Please double-check your shipping address before placing your order. If you made a mistake, email <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a> within <strong>24 hours</strong> of purchase. After that we cannot guarantee we can make changes.</p>
+
+    <h3>Delayed or lost packages</h3>
+    <p>If your order has not arrived within 10 business days of your dispatch notification, please contact us and we will help you investigate with the courier.</p>
+    <p>We are not responsible for delays caused by the courier, weather, or customs. For international orders, import duties are the responsibility of the buyer.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Returns</h2>
+    <div class="info-box"><strong>Your right under EU law:</strong> under the Consumer Rights Directive, you have 14 days from the date of delivery to return your purchase without giving a reason.</div>
+
+    <h3>How to return</h3>
+    <ol class="steps-list">
+      <li>Email <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a> with your order number and the reason for your return.</li>
+      <li>We will confirm the return and provide the return address.</li>
+      <li>Pack the item securely and send it back within 14 days of your return request.</li>
+      <li>Once we receive and inspect the item, we will process your refund within 14 days.</li>
+    </ol>
+
+    <h3>Condition of returned items</h3>
+    <p>To be eligible for a refund, the kit must be <strong>unused and in its original packaging</strong> with the B7000 adhesive seal intact. Kits that have been opened and used cannot be returned.</p>
+
+    <h3>Return shipping costs</h3>
+    <p>Return shipping costs are your responsibility, unless the item was delivered damaged, defective, or incorrectly. We recommend using a tracked service so the return is insured.</p>
+
+    <h3>Refunds</h3>
+    <p>Once your return has been received and approved, your refund will be processed to your original payment method within <strong>14 days</strong>. You will receive a confirmation email when the refund is issued.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Damaged or Defective Items</h2>
+    <p>We take great care packing every order. If your item arrives damaged or defective:</p>
+    <ol class="steps-list">
+      <li>Take a photo of the damage.</li>
+      <li>Email <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a> within <strong>72 hours</strong> of delivery.</li>
+      <li>Include your order number and the photo.</li>
+    </ol>
+    <p>We will replace or refund the item at no extra cost to you. Minor dents to the outer box that do not affect the product inside do not qualify for replacement.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Workshop Tickets and Bookings</h2>
+    <p>Workshop and event tickets are <strong>non-refundable</strong> once purchased, unless the event is cancelled by Creative Solace. If we cancel, you will receive a full refund within 14 days.</p>
+    <p>If you booked via our quote form and can no longer attend, please let us know as soon as possible by emailing <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a>. We will do our best to find an alternative date for you.</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Contact Us</h2>
+    <p>For any questions about your order, a return, or a refund, contact us at <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a>. We respond within one business day.</p>
+    <p>You can also visit our <a href="/faq">FAQ page</a> for quick answers to common questions.</p>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="/" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
+      <p class="footer-tagline">Bringing sparkle, creativity, and good vibes to workshops, markets, festivals, and living rooms across the Netherlands and beyond.</p>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/creativesolace__/" target="_blank" rel="noopener" class="social-btn" title="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></a>
+        <a href="https://www.tiktok.com/@creativesolace_" target="_blank" rel="noopener" class="social-btn" title="TikTok"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></a>
+        <a href="https://www.facebook.com/creativesolace/" target="_blank" rel="noopener" class="social-btn" title="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="https://www.linkedin.com/company/creative-solace/" target="_blank" rel="noopener" class="social-btn" title="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <div class="footer-col-title">Shop</div>
+        <ul class="footer-links"><li><a href="/#kits">All Kits</a></li><li><a href="/services">Our Services</a></li></ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Experiences</div>
+        <ul class="footer-links"><li><a href="/#workshops">Paint and Sip</a></li><li><a href="/#workshops">Bedazzle and Sip</a></li><li><a href="/#workshops">Private Events</a></li><li><a href="/#b2b">Corporate B2B</a></li><li><a href="/#events">Upcoming Events</a></li></ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Help</div>
+        <ul class="footer-links"><li><a href="mailto:hello@creativesolace.com">Contact Us</a></li><li><a href="/faq">FAQ</a></li><li><a href="/shipping">Shipping and Returns</a></li><li><a href="/privacy">Privacy Policy</a></li></ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Creative Solace. Made with 💎 in the Netherlands.</span>
+    <span>KVK: 93777337 &nbsp;·&nbsp; hello@creativesolace.com</span>
+  </div>
+</footer>
+
+<nav class="bottom-tab-bar">
+  <a href="/" class="tab-item"><span class="tab-icon">🏠</span><span class="tab-label">Home</span></a>
+  <a href="/#kits" class="tab-item"><span class="tab-icon">💎</span><span class="tab-label">Kits</span></a>
+  <a href="/#workshops" class="tab-item"><span class="tab-icon">🎨</span><span class="tab-label">Workshops</span></a>
+  <a href="/#events" class="tab-item"><span class="tab-icon">📍</span><span class="tab-label">Events</span></a>
+  <a href="/#b2b" class="tab-item"><span class="tab-icon">🤝</span><span class="tab-label">B2B</span></a>
+</nav>
+
+</body>
+</html>

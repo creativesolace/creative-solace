@@ -1,0 +1,567 @@
+---
+export const prerender = true;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Our Services | Creative Solace | Rhinestone Kits, Workshops & Corporate Events</title>
+<meta name="description" content="Everything Creative Solace offers: DIY rhinestone canvas kits, Paint and Sip workshops, Bedazzle and Sip events, private party packages, corporate team events, festival stands, and custom orders. Based in the Netherlands."/>
+<link rel="canonical" href="https://creativesolace.com/services"/>
+<meta property="og:title" content="Our Services | Creative Solace"/>
+<meta property="og:description" content="DIY rhinestone kits, Paint and Sip, Bedazzle and Sip, private events, corporate workshops and more. Creative Solace, Netherlands."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://creativesolace.com/services"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Creative Solace Services",
+  "url": "https://creativesolace.com/services",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@type": "Product",
+        "name": "Rhinestone Canvas Kit",
+        "description": "DIY rhinestone canvas kit including canvas, rhinestones, applicator pen, wax pad and B7000 adhesive. Ships within 1 to 3 business days.",
+        "brand": { "@type": "Brand", "name": "Creative Solace" },
+        "offers": { "@type": "Offer", "priceCurrency": "EUR", "price": "44.99", "availability": "https://schema.org/InStock", "url": "https://creativesolace.com/#kits" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@type": "Service",
+        "name": "Paint and Sip Workshop",
+        "description": "Guided painting session with drinks for groups of 6 to 25. Available at your venue or ours across the Netherlands.",
+        "provider": { "@type": "LocalBusiness", "name": "Creative Solace" },
+        "areaServed": { "@type": "Country", "name": "Netherlands" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "item": {
+        "@type": "Service",
+        "name": "Bedazzle and Sip Workshop",
+        "description": "Rhinestone canvas session with drinks for groups of 6 to 20. We come to your location anywhere in the Netherlands.",
+        "provider": { "@type": "LocalBusiness", "name": "Creative Solace" },
+        "areaServed": { "@type": "Country", "name": "Netherlands" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "item": {
+        "@type": "Service",
+        "name": "Corporate Creative Events",
+        "description": "Team-building workshops, branded rhinestone kits, festival stands, and bespoke artwork commissions for businesses.",
+        "provider": { "@type": "LocalBusiness", "name": "Creative Solace" },
+        "areaServed": { "@type": "Country", "name": "Netherlands" }
+      }
+    }
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --pink:        #FF6B9D;
+  --pink-light:  #FFB3CF;
+  --pink-pale:   #FFF0F5;
+  --yellow:      #FFD166;
+  --yellow-warm: #FFBC42;
+  --cream:       #FFF8F0;
+  --dark:        #1A0A14;
+  --mid:         #5C3049;
+  --text:        #3D1A2C;
+  --white:       #FFFFFF;
+  --grad-main:   linear-gradient(135deg,#FFD166 0%,#FF9EC4 50%,#C084FC 100%);
+  --grad-pink:   linear-gradient(135deg,#FF6B9D,#FFBC42);
+  --shadow-soft: 0 8px 40px rgba(255,107,157,.18);
+  --shadow-card: 0 4px 24px rgba(60,20,40,.10);
+  --radius:      20px;
+  --radius-sm:   12px;
+  --nav-h:       60px;
+  --tab-h:       64px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  overflow-x: hidden;
+  padding-bottom: var(--tab-h);
+}
+.announcement {
+  background: var(--grad-main);
+  color: var(--dark);
+  text-align: center;
+  padding: 9px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .4px;
+  position: relative;
+  z-index: 100;
+}
+.announcement .sep { margin: 0 6px; opacity: .35; }
+.desktop-nav { display: none; }
+.mobile-nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(255,248,240,.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,107,157,.12);
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+.nav-logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.nav-logo img {
+  height: 40px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+.mobile-nav-actions { display: flex; align-items: center; gap: 12px; }
+.btn-cart-mobile {
+  background: var(--grad-pink);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 8px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+/* PAGE HERO */
+.page-hero {
+  background: var(--dark);
+  padding: 52px 20px 48px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+.page-hero::before {
+  content: '';
+  position: absolute;
+  top: -100px; left: 50%;
+  transform: translateX(-50%);
+  width: 500px; height: 300px;
+  background: var(--grad-main);
+  opacity: .07;
+  border-radius: 50%;
+  filter: blur(60px);
+}
+.page-hero-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+.page-hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 8vw, 56px);
+  font-weight: 900;
+  color: white;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+.page-hero h1 em {
+  font-style: italic;
+  background: var(--grad-pink);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.page-hero-sub {
+  font-size: 15px;
+  line-height: 1.65;
+  color: rgba(255,255,255,.6);
+  max-width: 540px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  font-weight: 300;
+}
+/* BREADCRUMB */
+.breadcrumb {
+  padding: 14px 20px;
+  font-size: 12px;
+  color: var(--mid);
+  border-bottom: 1px solid rgba(60,20,40,.07);
+  background: white;
+}
+.breadcrumb a { color: var(--pink); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+/* SERVICES */
+.services-wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 48px 20px 80px;
+}
+.service-block {
+  padding: 36px 0;
+  border-bottom: 1px solid rgba(60,20,40,.08);
+}
+.service-block:last-child { border-bottom: none; }
+.service-tag {
+  display: inline-block;
+  background: var(--pink-pale);
+  border: 1px solid rgba(255,107,157,.25);
+  border-radius: 50px;
+  padding: 4px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--pink);
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.service-block h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(22px, 5vw, 30px);
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+.service-block p {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--mid);
+  margin-bottom: 12px;
+  font-weight: 300;
+}
+.service-block p:last-child { margin-bottom: 0; }
+.service-block strong { color: var(--text); font-weight: 600; }
+.service-cta {
+  display: inline-block;
+  margin-top: 20px;
+  background: var(--grad-pink);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 26px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform .2s, box-shadow .2s;
+}
+.service-cta:hover { transform: translateY(-2px); box-shadow: var(--shadow-soft); }
+.service-cta.outline {
+  background: none;
+  color: var(--dark);
+  border: 1.5px solid rgba(60,20,40,.2);
+  margin-left: 10px;
+}
+.service-cta.outline:hover { border-color: var(--pink); color: var(--pink); }
+/* BOTTOM TAB */
+.bottom-tab-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: var(--tab-h);
+  background: rgba(255,248,240,.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255,107,157,.12);
+  display: flex;
+  align-items: stretch;
+  z-index: 300;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.tab-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 4px;
+  text-decoration: none;
+  color: var(--mid);
+  -webkit-tap-highlight-color: transparent;
+}
+.tab-icon { font-size: 20px; line-height: 1; }
+.tab-label { font-size: 9px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; font-family: 'DM Sans', sans-serif; }
+/* FOOTER */
+footer {
+  background: var(--dark);
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding: 48px 20px 24px;
+}
+.footer-brand { margin-bottom: 36px; }
+.footer-brand .nav-logo { display: block; margin-bottom: 14px; }
+.footer-tagline { font-size: 13px; line-height: 1.65; color: rgba(255,255,255,.45); margin-bottom: 20px; }
+.footer-social { display: flex; gap: 10px; }
+.social-btn {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.07);
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, transform .2s;
+  color: white;
+  text-decoration: none;
+}
+.social-btn:hover { background: var(--pink); transform: translateY(-3px); }
+.footer-cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-bottom: 32px; }
+.footer-col-title { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 14px; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a { text-decoration: none; font-size: 13px; color: rgba(255,255,255,.55); transition: color .2s; }
+.footer-links a:hover { color: var(--pink); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,.06); padding-top: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 11px; color: rgba(255,255,255,.3); }
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity .55s ease, transform .55s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+/* DESKTOP */
+@media (min-width: 1024px) {
+  body { padding-bottom: 0; }
+  .mobile-nav { display: none; }
+  .bottom-tab-bar { display: none; }
+  .desktop-nav {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    background: rgba(255,248,240,.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,107,157,.12);
+    padding: 0 60px;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+  }
+  .desktop-nav .nav-logo img { height: 44px; }
+  .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
+  .nav-links a { text-decoration: none; color: var(--text); font-size: 14px; font-weight: 500; position: relative; transition: color .2s; }
+  .nav-links a::after { content: ''; position: absolute; bottom: -3px; left: 0; right: 0; height: 2px; background: var(--grad-pink); border-radius: 2px; transform: scaleX(0); transition: transform .25s; }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-links a:hover { color: var(--pink); }
+  .nav-actions { display: flex; align-items: center; gap: 16px; }
+  .btn-cart-desktop { background: var(--grad-pink); color: white; border: none; border-radius: 50px; padding: 9px 22px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; box-shadow: 0 4px 16px rgba(255,107,157,.3); text-decoration: none; }
+  .page-hero { padding: 80px 40px 72px; }
+  .page-hero-sub { font-size: 17px; }
+  .breadcrumb { padding: 14px 80px; }
+  .services-wrap { padding: 64px 40px 100px; }
+  .service-block { padding: 48px 0; }
+  .service-block h2 { font-size: 32px; }
+  .service-block p { font-size: 16px; }
+  footer { padding: 60px 80px 30px; }
+  .footer-brand { margin-bottom: 0; }
+  .footer-brand .nav-logo img { height: 48px; }
+  .footer-grid { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+  .footer-cols { display: contents; }
+  .footer-bottom { flex-direction: row; }
+}
+</style>
+</head>
+<body>
+
+<div class="announcement">
+  ✨ Free shipping on all orders in the Netherlands
+  <span class="sep">|</span>
+  🎉 Workshop spots are limited, book yours now
+  <span class="sep">|</span>
+  💌 Custom corporate events available
+</div>
+
+<nav class="desktop-nav">
+  <a href="/" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/#kits">Kits</a></li>
+    <li><a href="/#workshops">Workshops</a></li>
+    <li><a href="/#events">Events</a></li>
+    <li><a href="/#b2b">B2B</a></li>
+    <li><a href="/services" style="color:var(--pink)">Our Services</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="/#kits" class="btn-cart-desktop">Shop Kits ✨</a>
+  </div>
+</nav>
+
+<nav class="mobile-nav">
+  <a href="/" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
+  <div class="mobile-nav-actions">
+    <a href="/#kits" class="btn-cart-mobile">Shop Kits ✨</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-label">Creative Solace</div>
+  <h1>Everything we <em>do</em></h1>
+  <p class="page-hero-sub">From at-home DIY kits to workshops, corporate events, and festival stands. Here is a clear overview of everything Creative Solace offers.</p>
+</div>
+
+<div class="breadcrumb">
+  <a href="/">Home</a> &rsaquo; Our Services
+</div>
+
+<div class="services-wrap">
+
+  <div class="service-block reveal">
+    <div class="service-tag">Shop online</div>
+    <h2>Rhinestone Canvas Kits</h2>
+    <p>Our kits let you create a stunning piece of art at home. No experience needed. Each kit comes with a printed canvas, all the rhinestones for that design, an applicator pen, a wax tray, and a tube of B7000 professional adhesive. You press each gem into place, section by section, and watch the image come to life.</p>
+    <p>The canvas has a 4 cm gallery-wrap border, so it is ready to hang straight on the wall when you are done. No frame needed. <strong>Free shipping on all orders within the Netherlands.</strong> Ships within 1 to 3 business days.</p>
+    <a href="/#kits" class="service-cta">Shop the kits ✨</a>
+  </div>
+
+  <div class="service-block reveal">
+    <div class="service-tag">Workshop</div>
+    <h2>Paint and Sip</h2>
+    <p>A guided painting session with drinks. We bring all the materials. You bring the people. No painting experience needed at all. Everyone follows along at their own pace and goes home with a finished canvas.</p>
+    <p><strong>Works great for:</strong> birthday parties, girls nights, hen dos, team outings, and open public events. Group size is 6 to 25 people. Sessions run 2 to 3 hours. We can come to your venue or host at ours.</p>
+    <a href="/#workshops" class="service-cta">Request a quote</a>
+  </div>
+
+  <div class="service-block reveal">
+    <div class="service-tag">Workshop</div>
+    <h2>Bedazzle and Sip</h2>
+    <p>Our most popular workshop. Guests each get their own rhinestone kit and work on it together during a drinks session. It is relaxed, fun, and satisfying. Everyone leaves with their own finished piece to take home.</p>
+    <p><strong>Works great for:</strong> bachelorette parties, birthdays, corporate events, and girls nights. Group size is 6 to 20 people. Sessions run 2 to 3 hours. We come to you.</p>
+    <a href="/#workshops" class="service-cta">Request a quote</a>
+  </div>
+
+  <div class="service-block reveal">
+    <div class="service-tag">Private event</div>
+    <h2>Bachelorette and Birthday Packages</h2>
+    <p>We take care of everything so you can focus on the celebration. Materials, setup, guidance, and cleanup are all included. You choose the activity (paint, bedazzle, or both), we make it happen at your home, your venue, or a location of your choice.</p>
+    <p>All guests take their finished artwork home as a keepsake. Custom themes are available on request. Planning is done over WhatsApp to keep things simple.</p>
+    <a href="/#workshops" class="service-cta">Plan my event</a>
+  </div>
+
+  <div class="service-block reveal">
+    <div class="service-tag">B2B</div>
+    <h2>Corporate and Business Events</h2>
+    <p>Creative workshops that genuinely bring teams together. We have hosted sessions for companies of all sizes and backgrounds. No creative experience is required and everyone takes part. It is hands-on, social, and a lot more memorable than the usual team outing.</p>
+    <p>We also offer <strong>custom branded rhinestone kits</strong> for corporate gifting or merchandise, <strong>branded event stands</strong> at festivals and markets, and <strong>bespoke rhinestone artworks</strong> commissioned for your brand or office space.</p>
+    <p>Send us an enquiry and we will put together a proposal within 24 hours.</p>
+    <a href="/#b2b" class="service-cta">Get in touch</a>
+  </div>
+
+  <div class="service-block reveal">
+    <div class="service-tag">Live events</div>
+    <h2>Festival and Market Stands</h2>
+    <p>We pop up at thrift markets, design fairs, and lifestyle festivals across the Netherlands. Our stand is interactive: visitors can try a kit in person, buy products, or find out about our workshops.</p>
+    <p>If you organise an event and would like us there as a vendor or activity partner, get in touch and we will let you know our availability.</p>
+    <a href="/#events" class="service-cta">See upcoming events</a>
+    <a href="/#b2b" class="service-cta outline">Partner with us</a>
+  </div>
+
+  <div class="service-block reveal">
+    <div class="service-tag">Custom</div>
+    <h2>Custom Orders</h2>
+    <p>Need something unique? We create custom rhinestone artwork, bespoke kit designs, and branded creative gifts on request. Prices depend on size and complexity.</p>
+    <p>Send us a message with what you have in mind and we will come back to you within one business day.</p>
+    <a href="mailto:hello@creativesolace.com" class="service-cta">Email us</a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="/" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
+      <p class="footer-tagline">Bringing sparkle, creativity, and good vibes to workshops, markets, festivals, and living rooms across the Netherlands and beyond.</p>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/creativesolace__/" target="_blank" rel="noopener" class="social-btn" title="Instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@creativesolace_" target="_blank" rel="noopener" class="social-btn" title="TikTok">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
+        </a>
+        <a href="https://www.facebook.com/creativesolace/" target="_blank" rel="noopener" class="social-btn" title="Facebook">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/creative-solace/" target="_blank" rel="noopener" class="social-btn" title="LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <div class="footer-col-title">Shop</div>
+        <ul class="footer-links">
+          <li><a href="/#kits">All Kits</a></li>
+          <li><a href="/services">Our Services</a></li>
+          <li><a href="/#kits">New Arrivals</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Experiences</div>
+        <ul class="footer-links">
+          <li><a href="/#workshops">Paint and Sip</a></li>
+          <li><a href="/#workshops">Bedazzle and Sip</a></li>
+          <li><a href="/#workshops">Private Events</a></li>
+          <li><a href="/#b2b">Corporate B2B</a></li>
+          <li><a href="/#events">Upcoming Events</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Help</div>
+        <ul class="footer-links">
+          <li><a href="mailto:hello@creativesolace.com">Contact Us</a></li>
+          <li><a href="/faq">FAQ</a></li>
+          <li><a href="/shipping">Shipping and Returns</a></li>
+          <li><a href="/privacy">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Creative Solace. Made with 💎 in the Netherlands.</span>
+    <span>KVK: 93777337 &nbsp;·&nbsp; hello@creativesolace.com</span>
+  </div>
+</footer>
+
+<nav class="bottom-tab-bar">
+  <a href="/" class="tab-item"><span class="tab-icon">🏠</span><span class="tab-label">Home</span></a>
+  <a href="/#kits" class="tab-item"><span class="tab-icon">💎</span><span class="tab-label">Kits</span></a>
+  <a href="/#workshops" class="tab-item"><span class="tab-icon">🎨</span><span class="tab-label">Workshops</span></a>
+  <a href="/#events" class="tab-item"><span class="tab-icon">📍</span><span class="tab-label">Events</span></a>
+  <a href="/#b2b" class="tab-item"><span class="tab-icon">🤝</span><span class="tab-label">B2B</span></a>
+</nav>
+
+<script is:inline>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
