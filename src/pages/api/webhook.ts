@@ -72,6 +72,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
         });
 
         const myparcelData = await myparcelRes.json() as any;
+        console.log('MyParcel status:', myparcelRes.status);
+        console.log('MyParcel response:', JSON.stringify(myparcelData));
         myparcelShipmentId = myparcelData?.data?.ids?.[0]?.id || null;
 
         if (myparcelShipmentId) {
