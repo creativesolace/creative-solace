@@ -5,6 +5,7 @@
   "originalPrice": 69,
   "badge": "Sale",
   "image": "/images/products/dior-heels/image.png",
+  "imageIRL": "/images/products/dior-heels/imageIRL.png",
   "stripeProductId": "prod_UVIzsScOEedZh0",
   "stripePriceId": "price_1TWINLC1ZOnsxU8kWKNudNbf",
   "available": true
