@@ -236,10 +236,10 @@ export const prerender = false;
     const counts = {};
     ALL_STATUSES.forEach(s => { counts[s] = 0; });
     orders.forEach(o => { if (counts[o.fulfillment_status] !== undefined) counts[o.fulfillment_status]++; });
-    let html = '<button class="chip' + (activeFilter === 'all' ? ' active' : '') + '" onclick="applyFilter('all', this)">All (' + orders.length + ')</button>';
+    let html = '<button class="chip' + (activeFilter === 'all' ? ' active' : '') + '" onclick="applyFilter(&quot;all&quot;, this)">All (' + orders.length + ')</button>';
     ALL_STATUSES.forEach(s => {
       if (counts[s] > 0 || activeFilter === s) {
-        html += '<button class="chip' + (activeFilter === s ? ' active' : '') + '" onclick="applyFilter('' + s + '', this)">' + STATUS_LABELS[s] + ' (' + counts[s] + ')</button>';
+        html += '<button class="chip' + (activeFilter === s ? ' active' : '') + '" onclick="applyFilter(&quot;" + s + "&quot;, this)">' + STATUS_LABELS[s] + ' (' + counts[s] + ')</button>';
       }
     });
     html += '<button class="chip archive-chip' + (showArchived ? ' active' : '') + '" onclick="toggleArchived(this)">' + (showArchived ? 'Hide archived' : 'Archived') + '</button>';
