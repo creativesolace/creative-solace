@@ -1,0 +1,318 @@
+---
+export const prerender = false;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Check-in — Creative Solace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --pink: #FF6B9D;
+    --dark: #1A0A14;
+    --mid: #5C3049;
+    --cream: #FFF8F0;
+    --grad-pink: linear-gradient(135deg, #FF6B9D, #FFBC42);
+    --grad-main: linear-gradient(135deg, #FFD166 0%, #FF9EC4 50%, #C084FC 100%);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark);
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(255,107,157,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(255,209,102,0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 440px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-style: italic;
+    background: var(--grad-pink);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px;
+    padding: 40px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 28px;
+  }
+
+  .field { margin-bottom: 16px; }
+
+  label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 8px;
+  }
+
+  input {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 13px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: white;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  input::placeholder { color: rgba(255,255,255,0.25); }
+  input:focus {
+    border-color: rgba(255,107,157,0.5);
+    box-shadow: 0 0 0 3px rgba(255,107,157,0.1);
+  }
+  input.ticket-input {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .btn {
+    width: 100%;
+    background: var(--grad-pink);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,107,157,0.35); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* Result states */
+  .result {
+    display: none;
+    margin-top: 20px;
+    border-radius: 16px;
+    padding: 20px 24px;
+    text-align: center;
+  }
+  .result.valid {
+    background: rgba(52,211,153,0.12);
+    border: 1.5px solid rgba(52,211,153,0.3);
+  }
+  .result.invalid {
+    background: rgba(255,107,107,0.12);
+    border: 1.5px solid rgba(255,107,107,0.3);
+  }
+  .result.used {
+    background: rgba(255,188,66,0.12);
+    border: 1.5px solid rgba(255,188,66,0.3);
+  }
+  .result-icon { font-size: 40px; margin-bottom: 10px; }
+  .result-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .result-detail { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+  .result-detail strong { color: white; }
+
+  /* Login screen */
+  #login-screen { display: block; }
+  #checkin-screen { display: none; }
+
+  .error-msg {
+    font-size: 13px;
+    color: #ff6b6b;
+    margin-top: 8px;
+    text-align: center;
+    min-height: 20px;
+  }
+
+  .divider {
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+    margin: 24px 0;
+  }
+
+  .event-filter {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    margin-top: 16px;
+  }
+
+  .checkin-again {
+    background: none;
+    border: 1.5px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.6);
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 12px;
+    transition: all 0.2s;
+  }
+  .checkin-again:hover { border-color: rgba(255,255,255,0.3); color: white; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="logo">Creative Solace</div>
+
+  <!-- LOGIN -->
+  <div class="card" id="login-screen">
+    <h1>Staff Login 🔐</h1>
+    <p class="subtitle">Enter your password to access check-in</p>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="password-input" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    </div>
+    <button class="btn" onclick="doLogin()">Unlock Check-in</button>
+    <p class="error-msg" id="login-error"></p>
+  </div>
+
+  <!-- CHECK-IN -->
+  <div class="card" id="checkin-screen">
+    <h1>Check-in 🎟️</h1>
+    <p class="subtitle">Enter or scan a ticket code</p>
+    <div class="field">
+      <label>Ticket Code</label>
+      <input type="text" id="ticket-input" class="ticket-input" placeholder="ABC12345" maxlength="8"
+        onkeydown="if(event.key==='Enter')doCheckin()"
+        oninput="this.value=this.value.toUpperCase()"/>
+    </div>
+    <button class="btn" id="checkin-btn" onclick="doCheckin()">Check In</button>
+
+    <div class="result" id="result-valid">
+      <div class="result-icon">✅</div>
+      <div class="result-title">Valid Ticket!</div>
+      <div class="result-detail" id="result-valid-detail"></div>
+    </div>
+
+    <div class="result" id="result-used">
+      <div class="result-icon">⚠️</div>
+      <div class="result-title">Already Checked In</div>
+      <div class="result-detail" id="result-used-detail"></div>
+    </div>
+
+    <div class="result" id="result-invalid">
+      <div class="result-icon">❌</div>
+      <div class="result-title">Invalid Ticket</div>
+      <div class="result-detail">This code was not found. Please check the code and try again.</div>
+    </div>
+
+    <button class="checkin-again" onclick="resetCheckin()" id="again-btn" style="display:none">Check in another →</button>
+  </div>
+</div>
+
+<script is:inline>
+  const PASSWORD = 'igurE-jkc23-TIy?!';
+
+  function doLogin() {
+    const val = document.getElementById('password-input').value;
+    if (val === PASSWORD) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('checkin-screen').style.display = 'block';
+      setTimeout(() => document.getElementById('ticket-input').focus(), 100);
+    } else {
+      document.getElementById('login-error').textContent = 'Incorrect password. Try again.';
+      document.getElementById('password-input').value = '';
+    }
+  }
+
+  async function doCheckin() {
+    const code = document.getElementById('ticket-input').value.trim().toUpperCase();
+    if (!code || code.length < 4) return;
+
+    const btn = document.getElementById('checkin-btn');
+    btn.textContent = 'Checking...';
+    btn.disabled = true;
+
+    hideResults();
+
+    try {
+      const res = await fetch('/api/checkin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code })
+      });
+      const data = await res.json();
+
+      if (data.status === 'valid') {
+        document.getElementById('result-valid-detail').innerHTML =
+          `<strong>${data.name}</strong><br>${data.event}<br>Checked in at ${new Date().toLocaleTimeString('nl-NL')}`;
+        document.getElementById('result-valid').style.display = 'block';
+      } else if (data.status === 'already_used') {
+        document.getElementById('result-used-detail').innerHTML =
+          `<strong>${data.name}</strong> already checked in at <strong>${data.checked_in_at}</strong>`;
+        document.getElementById('result-used').style.display = 'block';
+      } else {
+        document.getElementById('result-invalid').style.display = 'block';
+      }
+      document.getElementById('again-btn').style.display = 'block';
+    } catch(e) {
+      document.getElementById('result-invalid').style.display = 'block';
+      document.getElementById('again-btn').style.display = 'block';
+    }
+
+    btn.textContent = 'Check In';
+    btn.disabled = false;
+  }
+
+  function hideResults() {
+    ['result-valid','result-used','result-invalid'].forEach(id => {
+      document.getElementById(id).style.display = 'none';
+    });
+    document.getElementById('again-btn').style.display = 'none';
+  }
+
+  function resetCheckin() {
+    hideResults();
+    document.getElementById('ticket-input').value = '';
+    document.getElementById('ticket-input').focus();
+  }
+</script>
+</body>
+</html>
