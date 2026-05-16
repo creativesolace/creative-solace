@@ -1870,7 +1870,7 @@ footer {
 
   <div class="products-grid">
     {products.length > 0 ? products.map((p, i) => (
-      <div class="product-card reveal" style={i > 0 ? `transition-delay:${i * 0.1}s` : ''} onclick={`addToCart('${p.data.title.replace(/'/g, "\\'")}',${p.data.price})`}>
+      <div class="product-card reveal" style={i > 0 ? `transition-delay:${i * 0.1}s` : ''} onclick={`addToCart('${p.data.title.replace(/'/g, "\\'")}',${p.data.price},'${p.data.stripePriceId || ''}')`}>
         <div class="product-img-wrap">
           {p.data.badge && <span class={`product-badge${p.data.badge.toLowerCase() === 'sale' ? ' sale' : ''}`}>{p.data.badge}</span>}
           <img src={p.data.image} alt={`${p.data.title} DIY rhinestone canvas kit`} onerror="this.src='https://images.unsplash.com/photo-1490750967868-88df5691cc5f?w=600&q=80'"/>
@@ -2370,7 +2370,7 @@ footer {
       <span>Total</span>
       <span id="cartTotalAmt">€0,00</span>
     </div>
-    <button class="btn-submit" onclick="alert('Checkout coming soon! 🛍️')">Checkout →</button>
+    <button class="btn-submit" onclick="handleCheckout()">Checkout →</button>
   </div>
 </div>
 
@@ -2539,9 +2539,43 @@ function toggleCart() {
   document.body.style.overflow = cartOpen ? 'hidden' : '';
 }
 
-function addToCart(name, price) {
+async function handleCheckout() {
+  const btn = document.querySelector('#cartFooter .btn-submit');
+  if (!btn) return;
+
+  const firstItem = cart.find(i => i.priceId);
+  if (!firstItem || !firstItem.priceId) {
+    alert('Checkout is not available for this item yet. Please contact us at hello@creativesolace.com');
+    return;
+  }
+
+  btn.textContent = 'Redirecting to Stripe...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ priceId: firstItem.priceId, productName: firstItem.name })
+    });
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      alert('Something went wrong. Please try again or contact us.');
+      btn.textContent = 'Checkout →';
+      btn.disabled = false;
+    }
+  } catch (e) {
+    alert('Something went wrong. Please try again or contact us.');
+    btn.textContent = 'Checkout →';
+    btn.disabled = false;
+  }
+}
+
+function addToCart(name, price, priceId) {
   const existing = cart.find(i => i.name === name);
-  if (existing) { existing.qty++; } else { cart.push({ name, price, qty: 1 }); }
+  if (existing) { existing.qty++; } else { cart.push({ name, price, priceId: priceId || '', qty: 1 }); }
   renderCart();
   if (!cartOpen) toggleCart();
 }
