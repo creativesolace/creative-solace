@@ -5,5 +5,7 @@
   "city": "Amsterdam",
   "type": "popup",
   "image": "/images/events/future-test-event/image.png",
-  "featured": true
+  "featured": true,
+  "ticketPrice": 1,
+  "ticketCapacity": 10
 }
