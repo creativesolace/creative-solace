@@ -62,7 +62,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const contactData = await contactRes.json() as any;
 
     let contactId: string;
-    if (contactData?.data?.length > 0) {
+    if (contactData?.data?.length > 0 && !contactData.errorCode) {
       contactId = contactData.data[0].id;
     } else {
       const newContact = await fetch('https://desk.zoho.eu/api/v1/contacts', {
@@ -79,7 +79,14 @@ export const POST: APIRoute = async ({ request, locals }) => {
       headers: { 'Authorization': `Zoho-oauthtoken ${access_token}`, 'orgId': orgId, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         subject: `New enquiry: ${resolvedEventType} — ${name}`,
-        description: `Name: ${name}\nEmail: ${email}\nEvent Type: ${resolvedEventType}\nDate: ${resolvedDate || 'Flexible'}\nGuests: ${guests || 'TBC'}\nMessage: ${message || '—'}`,
+        description: `<table style="border-collapse:collapse;width:100%;font-family:sans-serif;">
+          <tr><td style="padding:8px;border:1px solid #eee;"><b>Name</b></td><td style="padding:8px;border:1px solid #eee;">${name}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #eee;"><b>Email</b></td><td style="padding:8px;border:1px solid #eee;">${email}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #eee;"><b>Event Type</b></td><td style="padding:8px;border:1px solid #eee;">${resolvedEventType}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #eee;"><b>Date</b></td><td style="padding:8px;border:1px solid #eee;">${resolvedDate || 'Flexible'}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #eee;"><b>Guests</b></td><td style="padding:8px;border:1px solid #eee;">${guests || 'TBC'}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #eee;"><b>Message</b></td><td style="padding:8px;border:1px solid #eee;">${message || '—'}</td></tr>
+        </table>`,
         contactId,
         departmentId: '237675000000007061',
         channel: 'Web',
