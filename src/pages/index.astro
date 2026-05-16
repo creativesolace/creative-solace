@@ -2154,7 +2154,7 @@ footer {
 
   <div class="events-grid" style="margin-top:40px;">
     {pastEvents.length > 0 ? pastEvents.map((ev, i) => (
-      <div class="event-card reveal" style={i > 0 ? `transition-delay:${i * 0.1}s` : ''}>
+      <div class="event-card reveal" style={i > 0 ? `transition-delay:${i * 0.1}s` : ''} onclick={`window.location.href='/events/${ev.id}'`} style="cursor:pointer">
         <div class="event-img" data-slider>
           <div class="event-img-slider">
             <img class="event-img-slide" src={ev.data.image} alt={ev.data.title} onerror="this.src='https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80'"/>

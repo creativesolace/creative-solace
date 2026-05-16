@@ -34,6 +34,11 @@ export default config({
         featured: fields.checkbox({ label: 'Show on homepage', defaultValue: true }),
         ticketPrice: fields.number({ label: 'Ticket price in EUR (leave empty if no tickets)', validation: { isRequired: false } }),
         ticketCapacity: fields.number({ label: 'Max attendees (leave empty for unlimited)', validation: { isRequired: false } }),
+        body: fields.text({ label: 'Event description (shown on detail page)', multiline: true }),
+        photo1: fields.image({ label: 'Gallery photo 1', directory: 'public/images/events', publicPath: '/images/events/' }),
+        photo2: fields.image({ label: 'Gallery photo 2', directory: 'public/images/events', publicPath: '/images/events/' }),
+        photo3: fields.image({ label: 'Gallery photo 3', directory: 'public/images/events', publicPath: '/images/events/' }),
+        photo4: fields.image({ label: 'Gallery photo 4', directory: 'public/images/events', publicPath: '/images/events/' }),
       },
     }),
 
