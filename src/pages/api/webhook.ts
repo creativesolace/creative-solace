@@ -43,7 +43,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
         const myparcelRes = await fetch('https://api.myparcel.nl/shipments', {
           method: 'POST',
           headers: {
-            'Authorization': `basic ${btoa(env.MYPARCEL_API_KEY + ':')}`,
+            'Authorization': `basic ${btoa(env.MYPARCEL_API_KEY)}`,
             'Content-Type': 'application/vnd.shipment+json;charset=utf-8',
             'Accept': 'application/json;charset=utf-8',
           },
