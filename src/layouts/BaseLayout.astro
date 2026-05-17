@@ -10,6 +10,11 @@ export interface Props {
   hreflangEn?: string;
   hreflangNl?: string;
   activePage?: string;
+  heroLabel?: string;
+  heroTitle?: string;
+  heroTitleEm?: string;
+  heroSub?: string;
+  breadcrumb?: string;
 }
 
 const {
@@ -23,6 +28,11 @@ const {
   hreflangEn,
   hreflangNl,
   activePage = '',
+  heroLabel,
+  heroTitle,
+  heroTitleEm,
+  heroSub,
+  breadcrumb,
 } = Astro.props;
 
 const isNl = lang === 'nl';
@@ -392,6 +402,19 @@ footer {
     <a href={`${base}/#kits`} class="btn-cart-mobile">{nav.shopKits} ✨</a>
   </div>
 </nav>
+
+{heroTitle && (
+  <div class="page-hero">
+    {heroLabel && <div class="page-hero-label">{heroLabel}</div>}
+    <h1>{heroTitle}{heroTitleEm && <> <em>{heroTitleEm}</em></>}</h1>
+    {heroSub && <p class="page-hero-sub">{heroSub}</p>}
+  </div>
+)}
+{breadcrumb && (
+  <div class="breadcrumb">
+    <a href={`${base}/`}>{nav.home}</a> &rsaquo; {breadcrumb}
+  </div>
+)}
 
 <slot/>
 
