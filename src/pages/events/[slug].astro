@@ -1,7 +1,7 @@
 ---
 export const prerender = true;
-
 import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export async function getStaticPaths() {
   let events = [];
@@ -25,21 +25,8 @@ function typeLabel(t) {
 const photos = [d.photo1, d.photo2, d.photo3, d.photo4].filter(Boolean);
 const allPhotos = [d.image, ...photos].filter(Boolean);
 const isPast = d.date ? new Date(d.date) < new Date() : true;
----
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>{d.title} | Creative Solace</title>
-<meta name="description" content={d.body ? d.body.slice(0, 155) : `Creative Solace at ${d.title} — ${typeLabel(d.type)} in ${d.city || 'the Netherlands'}.`}/>
-<link rel="canonical" href={`https://creativesolace.com/events/${event.id}`}/>
-<meta property="og:title" content={`${d.title} | Creative Solace`}/>
-<meta property="og:description" content={d.body ? d.body.slice(0, 155) : `Creative Solace at ${d.title}`}/>
-<meta property="og:type" content="website"/>
-<meta property="og:url" content={`https://creativesolace.com/events/${event.id}`}/>
-{d.image && <meta property="og:image" content={`https://creativesolace.com${d.image}`}/>}
-<script type="application/ld+json" set:html={JSON.stringify({
+
+const schemaData = {
   "@context": "https://schema.org",
   "@type": "Event",
   "name": d.title,
@@ -49,273 +36,156 @@ const isPast = d.date ? new Date(d.date) < new Date() : true;
   "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
   "image": d.image ? `https://creativesolace.com${d.image}` : undefined,
   "description": d.body || `Creative Solace at ${d.title}`
-})}/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet"/>
-<style>
-:root {
-  --pink:#FF6B9D;--pink-pale:#FFF0F5;--yellow:#FFD166;
-  --cream:#FFF8F0;--dark:#1A0A14;--mid:#5C3049;--text:#3D1A2C;
-  --grad-main:linear-gradient(135deg,#FFD166 0%,#FF9EC4 50%,#C084FC 100%);
-  --grad-pink:linear-gradient(135deg,#FF6B9D,#FFBC42);
-  --shadow-soft:0 8px 40px rgba(255,107,157,.18);--shadow-card:0 4px 24px rgba(60,20,40,.10);
-  --radius:20px;--radius-sm:12px;--nav-h:60px;--tab-h:64px;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:"DM Sans",sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;padding-bottom:var(--tab-h);}
-.announcement{background:var(--grad-main);color:var(--dark);text-align:center;padding:9px 16px;font-size:12px;font-weight:500;letter-spacing:.4px;position:relative;z-index:100;}
-.announcement .sep{margin:0 6px;opacity:.35;}
-.desktop-nav{display:none;}
-.mobile-nav{position:sticky;top:0;z-index:200;background:rgba(255,248,240,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,107,157,.12);height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 20px;}
-.nav-logo{display:inline-flex;align-items:center;text-decoration:none;flex-shrink:0;}
-.nav-logo img{height:40px;width:auto;display:block;object-fit:contain;}
-.mobile-nav-actions{display:flex;align-items:center;gap:12px;}
-.btn-pink{background:var(--grad-pink);color:white;border:none;border-radius:50px;padding:8px 16px;font-family:"DM Sans",sans-serif;font-weight:600;font-size:13px;cursor:pointer;text-decoration:none;display:inline-block;transition:transform .2s,box-shadow .2s;}
-.btn-pink:hover{transform:translateY(-2px);box-shadow:var(--shadow-soft);}
-.btn-outline{background:none;color:var(--dark);border:1.5px solid rgba(60,20,40,.2);border-radius:50px;padding:11px 24px;font-family:"DM Sans",sans-serif;font-weight:500;font-size:14px;cursor:pointer;text-decoration:none;display:inline-block;transition:all .2s;}
-.btn-outline:hover{border-color:var(--pink);color:var(--pink);}
-.breadcrumb{padding:14px 20px;font-size:12px;color:var(--mid);border-bottom:1px solid rgba(60,20,40,.07);background:white;}
-.breadcrumb a{color:var(--pink);text-decoration:none;}
-.breadcrumb a:hover{text-decoration:underline;}
-.event-hero{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--pink-pale);max-height:520px;}
-.event-hero img{width:100%;height:100%;object-fit:cover;display:block;}
-.event-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,10,20,.6) 0%,transparent 50%);}
-.event-hero-badge{position:absolute;top:16px;left:16px;background:white;border-radius:50px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--pink);letter-spacing:.4px;text-transform:uppercase;}
-.event-wrap{max-width:860px;margin:0 auto;padding:40px 20px 80px;}
-.event-meta-bar{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid rgba(60,20,40,.08);}
-.event-meta-item{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--mid);}
-.event-meta-item strong{color:var(--text);}
-.event-title{font-family:"Playfair Display",serif;font-size:clamp(28px,6vw,48px);font-weight:900;color:var(--dark);line-height:1.1;margin-bottom:24px;}
-.event-body{font-size:15px;line-height:1.85;color:var(--mid);font-weight:300;white-space:pre-line;margin-bottom:40px;}
-.gallery-section{margin-bottom:48px;}
-.gallery-section h2{font-family:"Playfair Display",serif;font-size:22px;font-weight:700;color:var(--dark);margin-bottom:20px;}
-.gallery-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.gallery-grid img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--radius-sm);display:block;transition:transform .4s;}
-.gallery-grid img:hover{transform:scale(1.02);}
-.gallery-grid img:first-child{grid-column:1/-1;aspect-ratio:16/9;}
-.event-cta-box{background:white;border-radius:var(--radius);padding:28px 24px;box-shadow:var(--shadow-card);margin-bottom:40px;}
-.event-cta-box h3{font-family:"Playfair Display",serif;font-size:20px;font-weight:700;color:var(--dark);margin-bottom:6px;}
-.event-cta-box p{font-size:14px;color:var(--mid);margin-bottom:20px;}
-.event-cta-price{font-size:28px;font-weight:700;color:var(--pink);margin-bottom:16px;font-family:"Playfair Display",serif;}
-.back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--mid);text-decoration:none;margin-bottom:32px;transition:color .2s;}
-.back-link:hover{color:var(--pink);}
-.bottom-tab-bar{position:fixed;bottom:0;left:0;right:0;height:var(--tab-h);background:rgba(255,248,240,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(255,107,157,.12);display:flex;align-items:stretch;z-index:300;padding-bottom:env(safe-area-inset-bottom);}
-.tab-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;cursor:pointer;padding:6px 4px;text-decoration:none;color:var(--mid);-webkit-tap-highlight-color:transparent;}
-.tab-icon{font-size:20px;line-height:1;}
-.tab-label{font-size:9px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;font-family:"DM Sans",sans-serif;}
-footer{background:var(--dark);border-top:1px solid rgba(255,255,255,.06);padding:48px 20px 24px;}
-.footer-brand{margin-bottom:36px;}
-.footer-brand .nav-logo{display:block;margin-bottom:14px;}
-.footer-tagline{font-size:13px;line-height:1.65;color:rgba(255,255,255,.45);margin-bottom:20px;}
-.footer-social{display:flex;gap:10px;}
-.social-btn{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.07);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s;color:white;text-decoration:none;}
-.social-btn:hover{background:var(--pink);transform:translateY(-3px);}
-.footer-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-bottom:32px;}
-.footer-col-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:14px;}
-.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px;}
-.footer-links a{text-decoration:none;font-size:13px;color:rgba(255,255,255,.55);transition:color .2s;}
-.footer-links a:hover{color:var(--pink);}
-.footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:20px;display:flex;flex-direction:column;gap:6px;font-size:11px;color:rgba(255,255,255,.3);}
-@media(min-width:1024px){
-  body{padding-bottom:0;}
-  .mobile-nav{display:none;}
-  .bottom-tab-bar{display:none;}
-  .desktop-nav{display:flex;position:sticky;top:0;z-index:200;background:rgba(255,248,240,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,107,157,.12);padding:0 60px;align-items:center;justify-content:space-between;height:70px;}
-  .desktop-nav .nav-logo img{height:44px;}
-  .nav-links{display:flex;gap:32px;list-style:none;align-items:center;}
-  .nav-links a{text-decoration:none;color:var(--text);font-size:14px;font-weight:500;position:relative;transition:color .2s;}
-  .nav-links a::after{content:"";position:absolute;bottom:-3px;left:0;right:0;height:2px;background:var(--grad-pink);border-radius:2px;transform:scaleX(0);transition:transform .25s;}
-  .nav-links a:hover::after,.active-page::after{transform:scaleX(1);}
-  .nav-links a:hover,.active-page{color:var(--pink);}
-  .nav-actions{display:flex;align-items:center;gap:16px;}
-  .btn-cart-desktop{background:var(--grad-pink);color:white;border:none;border-radius:50px;padding:9px 22px;font-family:"DM Sans",sans-serif;font-weight:600;font-size:14px;cursor:pointer;box-shadow:0 4px 16px rgba(255,107,157,.3);text-decoration:none;}
-  .breadcrumb{padding:14px 80px;}
-  .event-wrap{padding:52px 40px 100px;}
-  .gallery-grid{grid-template-columns:1fr 1fr 1fr;}
-  .gallery-grid img:first-child{grid-column:1/-1;}
-  .event-cta-box{display:flex;align-items:center;justify-content:space-between;gap:32px;}
-  .event-cta-box h3{margin-bottom:4px;}
-  .event-cta-box p{margin-bottom:0;}
-  .event-cta-right{flex-shrink:0;text-align:right;}
-  .event-cta-price{margin-bottom:12px;}
-  footer{padding:60px 80px 30px;}
-  .footer-brand{margin-bottom:0;}
-  .footer-brand .nav-logo img{height:48px;}
-  .footer-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;}
-  .footer-cols{display:contents;}
-  .footer-bottom{flex-direction:row;}
+};
+---
+<style is:global>
+.event-hero { position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; background: var(--pink-pale); max-height: 520px; }
+.event-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.event-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,10,20,.6) 0%, transparent 50%); }
+.event-hero-badge { position: absolute; top: 16px; left: 16px; background: white; border-radius: 50px; padding: 5px 14px; font-size: 11px; font-weight: 700; color: var(--pink); letter-spacing: .4px; text-transform: uppercase; }
+.event-wrap { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
+.event-meta-bar { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid rgba(60,20,40,.08); }
+.event-meta-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--mid); }
+.event-meta-item strong { color: var(--text); }
+.event-title { font-family: 'Playfair Display', serif; font-size: clamp(28px,6vw,48px); font-weight: 900; color: var(--dark); line-height: 1.1; margin-bottom: 24px; }
+.event-body { font-size: 15px; line-height: 1.85; color: var(--mid); font-weight: 300; white-space: pre-line; margin-bottom: 40px; }
+.gallery-section { margin-bottom: 48px; }
+.gallery-section h2 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--dark); margin-bottom: 20px; }
+.gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.gallery-grid img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: var(--radius-sm); display: block; transition: transform .4s; }
+.gallery-grid img:hover { transform: scale(1.02); }
+.gallery-grid img:first-child { grid-column: 1/-1; aspect-ratio: 16/9; }
+.event-cta-box { background: white; border-radius: var(--radius); padding: 28px 24px; box-shadow: var(--shadow-card); margin-bottom: 40px; }
+.event-cta-box h3 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+.event-cta-box p { font-size: 14px; color: var(--mid); margin-bottom: 20px; }
+.event-cta-price { font-size: 28px; font-weight: 700; color: var(--pink); margin-bottom: 16px; font-family: 'Playfair Display', serif; }
+.back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--mid); text-decoration: none; margin-bottom: 32px; transition: color .2s; }
+.back-link:hover { color: var(--pink); }
+.btn-pink { background: var(--grad-pink); color: white; border: none; border-radius: 50px; padding: 8px 16px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; text-decoration: none; display: inline-block; transition: transform .2s, box-shadow .2s; }
+.btn-pink:hover { transform: translateY(-2px); box-shadow: var(--shadow-soft); }
+.btn-outline-event { background: none; color: var(--dark); border: 1.5px solid rgba(60,20,40,.2); border-radius: 50px; padding: 11px 24px; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 14px; cursor: pointer; text-decoration: none; display: inline-block; transition: all .2s; }
+.btn-outline-event:hover { border-color: var(--pink); color: var(--pink); }
+@media (min-width: 1024px) {
+  .event-wrap { padding: 52px 40px 100px; }
+  .gallery-grid { grid-template-columns: 1fr 1fr 1fr; }
+  .gallery-grid img:first-child { grid-column: 1/-1; }
+  .event-cta-box { display: flex; align-items: center; justify-content: space-between; gap: 32px; }
+  .event-cta-box h3 { margin-bottom: 4px; }
+  .event-cta-box p { margin-bottom: 0; }
+  .event-cta-right { flex-shrink: 0; text-align: right; }
+  .event-cta-price { margin-bottom: 12px; }
 }
 </style>
-</head>
-<body>
 
-<div class="announcement">
-  ✨ Free shipping on all orders in the Netherlands
-  <span class="sep">|</span>
-  🎉 Workshop spots are limited, book yours now
-  <span class="sep">|</span>
-  💌 Custom corporate events available
-</div>
+<BaseLayout
+  lang="en"
+  title={`${d.title} | Creative Solace`}
+  description={d.body ? d.body.slice(0, 155) : `Creative Solace at ${d.title} — ${typeLabel(d.type)} in ${d.city || 'the Netherlands'}.`}
+  canonical={`https://creativesolace.com/events/${event.id}`}
+  ogTitle={`${d.title} | Creative Solace`}
+  ogDescription={d.body ? d.body.slice(0, 155) : `Creative Solace at ${d.title}`}
+  ogUrl={`https://creativesolace.com/events/${event.id}`}
+  hreflangEn={`https://creativesolace.com/events/${event.id}`}
+  hreflangNl={`https://creativesolace.com/nl/events/${event.id}`}
+  activePage="events"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schemaData)}/>
+    {d.image && <meta property="og:image" content={`https://creativesolace.com${d.image}`}/>}
+  </Fragment>
 
-<nav class="desktop-nav">
-  <a href="/" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
-  <ul class="nav-links">
-    <li><a href="/">Home</a></li>
-    <li><a href="/#kits">Kits</a></li>
-    <li><a href="/#workshops">Workshops</a></li>
-    <li><a href="/#events" class="active-page">Events</a></li>
-    <li><a href="/#b2b">B2B</a></li>
-    <li><a href="/services">Our Services</a></li>
-  </ul>
-  <div class="nav-actions">
-    <a href="/#kits" class="btn-cart-desktop">Shop Kits ✨</a>
-  </div>
-</nav>
-
-<nav class="mobile-nav">
-  <a href="/" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
-  <div class="mobile-nav-actions">
-    <a href="/#kits" class="btn-pink">Shop Kits ✨</a>
-  </div>
-</nav>
-
-<div class="breadcrumb">
-  <a href="/">Home</a> &rsaquo; <a href="/#events">Events</a> &rsaquo; {d.title}
-</div>
-
-{d.image && (
-  <div class="event-hero">
-    <img src={d.image} alt={d.title} onerror="this.style.display='none'"/>
-    <div class="event-hero-overlay"></div>
-    <div class="event-hero-badge">{typeLabel(d.type)}</div>
-  </div>
-)}
-
-<div class="event-wrap">
-  <a href="/#events" class="back-link">← Back to events</a>
-
-  <h1 class="event-title">{d.title}</h1>
-
-  <div class="event-meta-bar">
-    {d.date && <div class="event-meta-item">📅 <strong>{fmtDate(d.date)}</strong></div>}
-    {d.location && <div class="event-meta-item">📍 <strong>{d.location}{d.city ? `, ${d.city}` : ""}</strong></div>}
-    {d.type && <div class="event-meta-item">🏷 <strong>{typeLabel(d.type)}</strong></div>}
-    {d.ticketPrice && <div class="event-meta-item">🎟 <strong>€{d.ticketPrice} per ticket</strong></div>}
-  </div>
-
-  {!isPast && d.ticketPrice && (
-    <div class="event-cta-box">
-      <div>
-        <h3>Join us at this event</h3>
-        <p>Secure your spot before it sells out. All materials included.</p>
-      </div>
-      <div class="event-cta-right">
-        <div class="event-cta-price">€{d.ticketPrice}</div>
-        <button class="btn-pink" onclick={`buyTicket('${event.id}', ${d.ticketPrice})`} style="padding:13px 28px;font-size:15px;">
-          Get tickets ✨
-        </button>
-      </div>
+  {d.image && (
+    <div class="event-hero">
+      <img src={d.image} alt={d.title} onerror="this.style.display='none'"/>
+      <div class="event-hero-overlay"></div>
+      <div class="event-hero-badge">{typeLabel(d.type)}</div>
     </div>
   )}
 
-  {!isPast && !d.ticketPrice && (
-    <div class="event-cta-box">
-      <div>
-        <h3>Free entry</h3>
-        <p>Come say hi at this event. No ticket needed.</p>
-      </div>
-      <div class="event-cta-right">
-        <a href="https://www.instagram.com/creativesolace__/" target="_blank" rel="noopener" class="btn-pink" style="padding:13px 28px;font-size:15px;">
-          Follow for updates ✨
-        </a>
-      </div>
-    </div>
-  )}
+  <div class="event-wrap">
+    <a href="/#events" class="back-link">← Back to events</a>
 
-  {d.body && <p class="event-body">{d.body}</p>}
+    <h1 class="event-title">{d.title}</h1>
 
-  {allPhotos.length > 1 && (
-    <div class="gallery-section">
-      <h2>Photos</h2>
-      <div class="gallery-grid">
-        {allPhotos.map((photo, i) => (
-          <img src={photo} alt={`${d.title} photo ${i + 1}`} loading={i === 0 ? "eager" : "lazy"} onerror="this.style.display='none'"/>
-        ))}
-      </div>
+    <div class="event-meta-bar">
+      {d.date && <div class="event-meta-item">📅 <strong>{fmtDate(d.date)}</strong></div>}
+      {d.location && <div class="event-meta-item">📍 <strong>{d.location}{d.city ? `, ${d.city}` : ""}</strong></div>}
+      {d.type && <div class="event-meta-item">🏷 <strong>{typeLabel(d.type)}</strong></div>}
+      {d.ticketPrice && <div class="event-meta-item">🎟 <strong>€{d.ticketPrice} per ticket</strong></div>}
     </div>
-  )}
 
-  {isPast && (
-    <div style="margin-top:40px;padding-top:40px;border-top:1px solid rgba(60,20,40,.08);text-align:center;">
-      <p style="font-size:15px;color:var(--mid);margin-bottom:20px;">Want to be at the next one? Follow us to stay in the loop.</p>
-      <a href="https://www.instagram.com/creativesolace__/" target="_blank" rel="noopener" class="btn-pink" style="padding:13px 28px;font-size:15px;margin-right:12px;">Follow on Instagram</a>
-      <a href="/#workshops" class="btn-outline">Book a workshop</a>
-    </div>
-  )}
-</div>
+    {!isPast && d.ticketPrice && (
+      <div class="event-cta-box">
+        <div>
+          <h3>Join us at this event</h3>
+          <p>Secure your spot before it sells out. All materials included.</p>
+        </div>
+        <div class="event-cta-right">
+          <div class="event-cta-price">€{d.ticketPrice}</div>
+          <button class="btn-pink" onclick={`buyTicket('${event.id}', ${d.ticketPrice})`} style="padding:13px 28px;font-size:15px;">
+            Get tickets ✨
+          </button>
+        </div>
+      </div>
+    )}
 
-<footer>
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <a href="/" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
-      <p class="footer-tagline">Bringing sparkle, creativity, and good vibes to workshops, markets, festivals, and living rooms across the Netherlands and beyond.</p>
-      <div class="footer-social">
-        <a href="https://www.instagram.com/creativesolace__/" target="_blank" rel="noopener" class="social-btn" title="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></a>
-        <a href="https://www.tiktok.com/@creativesolace_" target="_blank" rel="noopener" class="social-btn" title="TikTok"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></a>
-        <a href="https://www.facebook.com/creativesolace/" target="_blank" rel="noopener" class="social-btn" title="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
-        <a href="https://www.linkedin.com/company/creative-solace/" target="_blank" rel="noopener" class="social-btn" title="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></a>
+    {!isPast && !d.ticketPrice && (
+      <div class="event-cta-box">
+        <div>
+          <h3>Free entry</h3>
+          <p>Come say hi at this event. No ticket needed.</p>
+        </div>
+        <div class="event-cta-right">
+          <a href="https://www.instagram.com/creativesolace__/" target="_blank" rel="noopener" class="btn-pink" style="padding:13px 28px;font-size:15px;">
+            Follow for updates ✨
+          </a>
+        </div>
       </div>
-    </div>
-    <div class="footer-cols">
-      <div>
-        <div class="footer-col-title">Shop</div>
-        <ul class="footer-links"><li><a href="/#kits">All Kits</a></li><li><a href="/services">Our Services</a></li></ul>
+    )}
+
+    {d.body && <p class="event-body">{d.body}</p>}
+
+    {allPhotos.length > 1 && (
+      <div class="gallery-section">
+        <h2>Photos</h2>
+        <div class="gallery-grid">
+          {allPhotos.map((photo, i) => (
+            <img src={photo} alt={`${d.title} photo ${i + 1}`} loading={i === 0 ? "eager" : "lazy"} onerror="this.style.display='none'"/>
+          ))}
+        </div>
       </div>
-      <div>
-        <div class="footer-col-title">Experiences</div>
-        <ul class="footer-links"><li><a href="/#workshops">Paint and Sip</a></li><li><a href="/#workshops">Bedazzle and Sip</a></li><li><a href="/#workshops">Private Events</a></li><li><a href="/#b2b">Corporate B2B</a></li><li><a href="/#events">Upcoming Events</a></li></ul>
+    )}
+
+    {isPast && (
+      <div style="margin-top:40px;padding-top:40px;border-top:1px solid rgba(60,20,40,.08);text-align:center;">
+        <p style="font-size:15px;color:var(--mid);margin-bottom:20px;">Want to be at the next one? Follow us to stay in the loop.</p>
+        <a href="https://www.instagram.com/creativesolace__/" target="_blank" rel="noopener" class="btn-pink" style="padding:13px 28px;font-size:15px;margin-right:12px;">Follow on Instagram</a>
+        <a href="/#workshops" class="btn-outline-event">Book a workshop</a>
       </div>
-      <div>
-        <div class="footer-col-title">Help</div>
-        <ul class="footer-links"><li><a href="mailto:hello@creativesolace.com">Contact Us</a></li><li><a href="/faq">FAQ</a></li><li><a href="/shipping">Shipping and Returns</a></li><li><a href="/privacy">Privacy Policy</a></li></ul>
-      </div>
-    </div>
+    )}
   </div>
-  <div class="footer-bottom">
-    <span>© 2026 Creative Solace. Made with 💎 in the Netherlands.</span>
-    <span>KVK: 93777337 &nbsp;·&nbsp; hello@creativesolace.com</span>
-  </div>
-</footer>
 
-<nav class="bottom-tab-bar">
-  <a href="/" class="tab-item"><span class="tab-icon">🏠</span><span class="tab-label">Home</span></a>
-  <a href="/#kits" class="tab-item"><span class="tab-icon">💎</span><span class="tab-label">Kits</span></a>
-  <a href="/#workshops" class="tab-item"><span class="tab-icon">🎨</span><span class="tab-label">Workshops</span></a>
-  <a href="/#events" class="tab-item"><span class="tab-icon">📍</span><span class="tab-label">Events</span></a>
-  <a href="/#b2b" class="tab-item"><span class="tab-icon">🤝</span><span class="tab-label">B2B</span></a>
-</nav>
+  <Fragment slot="scripts">
+    <script is:inline>
+    async function buyTicket(eventSlug, ticketPrice) {
+      const btn = event.target;
+      btn.textContent = "Redirecting to Stripe...";
+      btn.disabled = true;
+      try {
+        const res = await fetch("/api/checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ items: [{ priceId: "ticket_" + eventSlug, qty: 1 }], eventSlug, isTicket: true, ticketPrice })
+        });
+        const data = await res.json();
+        if (data.url) { window.location.href = data.url; }
+        else { alert("Something went wrong. Please contact hello@creativesolace.com"); btn.textContent = "Get tickets ✨"; btn.disabled = false; }
+      } catch(e) {
+        alert("Something went wrong. Please contact hello@creativesolace.com");
+        btn.textContent = "Get tickets ✨"; btn.disabled = false;
+      }
+    }
+    </script>
+  </Fragment>
 
-<script is:inline>
-async function buyTicket(eventSlug, ticketPrice) {
-  const btn = event.target;
-  btn.textContent = "Redirecting to Stripe...";
-  btn.disabled = true;
-  try {
-    const res = await fetch("/api/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items: [{ priceId: "ticket_" + eventSlug, qty: 1 }], eventSlug, isTicket: true, ticketPrice })
-    });
-    const data = await res.json();
-    if (data.url) { window.location.href = data.url; }
-    else { alert("Something went wrong. Please contact hello@creativesolace.com"); btn.textContent = "Get tickets ✨"; btn.disabled = false; }
-  } catch(e) {
-    alert("Something went wrong. Please contact hello@creativesolace.com");
-    btn.textContent = "Get tickets ✨"; btn.disabled = false;
-  }
-}
-</script>
-</body>
-</html>
+</BaseLayout>
