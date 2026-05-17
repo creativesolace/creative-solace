@@ -6,7 +6,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
   const env = (locals as any).runtime?.env;
 
   try {
-    const { items, eventSlug, isTicket, ticketPrice } = await request.json();
+    const { items, eventSlug, isTicket, ticketPrice, locale, returnBase } = await request.json();
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return new Response(JSON.stringify({ error: 'Cart is empty' }), { status: 400 });
@@ -16,8 +16,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
       'mode': 'payment',
       'payment_method_types[0]': 'card',
       'payment_method_types[1]': 'ideal',
-      'success_url': `https://creativesolace.com/success?session_id={CHECKOUT_SESSION_ID}${isTicket ? '&ticket=1&event=' + eventSlug : ''}`,
+      'success_url': `https://creativesolace.com${returnBase || ''}/success?session_id={CHECKOUT_SESSION_ID}${isTicket ? '&ticket=1&event=' + eventSlug : ''}`,
       'cancel_url': `https://creativesolace.com/#events`,
+      'locale': locale || 'auto',
     });
 
     if (isTicket && eventSlug && ticketPrice) {

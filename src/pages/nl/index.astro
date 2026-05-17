@@ -1756,11 +1756,11 @@ footer {
 
 <!-- ANNOUNCEMENT BAR -->
 <div class="announcement">
-  ✨ Free shipping on all orders in the Netherlands
+  ✨ Gratis verzending op alle bestellingen in Nederland
   <span class="sep">|</span>
-  🎉 Workshop spots are limited, book yours now
+  🎉 Workshopplekken zijn beperkt, boek nu jouw plek
   <span class="sep">|</span>
-  💌 Custom corporate events available
+  💌 Maatwerk voor bedrijven mogelijk
 </div>
 
 <!-- DESKTOP NAV -->
@@ -2626,7 +2626,7 @@ async function buyTicket(eventSlug, ticketPrice) {
     const res = await fetch('/api/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items: [{ priceId: 'ticket_' + eventSlug, qty: 1 }], eventSlug, isTicket: true, ticketPrice })
+      body: JSON.stringify({ items: [{ priceId: 'ticket_' + eventSlug, qty: 1 }], eventSlug, isTicket: true, ticketPrice, locale: 'nl' })
     });
     const data = await res.json();
     if (data.url) {
@@ -2660,7 +2660,7 @@ async function handleCheckout() {
     const res = await fetch('/api/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items: itemsWithPrice.map(i => ({ priceId: i.priceId, qty: i.qty })) })
+      body: JSON.stringify({ items: itemsWithPrice.map(i => ({ priceId: i.priceId, qty: i.qty })), locale: 'nl' })
     });
     const data = await res.json();
     if (data.url) {
@@ -2672,7 +2672,7 @@ async function handleCheckout() {
     }
   } catch (e) {
     alert('Something went wrong. Please try again or contact us.');
-    btn.textContent = 'Checkout →';
+    btn.textContent = 'Afrekenen →';
     btn.disabled = false;
   }
 }
@@ -2690,7 +2690,7 @@ function renderCart() {
   const counts = document.querySelectorAll('.cart-count');
 
   if (cart.length === 0) {
-    itemsEl.innerHTML = `<div class="cart-empty"><div class="cart-empty-emoji">✨</div><p>Your cart is empty. Time to sparkle!</p><br/><button class="btn-primary" onclick="toggleCart();scrollToSection('kits')" style="margin-top:12px;">Shop kits →</button></div>`;
+    itemsEl.innerHTML = `<div class="cart-empty"><div class="cart-empty-emoji">✨</div><p>Je winkelwagen is leeg. Tijd om te schitteren!</p><br/><button class="btn-primary" onclick="toggleCart();scrollToSection('kits')" style="margin-top:12px;">Bekijk kits →</button></div>`;
     footerEl.style.display = 'none';
   } else {
     itemsEl.innerHTML = cart.map((item, i) => `
@@ -2784,7 +2784,7 @@ async function handleQuoteSubmit(e) {
 
 // ── B2C CONTACT MODAL ──
 function openBooking(type) {
-  document.getElementById('bookingTitle').textContent = 'Get in touch 💌';
+  document.getElementById('bookingTitle').textContent = 'Neem contact op 💌';
   document.getElementById('workshopType').value = '';
   document.getElementById('bookingModal').classList.add('active');
   document.body.style.overflow = 'hidden';
