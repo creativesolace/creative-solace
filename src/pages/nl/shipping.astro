@@ -1,0 +1,115 @@
+---
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<style is:global>
+.content-wrap { max-width: 760px; margin: 0 auto; padding: 48px 20px 80px; }
+.content-section { margin-bottom: 48px; }
+.content-section h2 { font-family: 'Playfair Display', serif; font-size: clamp(20px,4vw,26px); font-weight: 700; color: var(--dark); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--pink-pale); }
+.content-section h3 { font-size: 15px; font-weight: 600; color: var(--dark); margin: 20px 0 8px; }
+.content-section p { font-size: 14px; line-height: 1.75; color: var(--mid); margin-bottom: 10px; font-weight: 300; }
+.content-section p:last-child { margin-bottom: 0; }
+.content-section a { color: var(--pink); }
+.content-section strong { color: var(--text); font-weight: 600; }
+.shipping-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+.shipping-table th { background: var(--pink-pale); color: var(--dark); font-weight: 600; padding: 10px 14px; text-align: left; border: 1px solid rgba(255,107,157,.15); }
+.shipping-table td { padding: 10px 14px; border: 1px solid rgba(60,20,40,.07); color: var(--mid); }
+.shipping-table tr:nth-child(even) td { background: rgba(255,248,240,.6); }
+.info-box { background: var(--pink-pale); border-left: 4px solid var(--pink); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 16px 18px; margin: 16px 0; font-size: 14px; color: var(--mid); line-height: 1.65; }
+.info-box strong { color: var(--text); }
+.steps-list { list-style: none; counter-reset: steps; margin: 12px 0; }
+.steps-list li { counter-increment: steps; display: flex; gap: 14px; align-items: flex-start; margin-bottom: 12px; font-size: 14px; line-height: 1.65; color: var(--mid); }
+.steps-list li::before { content: counter(steps); width: 28px; height: 28px; border-radius: 50%; background: var(--grad-pink); color: white; font-weight: 700; font-size: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+@media (min-width: 1024px) {
+  .content-wrap { padding: 64px 40px 100px; }
+  .content-section h2 { font-size: 28px; }
+  .content-section p, .steps-list li, .info-box { font-size: 15px; }
+}
+</style>
+
+<BaseLayout
+  lang="nl"
+  title="Verzending en Retourneren | Creative Solace"
+  description="Verzendtarieven, levertijden en retourbeleid voor Creative Solace. Gratis verzending in Nederland. 14 dagen retourrecht. Schademeldingen binnen 72 uur."
+  canonical="https://creativesolace.com/nl/shipping"
+  ogTitle="Verzending en Retourneren | Creative Solace"
+  ogDescription="Gratis NL-verzending, 14 dagen EU-retourrecht en schadebeleid voor Creative Solace rhinestone kits."
+  ogUrl="https://creativesolace.com/nl/shipping"
+  hreflangEn="https://creativesolace.com/shipping"
+  hreflangNl="https://creativesolace.com/nl/shipping"
+  heroLabel="Hulp"
+  heroTitle="Verzending en"
+  heroTitleEm="retourneren"
+  heroSub="Alles wat je moet weten over hoe je bestelling bij je komt, en wat er gebeurt als er iets misgaat."
+  breadcrumb="Verzending en retourneren"
+>
+
+  <div class="content-wrap">
+
+    <div class="content-section">
+      <h2>Verzending</h2>
+      <h3>Hoe snel verzenden jullie?</h3>
+      <p>We streven ernaar elke bestelling binnen <strong>1 tot 3 werkdagen</strong> na betaling te verpakken en te verzenden. Je ontvangt een bevestigingsmail met een track & trace link zodra je bestelling onderweg is.</p>
+      <h3>Verzendtarieven</h3>
+      <table class="shipping-table">
+        <thead>
+          <tr><th>Bestemming</th><th>Kosten</th><th>Geschatte levertijd</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Nederland</td><td><strong>Gratis</strong></td><td>1 tot 3 werkdagen</td></tr>
+          <tr><td>België en Duitsland</td><td>Berekend bij afrekenen</td><td>2 tot 5 werkdagen</td></tr>
+          <tr><td>Rest van Europa</td><td>Berekend bij afrekenen</td><td>3 tot 7 werkdagen</td></tr>
+        </tbody>
+      </table>
+      <p>Verzendkosten worden getoond bij het afrekenen voordat je je betaling bevestigt.</p>
+      <h3>Verkeerd verzendadres</h3>
+      <p>Controleer je verzendadres goed voordat je je bestelling plaatst. Als je een fout hebt gemaakt, stuur dan een e-mail naar <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a> binnen <strong>24 uur</strong> na aankoop. Daarna kunnen we geen wijzigingen meer garanderen.</p>
+      <h3>Vertraagde of verloren pakketten</h3>
+      <p>Als je bestelling niet binnen 10 werkdagen na je verzendbericht is aangekomen, neem dan contact met ons op en we helpen je bij het onderzoek met de koerier.</p>
+      <p>We zijn niet verantwoordelijk voor vertragingen veroorzaakt door de koerier, het weer of de douane. Voor internationale bestellingen zijn invoerrechten de verantwoordelijkheid van de koper.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Retourneren</h2>
+      <div class="info-box"><strong>Jouw recht onder EU-wetgeving:</strong> op grond van de Richtlijn Consumentenrechten heb je het recht om je aankoop binnen 14 dagen na levering te retourneren zonder opgaaf van reden.</div>
+      <h3>Hoe retourneer je</h3>
+      <ol class="steps-list">
+        <li>Stuur een e-mail naar <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a> met je bestelnummer en de reden voor je retour.</li>
+        <li>We bevestigen de retour en geven het retouradres door.</li>
+        <li>Verpak het artikel goed en stuur het terug binnen 14 dagen na je retourverzoek.</li>
+        <li>Zodra we het artikel hebben ontvangen en gecontroleerd, verwerken we je terugbetaling binnen 14 dagen.</li>
+      </ol>
+      <h3>Staat van geretourneerde artikelen</h3>
+      <p>Om in aanmerking te komen voor terugbetaling moet de kit <strong>ongebruikt en in de originele verpakking</strong> zijn met het B7000-zegel intact. Kits die al geopend en gebruikt zijn, kunnen niet worden geretourneerd.</p>
+      <h3>Retourverzendkosten</h3>
+      <p>Retourverzendkosten zijn voor jouw rekening, tenzij het artikel beschadigd, defect of onjuist is geleverd. We raden aan een getraceerde service te gebruiken zodat de retour verzekerd is.</p>
+      <h3>Terugbetalingen</h3>
+      <p>Zodra je retour is ontvangen en goedgekeurd, wordt je terugbetaling verwerkt naar je oorspronkelijke betaalmethode binnen <strong>14 dagen</strong>. Je ontvangt een bevestigingsmail wanneer de terugbetaling is uitgevoerd.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Beschadigde of defecte artikelen</h2>
+      <p>We verpakken elke bestelling met zorg. Als je artikel beschadigd of defect aankomt:</p>
+      <ol class="steps-list">
+        <li>Maak een foto van de schade.</li>
+        <li>Stuur een e-mail naar <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a> binnen <strong>72 uur</strong> na levering.</li>
+        <li>Vermeld je bestelnummer en de foto.</li>
+      </ol>
+      <p>We vervangen of vergoeden het artikel zonder extra kosten voor jou. Kleine deuken in de buitenverpakking die het product binnenin niet beschadigen, komen niet in aanmerking voor vervanging.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Workshoptickets en boekingen</h2>
+      <p>Workshop- en eventtickets zijn <strong>niet terugbetaalbaar</strong> na aankoop, tenzij het event door Creative Solace wordt geannuleerd. Als wij annuleren, ontvang je een volledige terugbetaling binnen 14 dagen.</p>
+      <p>Als je via ons offerteformulier hebt geboekt en niet meer kunt komen, laat het ons dan zo snel mogelijk weten via <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a>. We doen ons best om een alternatieve datum voor je te vinden.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Neem contact op</h2>
+      <p>Voor vragen over je bestelling, een retour of een terugbetaling, neem contact op via <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a>. We reageren binnen één werkdag.</p>
+      <p>Je kunt ook onze <a href="/nl/faq">veelgestelde vragen pagina</a> bezoeken voor snelle antwoorden op veelgestelde vragen.</p>
+    </div>
+
+  </div>
+
+</BaseLayout>

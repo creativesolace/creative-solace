@@ -1,0 +1,115 @@
+---
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<style is:global>
+.services-wrap { max-width: 760px; margin: 0 auto; padding: 48px 20px 80px; }
+.service-block { padding: 36px 0; border-bottom: 1px solid rgba(60,20,40,.08); }
+.service-block:last-child { border-bottom: none; }
+.service-tag { display: inline-block; background: var(--pink-pale); border: 1px solid rgba(255,107,157,.25); border-radius: 50px; padding: 4px 14px; font-size: 11px; font-weight: 700; color: var(--pink); letter-spacing: .8px; text-transform: uppercase; margin-bottom: 14px; }
+.service-block h2 { font-family: 'Playfair Display', serif; font-size: clamp(22px, 5vw, 30px); font-weight: 700; color: var(--dark); margin-bottom: 14px; line-height: 1.2; }
+.service-block p { font-size: 15px; line-height: 1.75; color: var(--mid); margin-bottom: 12px; font-weight: 300; }
+.service-block p:last-child { margin-bottom: 0; }
+.service-block strong { color: var(--text); font-weight: 600; }
+.service-cta { display: inline-block; margin-top: 20px; background: var(--grad-pink); color: white; border: none; border-radius: 50px; padding: 12px 26px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; text-decoration: none; transition: transform .2s, box-shadow .2s; }
+.service-cta:hover { transform: translateY(-2px); box-shadow: var(--shadow-soft); }
+.service-cta.outline { background: none; color: var(--dark); border: 1.5px solid rgba(60,20,40,.2); margin-left: 10px; }
+.service-cta.outline:hover { border-color: var(--pink); color: var(--pink); }
+@media (min-width: 1024px) {
+  .services-wrap { padding: 64px 40px 100px; }
+  .service-block { padding: 48px 0; }
+  .service-block h2 { font-size: 32px; }
+  .service-block p { font-size: 16px; }
+}
+</style>
+
+<BaseLayout
+  lang="nl"
+  title="Ons Aanbod | Creative Solace | Rhinestone Kits, Workshops & Bedrijfsevents"
+  description="Alles wat Creative Solace te bieden heeft: DIY rhinestone canvas kits, Paint and Sip workshops, Bedazzle and Sip events, privé-feestpakketten, corporate teamevents, festivalstands en maatwerk. Gevestigd in Nederland."
+  canonical="https://creativesolace.com/nl/services"
+  ogTitle="Ons Aanbod | Creative Solace"
+  ogDescription="DIY rhinestone kits, Paint and Sip, Bedazzle and Sip, privé-events, corporate workshops en meer. Creative Solace, Nederland."
+  ogUrl="https://creativesolace.com/nl/services"
+  hreflangEn="https://creativesolace.com/services"
+  hreflangNl="https://creativesolace.com/nl/services"
+  activePage="services"
+  heroLabel="Creative Solace"
+  heroTitle="Alles wat we"
+  heroTitleEm="doen"
+  heroSub="Van doe-het-zelf kits tot workshops, bedrijfsevents en festivalstands. Een helder overzicht van alles wat Creative Solace te bieden heeft."
+  breadcrumb="Ons Aanbod"
+>
+
+  <div class="services-wrap">
+
+    <div class="service-block reveal">
+      <div class="service-tag">Online bestellen</div>
+      <h2>Rhinestone Canvas Kits</h2>
+      <p>Met onze kits maak je thuis een prachtig kunstwerk. Geen ervaring nodig. Elke kit bevat een bedrukt canvas, alle rhinestones voor het ontwerp, een precisiepen, een wasplaatje en een tube B7000 professionele lijm. Je drukt elk steentje op zijn plek en ziet het beeld tot leven komen.</p>
+      <p>Het canvas heeft een 4 cm gallery-wrap rand, zodat het klaar is om direct aan de muur te hangen als je klaar bent. Geen lijst nodig. <strong>Gratis verzending op alle bestellingen in Nederland.</strong> Verzonden binnen 1 tot 3 werkdagen.</p>
+      <a href="/nl#kits" class="service-cta">Bekijk de kits ✨</a>
+    </div>
+
+    <div class="service-block reveal">
+      <div class="service-tag">Workshop</div>
+      <h2>Paint and Sip</h2>
+      <p>Een begeleide schildersessie met drankjes. Wij brengen alle materialen mee. Jij brengt de mensen. Geen schilderervaring nodig. Iedereen volgt in zijn eigen tempo en gaat naar huis met een afgewerkt canvas.</p>
+      <p><strong>Perfect voor:</strong> verjaardagen, meidenuitjes, vrijgezellenfeesten, teamuitjes en open publieke events. Groepsgrootte is 6 tot 25 personen. Sessies duren 2 tot 3 uur. Wij komen naar jou of je komt naar ons.</p>
+      <a href="/nl#workshops" class="service-cta">Vraag een offerte aan</a>
+    </div>
+
+    <div class="service-block reveal">
+      <div class="service-tag">Workshop</div>
+      <h2>Bedazzle and Sip</h2>
+      <p>Onze populairste workshop. Gasten krijgen elk hun eigen rhinestone kit en werken er samen aan tijdens een drankjesessie. Ontspannen, leuk en bevredigend. Iedereen gaat naar huis met een eigen afgewerkt kunstwerk.</p>
+      <p><strong>Perfect voor:</strong> vrijgezellenfeesten, verjaardagen, bedrijfsevents en meidenuitjes. Groepsgrootte is 6 tot 20 personen. Sessies duren 2 tot 3 uur. Wij komen naar jou.</p>
+      <a href="/nl#workshops" class="service-cta">Vraag een offerte aan</a>
+    </div>
+
+    <div class="service-block reveal">
+      <div class="service-tag">Privé-event</div>
+      <h2>Vrijgezellenfeest en Verjaardagspakketten</h2>
+      <p>Wij regelen alles zodat jij je kunt richten op het feest. Materialen, opbouw, begeleiding en opruimen zijn allemaal inbegrepen. Jij kiest de activiteit (schilderen, bedazzlen of allebei), wij regelen het bij jou thuis, op jouw locatie of een locatie naar keuze.</p>
+      <p>Alle gasten nemen hun afgewerkte kunstwerk mee naar huis als aandenken. Aangepaste thema's zijn op aanvraag mogelijk. Planning verloopt via WhatsApp.</p>
+      <a href="/nl#workshops" class="service-cta">Plan mijn event</a>
+    </div>
+
+    <div class="service-block reveal">
+      <div class="service-tag">B2B</div>
+      <h2>Corporate en Zakelijke Events</h2>
+      <p>Creatieve workshops die teams echt samenbrengen. We hebben sessies georganiseerd voor bedrijven van alle groottes en achtergronden. Geen creatieve ervaring vereist en iedereen doet mee. Hands-on, sociaal en een stuk gedenkwaardiger dan het gemiddelde teamuitje.</p>
+      <p>We bieden ook <strong>custom branded rhinestone kits</strong> voor corporate gifting of merchandise, <strong>branded eventstands</strong> op festivals en markten, en <strong>maatwerk rhinestone kunstwerken</strong> in opdracht voor jouw merk of kantoor.</p>
+      <p>Stuur ons een aanvraag en we stellen binnen 24 uur een voorstel op.</p>
+      <a href="/nl#b2b" class="service-cta">Neem contact op</a>
+    </div>
+
+    <div class="service-block reveal">
+      <div class="service-tag">Live events</div>
+      <h2>Festival- en Marktstandjes</h2>
+      <p>We staan op thrift markets, designbeurzen en lifestyle festivals door heel Nederland. Ons stand is interactief: bezoekers kunnen een kit persoonlijk uitproberen, producten kopen of meer te weten komen over onze workshops.</p>
+      <p>Organiseer jij een event en wil je ons erbij als verkoper of activiteitspartner? Neem contact op en we laten je onze beschikbaarheid weten.</p>
+      <a href="/nl#events" class="service-cta">Bekijk aankomende events</a>
+      <a href="/nl#b2b" class="service-cta outline">Samenwerken</a>
+    </div>
+
+    <div class="service-block reveal">
+      <div class="service-tag">Maatwerk</div>
+      <h2>Maatwerk Bestellingen</h2>
+      <p>Iets unieks nodig? We maken maatwerk rhinestone kunstwerken, bespoke kit-ontwerpen en branded creatieve cadeaus op aanvraag. Prijzen zijn afhankelijk van formaat en complexiteit.</p>
+      <p>Stuur ons een bericht met wat je in gedachten hebt en we nemen binnen één werkdag contact op.</p>
+      <a href="mailto:hello@creativesolace.com" class="service-cta">Stuur ons een e-mail</a>
+    </div>
+
+  </div>
+
+  <Fragment slot="scripts">
+    <script is:inline>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+  </Fragment>
+
+</BaseLayout>

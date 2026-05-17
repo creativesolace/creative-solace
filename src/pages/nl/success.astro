@@ -1,0 +1,40 @@
+---
+export const prerender = false;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<style is:global>
+.success-wrap { min-height: 60vh; display: flex; align-items: center; justify-content: center; padding: 60px 20px; }
+.success-card { background: white; border-radius: 24px; padding: 60px 48px; text-align: center; max-width: 480px; width: 100%; box-shadow: 0 8px 40px rgba(255,107,157,0.15); }
+.success-emoji { font-size: 64px; margin-bottom: 24px; }
+.success-card h1 { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--dark); margin-bottom: 12px; }
+.success-card p { color: var(--mid); font-size: 16px; line-height: 1.6; margin-bottom: 32px; }
+.success-card a { background: var(--grad-pink); color: white; border: none; border-radius: 50px; padding: 14px 32px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px; text-decoration: none; display: inline-block; }
+</style>
+
+<BaseLayout
+  lang="nl"
+  title="Bestelling bevestigd — Creative Solace"
+  description="Je Creative Solace bestelling is bevestigd."
+  canonical="https://creativesolace.com/nl/success"
+>
+  <div class="success-wrap">
+    <div class="success-card">
+      <div class="success-emoji" id="emoji">💎</div>
+      <h1 id="title">Bestelling bevestigd!</h1>
+      <p id="msg">Bedankt voor je aankoop! Je rhinestone kit wordt met liefde klaargemaakt en verzonden binnen 1 tot 2 werkdagen. Je ontvangt binnenkort een bevestigingsmail.</p>
+      <a href="/nl">Terug naar Creative Solace ✨</a>
+    </div>
+  </div>
+
+  <Fragment slot="scripts">
+    <script is:inline>
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('ticket') === '1') {
+      document.getElementById('emoji').textContent = '🎟️';
+      document.getElementById('title').textContent = 'Je bent erbij!';
+      document.getElementById('msg').textContent = 'Je ticket is bevestigd! Controleer je e-mail voor je ticketcode en QR-code. Tot dan! ✨';
+    }
+    </script>
+  </Fragment>
+
+</BaseLayout>

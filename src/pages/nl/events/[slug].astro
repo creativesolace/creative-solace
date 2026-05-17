@@ -1,0 +1,187 @@
+---
+export const prerender = true;
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  let events = [];
+  try { events = await getCollection('events'); } catch(e) {}
+  return events.map(e => ({ params: { slug: e.id }, props: { event: e } }));
+}
+
+const { event } = Astro.props;
+const d = event.data;
+
+function fmtDate(dt) {
+  if (!dt) return '';
+  try { return new Date(dt).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' }); } catch { return String(dt); }
+}
+
+function typeLabel(t) {
+  const map = { festival: 'Festival', market: 'Vintage Markt', workshop: 'Workshop Avond', popup: 'Pop-up' };
+  return map[t] || t;
+}
+
+const photos = [d.photo1, d.photo2, d.photo3, d.photo4].filter(Boolean);
+const allPhotos = [d.image, ...photos].filter(Boolean);
+const isPast = d.date ? new Date(d.date) < new Date() : true;
+
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": d.title,
+  "inLanguage": "nl",
+  "startDate": d.date,
+  "location": { "@type": "Place", "name": d.location, "address": { "@type": "PostalAddress", "addressLocality": d.city, "addressCountry": "NL" } },
+  "organizer": { "@type": "Organization", "name": "Creative Solace", "url": "https://creativesolace.com" },
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": d.body || `Creative Solace bij ${d.title}`
+};
+---
+<style is:global>
+.event-hero { position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; background: var(--pink-pale); max-height: 520px; }
+.event-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.event-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,10,20,.6) 0%, transparent 50%); }
+.event-hero-badge { position: absolute; top: 16px; left: 16px; background: white; border-radius: 50px; padding: 5px 14px; font-size: 11px; font-weight: 700; color: var(--pink); letter-spacing: .4px; text-transform: uppercase; }
+.event-wrap { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
+.event-meta-bar { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid rgba(60,20,40,.08); }
+.event-meta-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--mid); }
+.event-meta-item strong { color: var(--text); }
+.event-title { font-family: 'Playfair Display', serif; font-size: clamp(28px,6vw,48px); font-weight: 900; color: var(--dark); line-height: 1.1; margin-bottom: 24px; }
+.event-body { font-size: 15px; line-height: 1.85; color: var(--mid); font-weight: 300; white-space: pre-line; margin-bottom: 40px; }
+.gallery-section { margin-bottom: 48px; }
+.gallery-section h2 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--dark); margin-bottom: 20px; }
+.gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.gallery-grid img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: var(--radius-sm); display: block; }
+.gallery-grid img:first-child { grid-column: 1/-1; aspect-ratio: 16/9; }
+.event-cta-box { background: white; border-radius: var(--radius); padding: 28px 24px; box-shadow: var(--shadow-card); margin-bottom: 40px; }
+.event-cta-box h3 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+.event-cta-box p { font-size: 14px; color: var(--mid); margin-bottom: 20px; }
+.event-cta-price { font-size: 28px; font-weight: 700; color: var(--pink); margin-bottom: 16px; font-family: 'Playfair Display', serif; }
+.back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--mid); text-decoration: none; margin-bottom: 32px; transition: color .2s; }
+.back-link:hover { color: var(--pink); }
+.btn-pink { background: var(--grad-pink); color: white; border: none; border-radius: 50px; padding: 8px 16px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; text-decoration: none; display: inline-block; transition: transform .2s, box-shadow .2s; }
+.btn-pink:hover { transform: translateY(-2px); box-shadow: var(--shadow-soft); }
+.btn-outline-event { background: none; color: var(--dark); border: 1.5px solid rgba(60,20,40,.2); border-radius: 50px; padding: 11px 24px; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 14px; text-decoration: none; display: inline-block; transition: all .2s; }
+.btn-outline-event:hover { border-color: var(--pink); color: var(--pink); }
+@media (min-width: 1024px) {
+  .event-wrap { padding: 52px 40px 100px; }
+  .gallery-grid { grid-template-columns: 1fr 1fr 1fr; }
+  .gallery-grid img:first-child { grid-column: 1/-1; }
+  .event-cta-box { display: flex; align-items: center; justify-content: space-between; gap: 32px; }
+  .event-cta-box p { margin-bottom: 0; }
+  .event-cta-right { flex-shrink: 0; text-align: right; }
+  .event-cta-price { margin-bottom: 12px; }
+}
+</style>
+
+<BaseLayout
+  lang="nl"
+  title={`${d.title} | Creative Solace`}
+  description={d.body ? d.body.slice(0, 155) : `Creative Solace bij ${d.title} — ${typeLabel(d.type)} in ${d.city || 'Nederland'}.`}
+  canonical={`https://creativesolace.com/nl/events/${event.id}`}
+  ogTitle={`${d.title} | Creative Solace`}
+  ogUrl={`https://creativesolace.com/nl/events/${event.id}`}
+  hreflangEn={`https://creativesolace.com/events/${event.id}`}
+  hreflangNl={`https://creativesolace.com/nl/events/${event.id}`}
+  activePage="events"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(schemaData)}/>
+  </Fragment>
+
+  {d.image && (
+    <div class="event-hero">
+      <img src={d.image} alt={d.title} onerror="this.style.display='none'"/>
+      <div class="event-hero-overlay"></div>
+      <div class="event-hero-badge">{typeLabel(d.type)}</div>
+    </div>
+  )}
+
+  <div class="event-wrap">
+    <a href="/nl#events" class="back-link">← Terug naar events</a>
+
+    <h1 class="event-title">{d.title}</h1>
+
+    <div class="event-meta-bar">
+      {d.date && <div class="event-meta-item">📅 <strong>{fmtDate(d.date)}</strong></div>}
+      {d.location && <div class="event-meta-item">📍 <strong>{d.location}{d.city ? `, ${d.city}` : ""}</strong></div>}
+      {d.type && <div class="event-meta-item">🏷 <strong>{typeLabel(d.type)}</strong></div>}
+      {d.ticketPrice && <div class="event-meta-item">🎟 <strong>€{d.ticketPrice} per ticket</strong></div>}
+    </div>
+
+    {!isPast && d.ticketPrice && (
+      <div class="event-cta-box">
+        <div>
+          <h3>Doe mee aan dit event</h3>
+          <p>Zeker jouw plek voordat het uitverkocht is. Alle materialen inbegrepen.</p>
+        </div>
+        <div class="event-cta-right">
+          <div class="event-cta-price">€{d.ticketPrice}</div>
+          <button class="btn-pink" onclick={`buyTicket('${event.id}', ${d.ticketPrice})`} style="padding:13px 28px;font-size:15px;">
+            Tickets kopen ✨
+          </button>
+        </div>
+      </div>
+    )}
+
+    {!isPast && !d.ticketPrice && (
+      <div class="event-cta-box">
+        <div>
+          <h3>Gratis toegang</h3>
+          <p>Kom langs bij dit event. Geen ticket nodig.</p>
+        </div>
+        <div class="event-cta-right">
+          <a href="https://www.instagram.com/creativesolace__/" target="_blank" rel="noopener" class="btn-pink" style="padding:13px 28px;font-size:15px;">
+            Volg voor updates ✨
+          </a>
+        </div>
+      </div>
+    )}
+
+    {d.body && <p class="event-body">{d.body}</p>}
+
+    {allPhotos.length > 1 && (
+      <div class="gallery-section">
+        <h2>Foto's</h2>
+        <div class="gallery-grid">
+          {allPhotos.map((photo, i) => (
+            <img src={photo} alt={`${d.title} foto ${i + 1}`} loading={i === 0 ? "eager" : "lazy"} onerror="this.style.display='none'"/>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {isPast && (
+      <div style="margin-top:40px;padding-top:40px;border-top:1px solid rgba(60,20,40,.08);text-align:center;">
+        <p style="font-size:15px;color:var(--mid);margin-bottom:20px;">Wil je bij het volgende zijn? Volg ons om op de hoogte te blijven.</p>
+        <a href="https://www.instagram.com/creativesolace__/" target="_blank" rel="noopener" class="btn-pink" style="padding:13px 28px;font-size:15px;margin-right:12px;">Volg op Instagram</a>
+        <a href="/nl#workshops" class="btn-outline-event">Boek een workshop</a>
+      </div>
+    )}
+  </div>
+
+  <Fragment slot="scripts">
+    <script is:inline>
+    async function buyTicket(eventSlug, ticketPrice) {
+      const btn = event.target;
+      btn.textContent = 'Bezig met doorsturen...';
+      btn.disabled = true;
+      try {
+        const res = await fetch('/api/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: [{ priceId: 'ticket_' + eventSlug, qty: 1 }], eventSlug, isTicket: true, ticketPrice, locale: 'nl', returnBase: '/nl' })
+        });
+        const data = await res.json();
+        if (data.url) { window.location.href = data.url; }
+        else { alert('Er is iets misgegaan. Neem contact op via hello@creativesolace.com'); btn.textContent = 'Tickets kopen ✨'; btn.disabled = false; }
+      } catch(e) {
+        alert('Er is iets misgegaan. Neem contact op via hello@creativesolace.com');
+        btn.textContent = 'Tickets kopen ✨'; btn.disabled = false;
+      }
+    }
+    </script>
+  </Fragment>
+
+</BaseLayout>

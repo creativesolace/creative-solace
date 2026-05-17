@@ -1,0 +1,147 @@
+---
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<style is:global>
+.faq-wrap { max-width: 760px; margin: 0 auto; padding: 48px 20px 80px; }
+.faq-section-title { font-family: 'Playfair Display', serif; font-size: clamp(20px,4vw,26px); font-weight: 700; color: var(--dark); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--pink-pale); }
+.faq-group { margin-bottom: 52px; }
+details { background: white; border-radius: var(--radius-sm); box-shadow: var(--shadow-card); margin-bottom: 10px; overflow: hidden; }
+details[open] { box-shadow: 0 4px 32px rgba(255,107,157,.12); }
+summary { padding: 20px; font-weight: 600; font-size: 15px; color: var(--dark); cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 12px; -webkit-tap-highlight-color: transparent; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: '+'; font-size: 22px; font-weight: 300; color: var(--pink); flex-shrink: 0; line-height: 1; transition: transform .25s; }
+details[open] summary::after { transform: rotate(45deg); }
+summary:hover { color: var(--pink); }
+.faq-answer { padding: 0 20px 20px; font-size: 14px; line-height: 1.75; color: var(--mid); font-weight: 300; }
+.faq-answer p { margin-bottom: 10px; }
+.faq-answer p:last-child { margin-bottom: 0; }
+.faq-answer a { color: var(--pink); }
+.faq-contact-strip { background: var(--pink-pale); border: 1.5px solid rgba(255,107,157,.2); border-radius: var(--radius); padding: 28px 24px; text-align: center; margin-top: 56px; }
+.faq-contact-strip p { font-size: 15px; color: var(--mid); margin-bottom: 16px; }
+@media (min-width: 1024px) {
+  .faq-wrap { padding: 64px 40px 100px; }
+  summary { padding: 22px 24px; font-size: 16px; }
+  .faq-answer { padding: 0 24px 24px; font-size: 15px; }
+}
+</style>
+
+<BaseLayout
+  lang="nl"
+  title="Veelgestelde Vragen | Creative Solace"
+  description="Antwoorden op veelgestelde vragen over Creative Solace rhinestone canvas kits, B7000-lijm, workshopboekingen, verzending, retourneren en events in Nederland."
+  canonical="https://creativesolace.com/nl/faq"
+  ogTitle="Veelgestelde Vragen | Creative Solace"
+  ogDescription="Alles wat je moet weten over onze rhinestone kits, workshops, verzending en retourneren."
+  ogUrl="https://creativesolace.com/nl/faq"
+  hreflangEn="https://creativesolace.com/faq"
+  hreflangNl="https://creativesolace.com/nl/faq"
+  heroLabel="Hulp"
+  heroTitle="Veelgestelde"
+  heroTitleEm="vragen"
+  heroSub="Alles wat je moet weten over onze kits, workshops, bestellingen en retourneren. Staat jouw vraag er niet bij? Stuur ons een e-mail via hello@creativesolace.com."
+  breadcrumb="Veelgestelde vragen"
+>
+
+  <div class="faq-wrap">
+
+    <div class="faq-group">
+      <h2 class="faq-section-title">Over de kits</h2>
+      <details>
+        <summary>Wat zit er in de kit?</summary>
+        <div class="faq-answer"><p>Elke kit bevat een premium bedrukt canvas met een 4 cm gallery-wrap rand (klaar om op te hangen zonder lijst), alle rhinestones die je nodig hebt om het ontwerp te voltooien, een precisiepen, een wasplaatje en een tube B7000 professionele lijm. Alles is inbegrepen. Je hoeft niets extra's te kopen.</p></div>
+      </details>
+      <details>
+        <summary>Is dit hetzelfde als diamond painting?</summary>
+        <div class="faq-answer"><p>Vergelijkbaar maar niet hetzelfde. Klassiek diamond painting gebruikt een kleverig canvas met een vooraf ingesteld raster. Onze kits werken met een vrije aanpak met B7000-lijm, zodat je meer controle hebt over waar je elk steentje plaatst. Het resultaat ziet er gedurfder, meer gestructureerd en meer als echte wandkunst uit.</p></div>
+      </details>
+      <details>
+        <summary>Waarom B7000-lijm en geen kleverig canvas?</summary>
+        <div class="faq-answer"><p>B7000 creëert een permanente binding. Zodra de lijm is uitgehard (24 tot 48 uur), zitten de steentjes voor altijd vast. Een kleverig canvas kan na verloop van tijd zijn grip verliezen, vooral in warme ruimtes. De precisietip op de B7000-tube laat je ook nauwkeuriger werken.</p></div>
+      </details>
+      <details>
+        <summary>Moet ik het inlijsten?</summary>
+        <div class="faq-answer"><p>Nee. Het canvas heeft een 4 cm gallery-wrap rand, wat betekent dat de randen netjes en afgewerkt zijn. Het ziet er geweldig uit direct aan de muur gehangen zonder lijst.</p></div>
+      </details>
+      <details>
+        <summary>Hoe lang duurt het om te voltooien?</summary>
+        <div class="faq-answer"><p>De meeste mensen zijn klaar in 3 tot 6 uur verspreid over een paar sessies. Het is een ontspannende activiteit, geen race. Veel mensen doen het terwijl ze tv kijken of een podcast luisteren.</p></div>
+      </details>
+      <details>
+        <summary>Is het geschikt voor beginners?</summary>
+        <div class="faq-answer"><p>Ja. Dat is precies voor wie het ontworpen is. Als je een pen kunt vasthouden, kun je dit. Geen creatieve ervaring nodig.</p></div>
+      </details>
+      <details>
+        <summary>Hoe onderhoud ik het afgewerkte stuk?</summary>
+        <div class="faq-answer"><p>Nadat de lijm volledig is uitgehard (24 tot 48 uur), zitten de steentjes zeer stevig vast. Als het canvas schoongemaakt moet worden, gebruik dan een zachte droge borstel of een pluisvrije doek. Spuit geen water of schoonmaakmiddelen direct op het oppervlak.</p></div>
+      </details>
+    </div>
+
+    <div class="faq-group">
+      <h2 class="faq-section-title">Bestellingen en verzending</h2>
+      <details>
+        <summary>Hoe snel verzenden jullie?</summary>
+        <div class="faq-answer"><p>Bestellingen worden verpakt en verzonden binnen 1 tot 3 werkdagen na betaling. Je ontvangt een bevestigingsmail met een track & trace link zodra je bestelling onderweg is.</p></div>
+      </details>
+      <details>
+        <summary>Is verzending gratis in Nederland?</summary>
+        <div class="faq-answer"><p>Ja. Verzending is gratis op alle bestellingen binnen Nederland. Voor bestellingen naar België, Duitsland of de rest van Europa worden verzendkosten berekend bij het afrekenen.</p></div>
+      </details>
+      <details>
+        <summary>Kan ik mijn bestelling wijzigen of annuleren?</summary>
+        <div class="faq-answer"><p>Je hebt 24 uur na het plaatsen van je bestelling om een wijziging of annulering aan te vragen. Daarna is je bestelling al in verwerking. Stuur ons zo snel mogelijk een e-mail op <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a> als je een wijziging nodig hebt.</p></div>
+      </details>
+      <details>
+        <summary>Wat als ik het verkeerde verzendadres heb ingevoerd?</summary>
+        <div class="faq-answer"><p>Neem contact op via <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a> binnen 24 uur na het plaatsen van je bestelling. Als je pakket al verzonden is, kunnen we het helaas niet meer omleiden.</p></div>
+      </details>
+      <details>
+        <summary>Mijn bestelling is beschadigd aangekomen. Wat nu?</summary>
+        <div class="faq-answer"><p>Maak een foto van de schade en stuur deze binnen 72 uur na levering naar <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a>. Vermeld je bestelnummer. We regelen een vervanging of terugbetaling zonder extra kosten voor jou.</p></div>
+      </details>
+      <details>
+        <summary>Kan ik mijn kit retourneren?</summary>
+        <div class="faq-answer"><p>Ja. Op grond van Europees consumentenrecht heb je het recht om je aankoop binnen 14 dagen na levering te retourneren zonder opgaaf van reden. De kit moet ongebruikt zijn en in de originele verpakking met het B7000-zegel intact. Retourverzendkosten zijn voor jouw rekening.</p><p>Stuur een e-mail naar <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a> met je bestelnummer om een retour te starten. Zie onze <a href="/nl/shipping">verzend- en retourpagina</a> voor alle details.</p></div>
+      </details>
+    </div>
+
+    <div class="faq-group">
+      <h2 class="faq-section-title">Workshops en events</h2>
+      <details>
+        <summary>Heb ik ervaring nodig voor een workshop?</summary>
+        <div class="faq-answer"><p>Helemaal niet. Onze workshops zijn ontworpen voor mensen die nog nooit geschilderd of gedazzeld hebben. We begeleiden je stap voor stap door alles heen.</p></div>
+      </details>
+      <details>
+        <summary>Hoe boek ik een workshop?</summary>
+        <div class="faq-answer"><p>Klik op de knop 'Boek een workshop' op onze website en vul het korte formulier in. We nemen binnen 24 uur contact op om beschikbaarheid en details te bevestigen.</p></div>
+      </details>
+      <details>
+        <summary>Kan ik een privé-workshop boeken voor mijn groep?</summary>
+        <div class="faq-answer"><p>Ja. We zijn gespecialiseerd in privé-events voor verjaardagen, vrijgezellenfeesten en corporate teamsessies. Vul het offerteformulier in of stuur ons een e-mail op <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a> en we stellen een maatwerkpakket samen.</p></div>
+      </details>
+      <details>
+        <summary>Waar vinden workshops plaats?</summary>
+        <div class="faq-answer"><p>We kunnen naar jouw huis, jouw locatie of een locatie naar keuze komen, overal in Nederland. Voor sommige open publieke workshops organiseren we op onze eigen locatie. De exacte locatie wordt altijd bevestigd bij boeking.</p></div>
+      </details>
+      <details>
+        <summary>Hoeveel mensen kunnen meedoen aan een workshop?</summary>
+        <div class="faq-answer"><p>Paint and Sip: 6 tot 25 personen. Bedazzle and Sip: 6 tot 20 personen. Privé-events en corporate sessies kunnen worden aangepast op basis van je groepsgrootte. Neem contact op voor grotere groepen.</p></div>
+      </details>
+      <details>
+        <summary>Ik heb een ticket gekocht voor een event. Waar vind ik het?</summary>
+        <div class="faq-answer"><p>Je ticket wordt direct na aankoop naar je e-mailadres gestuurd. Het bevat een unieke code en een QR-code. Breng het mee op je telefoon of print het uit. We scannen het aan de deur.</p></div>
+      </details>
+      <details>
+        <summary>Zijn workshoptickets terugbetaalbaar?</summary>
+        <div class="faq-answer"><p>Workshop- en eventtickets zijn niet terugbetaalbaar na aankoop, tenzij het event door Creative Solace wordt geannuleerd. Als wij annuleren, ontvang je een volledige terugbetaling binnen 14 dagen.</p></div>
+      </details>
+    </div>
+
+    <div class="faq-contact-strip">
+      <p>Nog een vraag? We helpen je graag.</p>
+      <a href="mailto:hello@creativesolace.com" class="btn-primary">Stuur ons een e-mail</a>
+    </div>
+
+  </div>
+
+</BaseLayout>

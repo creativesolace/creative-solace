@@ -1,0 +1,116 @@
+---
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<style is:global>
+.content-wrap { max-width: 760px; margin: 0 auto; padding: 48px 20px 80px; }
+.last-updated { font-size: 12px; color: var(--mid); margin-bottom: 40px; padding: 10px 16px; background: white; border-radius: var(--radius-sm); display: inline-block; }
+.content-section { margin-bottom: 44px; }
+.content-section h2 { font-family: 'Playfair Display', serif; font-size: clamp(18px,4vw,24px); font-weight: 700; color: var(--dark); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--pink-pale); }
+.content-section h3 { font-size: 14px; font-weight: 600; color: var(--dark); margin: 18px 0 6px; }
+.content-section p { font-size: 14px; line-height: 1.75; color: var(--mid); margin-bottom: 10px; font-weight: 300; }
+.content-section p:last-child { margin-bottom: 0; }
+.content-section a { color: var(--pink); }
+.content-section ul { margin: 8px 0 10px 0; padding-left: 20px; }
+.content-section ul li { font-size: 14px; line-height: 1.75; color: var(--mid); margin-bottom: 4px; }
+.content-section strong { color: var(--text); font-weight: 600; }
+@media (min-width: 1024px) {
+  .content-wrap { padding: 64px 40px 100px; }
+  .content-section p, .content-section ul li { font-size: 15px; }
+}
+</style>
+
+<BaseLayout
+  lang="nl"
+  title="Privacybeleid | Creative Solace"
+  description="Privacybeleid van Creative Solace. Hoe we jouw persoonsgegevens verzamelen, gebruiken en beschermen in overeenstemming met de AVG en Nederlandse wet."
+  canonical="https://creativesolace.com/nl/privacy"
+  hreflangEn="https://creativesolace.com/privacy"
+  hreflangNl="https://creativesolace.com/nl/privacy"
+  heroLabel="Juridisch"
+  heroTitle="Privacy"
+  heroTitleEm="beleid"
+  heroSub="We verzamelen alleen wat we echt nodig hebben. Hier staat precies wat we met jouw gegevens doen."
+  breadcrumb="Privacybeleid"
+>
+  <Fragment slot="head">
+    <meta name="robots" content="noindex"/>
+  </Fragment>
+
+  <div class="content-wrap">
+    <div class="last-updated">Laatst bijgewerkt: mei 2026</div>
+
+    <div class="content-section">
+      <p>Creative Solace is geregistreerd in Nederland onder KVK-nummer 93777337. Wij zijn de verwerkingsverantwoordelijke voor de persoonsgegevens die in dit beleid worden beschreven. Ons contactadres is <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a>.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Welke gegevens we verzamelen en waarom</h2>
+      <h3>Als je een bestelling plaatst</h3>
+      <p>We verzamelen je naam, e-mailadres, verzendadres en betaalgegevens. Betalingen worden verwerkt door Stripe. We slaan je kaartgegevens niet op. We gebruiken deze gegevens om je bestelling te verwerken en te verzenden, je een orderbevestiging en verzendupdate te sturen, en retours of vragen af te handelen.</p>
+      <h3>Als je een boekings- of aanvraagformulier invult</h3>
+      <p>We verzamelen je naam, e-mailadres, type event, gewenste datum, aantal gasten en eventueel een bericht. We gebruiken dit om op je aanvraag te reageren en, als een boeking wordt bevestigd, je event te beheren.</p>
+      <h3>Als je je aanmeldt voor onze nieuwsbrief</h3>
+      <p>We verzamelen je e-mailadres om je updates te sturen over nieuwe producten, aankomende events en workshopdata. Je kunt je op elk moment uitschrijven via de afmeldlink in elke e-mail.</p>
+      <h3>Als je onze website bezoekt</h3>
+      <p>We kunnen basisanalysegegevens verzamelen (zoals welke pagina's worden bezocht) om te begrijpen hoe onze site wordt gebruikt. We gebruiken geen advertentietrackers.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Met wie we jouw gegevens delen</h2>
+      <p>We delen je gegevens alleen met de diensten die nodig zijn om ons bedrijf te runnen:</p>
+      <ul>
+        <li><strong>Stripe</strong> &mdash; om je betaling veilig te verwerken.</li>
+        <li><strong>MyParcel (PostNL)</strong> &mdash; om je verzendlabel aan te maken en te beheren.</li>
+        <li><strong>Postmark</strong> &mdash; om transactionele e-mails te versturen (order- en boekingsbevestigingen).</li>
+        <li><strong>Zoho Desk</strong> &mdash; om klantvragen en supporttickets te beheren.</li>
+      </ul>
+      <p>We verkopen jouw gegevens niet. We delen ze niet met adverteerders. Alle externe dienstverleners werken onder hun eigen privacybeleid en, waar vereist door EU-wetgeving, onder verwerkersovereenkomsten met ons.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Hoe lang we jouw gegevens bewaren</h2>
+      <ul>
+        <li>Order- en klantgegevens: 7 jaar, conform de Nederlandse belasting- en boekhoudwetgeving.</li>
+        <li>Aanvraag- en boekingsgegevens: 2 jaar na afsluiting van de aanvraag.</li>
+        <li>Nieuwsbriefgegevens: totdat je je uitschrijft.</li>
+      </ul>
+    </div>
+
+    <div class="content-section">
+      <h2>Jouw rechten onder de AVG</h2>
+      <p>Als inwoner van de EU of EER heb je de volgende rechten:</p>
+      <ul>
+        <li><strong>Inzage</strong> &mdash; je kunt ons vragen welke persoonsgegevens we van je hebben.</li>
+        <li><strong>Rectificatie</strong> &mdash; je kunt ons vragen onjuiste gegevens te corrigeren.</li>
+        <li><strong>Verwijdering</strong> &mdash; je kunt ons vragen je gegevens te verwijderen, met inachtneming van wettelijke bewaartermijnen.</li>
+        <li><strong>Beperking</strong> &mdash; je kunt ons vragen het gebruik van je gegevens te beperken.</li>
+        <li><strong>Overdraagbaarheid</strong> &mdash; je kunt ons vragen je gegevens in een overdraagbaar formaat aan te leveren.</li>
+        <li><strong>Bezwaar</strong> &mdash; je kunt bezwaar maken tegen de verwerking van je gegevens, ook voor marketingdoeleinden.</li>
+      </ul>
+      <p>Om een van deze rechten uit te oefenen, stuur een e-mail naar <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a>. We reageren binnen één maand.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Cookies</h2>
+      <p>Onze website gebruikt een sessiecookie die nodig is voor het functioneren van de winkelwagen. We gebruiken standaard geen advertentie- of trackeringscookies. Je kunt cookievoorkeuren beheren via de cookie-instellingen in onze websitevoettekst.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Gegevensbeveiliging</h2>
+      <p>Onze website wordt gehost op Cloudflare Pages met HTTPS-versleuteling. Betalingen worden verwerkt via de beveiligde Stripe-infrastructuur. Geen enkele methode van verzending via internet is 100% veilig. Als je zorgen hebt over een specifieke gegevensinteractie, neem contact op via <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a>.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Wijzigingen in dit beleid</h2>
+      <p>We kunnen dit beleid van tijd tot tijd bijwerken. De bijgewerkte versie wordt altijd op deze pagina geplaatst met een herziene datum bovenaan.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Contact en klachten</h2>
+      <p>Voor privacyvragen of -verzoeken, neem contact op via <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a>.</p>
+      <p>Als je denkt dat we je gegevens onjuist hebben verwerkt, heb je het recht een klacht in te dienen bij de Autoriteit Persoonsgegevens via <a href="https://autoriteitpersoonsgegevens.nl" target="_blank" rel="noopener">autoriteitpersoonsgegevens.nl</a>.</p>
+    </div>
+  </div>
+
+</BaseLayout>
