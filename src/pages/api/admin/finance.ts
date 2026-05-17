@@ -73,14 +73,22 @@ export async function GET({ request, locals }: APIContext) {
       description: p.description || '',
       customer: p.receipt_email || '',
     })),
-    zohoInvoices: zohoInvoices.map((inv: any) => ({
-      number: inv.invoice_number,
-      client: inv.customer_name,
-      date: inv.date,
-      total: Math.round((parseFloat(inv.total) || 0) * 100),
-      tax_total: Math.round((parseFloat(inv.tax_total) || 0) * 100),
-      subtotal: Math.round((parseFloat(inv.sub_total) || 0) * 100),
-      status: inv.status,
-    })),
+    zohoInvoices: zohoInvoices.map((inv: any) => {
+      const total = Math.round((parseFloat(inv.total) || 0) * 100);
+      const subtotal = Math.round((parseFloat(inv.sub_total) || 0) * 100);
+      const tax_total = Math.round((parseFloat(inv.tax_total) || 0) * 100);
+      // Zoho list endpoint sometimes omits tax_total/sub_total — derive from total if missing
+      const derivedSubtotal = subtotal || Math.round(total / 1.21);
+      const derivedTax = tax_total || (total - derivedSubtotal);
+      return {
+        number: inv.invoice_number,
+        client: inv.customer_name,
+        date: inv.date,
+        total,
+        tax_total: derivedTax,
+        subtotal: derivedSubtotal,
+        status: inv.status,
+      };
+    }),
   }), { status: 200 });
 }
