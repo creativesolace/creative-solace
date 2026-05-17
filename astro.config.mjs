@@ -10,5 +10,7 @@ export default defineConfig({
     platformProxy: { enabled: true },
   }),
   site: 'https://creativesolace.com',
-  integrations: [react(), keystatic(), sitemap()],
+  integrations: [react(), keystatic(), sitemap({
+    filter: (page) => !page.includes('/keystatic') && !page.includes('/orders') && !page.includes('/checkin') && !page.includes('/api'),
+  })],
 });
