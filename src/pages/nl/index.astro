@@ -2837,6 +2837,8 @@ async function handleBookingSubmit(e) {
 // ── REVIEW MODAL ──
 let selectedRating = 0;
 
+if (window.location.hash === "#review") openReviewModal();
+
 function openReviewModal() {
   document.getElementById('reviewModal').classList.add('active');
   document.body.style.overflow = 'hidden';
