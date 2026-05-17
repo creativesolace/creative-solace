@@ -7,10 +7,10 @@ const PASSWORD = 'igurE-jkc23-TIy?!';
 export async function GET({ request, locals }: APIContext) {
   const url = new URL(request.url);
   const password = url.searchParams.get('password');
-  if (password !== PASSWORD) {
+  const status = url.searchParams.get('status') || 'pending';
+  if (status !== 'approved' && password !== PASSWORD) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
-  const status = url.searchParams.get('status') || 'pending';
   const db = locals.runtime.env.DB;
   const { results } = await db.prepare(
     `SELECT id, name, city, product, rating, text, status, created_at FROM reviews WHERE status = ? ORDER BY created_at DESC`
