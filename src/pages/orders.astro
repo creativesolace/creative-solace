@@ -243,7 +243,6 @@ export const prerender = false;
     allOrders = await oRes.json();
     const tickets = await tRes.json();
     const reviews = await rRes.json();
-    const reviews = await rRes.json();
     if (isLogin) {
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('app').style.display = 'block';
@@ -253,8 +252,6 @@ export const prerender = false;
     applyFilter(activeFilter);
     renderTicketStats(tickets);
     renderTickets(tickets);
-    renderReviewStats(reviews);
-    renderReviewsTable(reviews);
     renderReviewStats(reviews);
     renderReviewsTable(reviews);
     document.getElementById('last-updated').textContent = 'Updated ' + new Date().toLocaleTimeString('nl-NL');
@@ -529,63 +526,5 @@ export const prerender = false;
     loadAll();
   }
 
-  function renderReviewStats(reviews) {
-    fetch('/api/review?password=' + encodeURIComponent(pw) + '&status=approved')
-      .then(r => r.json()).then(approved => {
-        fetch('/api/review?password=' + encodeURIComponent(pw) + '&status=rejected')
-          .then(r => r.json()).then(rejected => {
-            document.getElementById('review-stats').innerHTML =
-              stat(reviews.length, 'Pending') +
-              stat(approved.length, 'Approved') +
-              stat(rejected.length, 'Rejected') +
-              stat(approved.length + reviews.length + rejected.length, 'Total');
-          });
-      });
-  }
-
-  function renderReviewsTable(reviews) {
-    const meta = document.getElementById('reviews-card-meta');
-    if (meta) meta.textContent = reviews.length + ' awaiting approval';
-    if (!reviews.length) {
-      document.getElementById('reviews-table-container').innerHTML = '<div class="empty">No pending reviews \u2014 all caught up \u2728</div>';
-      return;
-    }
-    const rows = reviews.map(r => {
-      const date = new Date(r.created_at).toLocaleDateString('nl-NL', { day: '2-digit', month: 'short', year: 'numeric' });
-      const stars = r.rating ? '\u2605'.repeat(r.rating) + '\u2606'.repeat(5 - r.rating) : '\u2014';
-      return '<tr id="review-row-' + r.id + '">' +
-        '<td class="date-text">' + date + '</td>' +
-        '<td><div class="customer-name">' + r.name + '</div><div class="review-meta">' + (r.city || '') + (r.city && r.product ? ' \u00b7 ' : '') + (r.product || '') + '</div></td>' +
-        '<td><span class="stars">' + stars + '</span></td>' +
-        '<td><div class="review-text">' + r.text + '</div></td>' +
-        '<td><button class="approve-btn" onclick="approveReview(' + r.id + ')">\u2713 Approve</button><button class="reject-btn" onclick="rejectReview(' + r.id + ')">\u00d7 Reject</button></td>' +
-        '</tr>';
-    }).join('');
-    document.getElementById('reviews-table-container').innerHTML =
-      '<table><thead><tr><th>Date</th><th>Customer</th><th>Rating</th><th>Review</th><th>Action</th></tr></thead><tbody>' + rows + '</tbody></table>';
-  }
-
-  async function approveReview(id) {
-    const row = document.getElementById('review-row-' + id);
-    if (row) row.style.opacity = '0.4';
-    await fetch('/api/review?password=' + encodeURIComponent(pw), {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, action: 'approve' })
-    });
-    loadAll();
-  }
-
-  async function rejectReview(id) {
-    const row = document.getElementById('review-row-' + id);
-    if (row) row.style.opacity = '0.4';
-    await fetch('/api/review?password=' + encodeURIComponent(pw), {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, action: 'reject' })
-    });
-    loadAll();
-  }
-</script>
 </body>
 </html>
