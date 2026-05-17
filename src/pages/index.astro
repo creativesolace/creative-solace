@@ -2324,14 +2324,7 @@ footer {
     <p class="section-sub">Real reviews from real sparkle enthusiasts across the Netherlands.</p>
   </div>
 
-  <div id="reviewsContainer">
-    <div class="reviews-empty reveal">
-      <div class="reviews-empty-icon">💎</div>
-      <h3 class="reviews-empty-title">Be one of the first to share your experience</h3>
-      <p class="reviews-empty-sub">We're just getting started. If you've tried a kit or attended one of our workshops, we would love to hear from you.</p>
-      <button class="btn-primary" onclick="openReviewModal()" style="margin-top:24px;">Leave a review ✨</button>
-    </div>
-  </div>
+  <div id="reviewsContainer"></div>
 </section>
 
 <!-- NEWSLETTER -->
@@ -3022,6 +3015,51 @@ window.addEventListener('scroll', () => {
   });
   if (window.scrollY < 200) navLinks[0].classList.add('active');
 });
+
+// ── REVIEWS ──
+async function loadApprovedReviews() {
+  try {
+    const res = await fetch('/api/review?status=approved');
+    if (!res.ok) throw new Error();
+    const reviews = await res.json();
+    renderReviews(reviews);
+  } catch {
+    renderReviews([]);
+  }
+}
+
+function renderReviews(reviews) {
+  const container = document.getElementById('reviewsContainer');
+  if (!container) return;
+  if (!reviews.length) {
+    container.innerHTML = '<div class="reviews-empty reveal">' +
+      '<div class="reviews-empty-icon">💎</div>' +
+      '<h3 class="reviews-empty-title">Be one of the first to share your experience</h3>' +
+      '<p class="reviews-empty-sub">We\'re just getting started. If you\'ve tried a kit or attended one of our workshops, we would love to hear from you.</p>' +
+      '<button class="btn-primary" onclick="openReviewModal()" style="margin-top:24px;">Leave a review ✨</button>' +
+      '</div>';
+    return;
+  }
+  const EMOJIS = ['🌸','✨','💎','🌟','💫','🦋','🌹'];
+  const cards = reviews.map((r, i) => {
+    const stars = r.rating ? '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating) : '';
+    const handle = [r.city, r.product].filter(Boolean).join(' · ');
+    const emoji = EMOJIS[i % EMOJIS.length];
+    return '<div class="testimonial-card reveal">' +
+      (stars ? '<div class="testimonial-stars">' + stars + '</div>' : '') +
+      '<div class="testimonial-quote">“</div>' +
+      '<p class="testimonial-text">' + r.text + '</p>' +
+      '<div class="testimonial-author">' +
+      '<div class="author-avatar">' + emoji + '</div>' +
+      '<div><div class="author-name">' + r.name + '</div>' +
+      (handle ? '<div class="author-handle">' + handle + '</div>' : '') +
+      '</div></div></div>';
+  }).join('');
+  container.innerHTML = '<div class="testimonials-grid">' + cards + '</div>' +
+    '<div style="text-align:center;margin-top:32px"><button class="btn-primary" onclick="openReviewModal()">Leave a review ✨</button></div>';
+}
+
+loadApprovedReviews();
 </script>
 </body>
 </html>
