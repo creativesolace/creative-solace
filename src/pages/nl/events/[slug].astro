@@ -35,7 +35,7 @@ const schemaData = {
   "location": { "@type": "Place", "name": d.location, "address": { "@type": "PostalAddress", "addressLocality": d.city, "addressCountry": "NL" } },
   "organizer": { "@type": "Organization", "name": "Creative Solace", "url": "https://creativesolace.com" },
   "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-  "description": d.body || `Creative Solace bij ${d.title}`
+  "description": d.bodyNl || d.body || `Creative Solace bij ${d.title}`
 };
 ---
 <style is:global>
@@ -78,7 +78,7 @@ const schemaData = {
 <BaseLayout
   lang="nl"
   title={`${d.title} | Creative Solace`}
-  description={d.body ? d.body.slice(0, 155) : `Creative Solace bij ${d.title} — ${typeLabel(d.type)} in ${d.city || 'Nederland'}.`}
+  description={(d.bodyNl || d.body) ? (d.bodyNl || d.body).slice(0, 155) : `Creative Solace bij ${d.title} — ${typeLabel(d.type)} in ${d.city || 'Nederland'}.`}
   canonical={`https://creativesolace.com/nl/events/${event.id}`}
   ogTitle={`${d.title} | Creative Solace`}
   ogUrl={`https://creativesolace.com/nl/events/${event.id}`}
@@ -139,7 +139,7 @@ const schemaData = {
       </div>
     )}
 
-    {d.body && <p class="event-body">{d.body}</p>}
+    {(d.bodyNl || d.body) && <p class="event-body">{d.bodyNl || d.body}</p>}
 
     {allPhotos.length > 1 && (
       <div class="gallery-section">

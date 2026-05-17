@@ -1924,7 +1924,7 @@ footer {
         </div>
         <div class="product-info">
           <div class="product-name">{p.data.title}</div>
-          <div class="product-desc">{p.data.description}</div>
+          <div class="product-desc">{p.data.descriptionNl || p.data.description}</div>
           <div class="product-meta-row">20x30cm · Beginnersvriendelijk</div>
           <div class="product-price">
             <span class="price-now">€{p.data.price.toFixed(2).replace('.', ',')}</span>
@@ -2049,7 +2049,7 @@ footer {
           <div class="workshop-emoji">{w.data.emoji}</div>
           <div class="workshop-label">{w.data.tagline}</div>
           <h3 class="workshop-title">{w.data.title}</h3>
-          <p class="workshop-desc">{w.data.description}</p>
+          <p class="workshop-desc">{w.data.descriptionNl || w.data.description}</p>
           <div class="workshop-meta">
             {w.data.duration && <div class="meta-item"><span>⏱</span> {w.data.duration}</div>}
             {w.data.groupSize && <div class="meta-item"><span>👥</span> {w.data.groupSize}</div>}
