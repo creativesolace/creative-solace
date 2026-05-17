@@ -1,0 +1,466 @@
+---
+export interface Props {
+  lang?: 'en' | 'nl';
+  title: string;
+  description: string;
+  canonical: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogUrl?: string;
+  hreflangEn?: string;
+  hreflangNl?: string;
+  activePage?: string;
+}
+
+const {
+  lang = 'en',
+  title,
+  description,
+  canonical,
+  ogTitle,
+  ogDescription,
+  ogUrl,
+  hreflangEn,
+  hreflangNl,
+  activePage = '',
+} = Astro.props;
+
+const isNl = lang === 'nl';
+const base = isNl ? '/nl' : '';
+
+const nav = {
+  home:      isNl ? 'Home'          : 'Home',
+  kits:      isNl ? 'Kits'          : 'Kits',
+  workshops: isNl ? 'Workshops'     : 'Workshops',
+  events:    isNl ? 'Events'        : 'Events',
+  b2b:       isNl ? 'B2B'           : 'B2B',
+  services:  isNl ? 'Ons Aanbod'    : 'Our Services',
+  shopKits:  isNl ? 'Kits bekijken' : 'Shop Kits',
+};
+
+const footer = {
+  tagline:         isNl ? 'Wij brengen glitter, creativiteit en goede energie naar workshops, markten, festivals en woonkamers door heel Nederland en daarbuiten.' : 'Bringing sparkle, creativity, and good vibes to workshops, markets, festivals, and living rooms across the Netherlands and beyond.',
+  shop:            isNl ? 'Shop'                      : 'Shop',
+  allKits:         isNl ? 'Alle kits'                 : 'All Kits',
+  ourServices:     isNl ? 'Ons aanbod'                : 'Our Services',
+  experiences:     isNl ? 'Ervaringen'                : 'Experiences',
+  paintAndSip:     isNl ? 'Paint and Sip'             : 'Paint and Sip',
+  bedazzleAndSip:  isNl ? 'Bedazzle and Sip'          : 'Bedazzle and Sip',
+  privateEvents:   isNl ? 'Privé-events'              : 'Private Events',
+  corporateB2b:    isNl ? 'Corporate B2B'             : 'Corporate B2B',
+  upcomingEvents:  isNl ? 'Aankomende events'         : 'Upcoming Events',
+  help:            isNl ? 'Hulp'                      : 'Help',
+  contactUs:       isNl ? 'Neem contact op'           : 'Contact Us',
+  faq:             isNl ? 'Veelgestelde vragen'       : 'FAQ',
+  shippingReturns: isNl ? 'Verzending en retourneren' : 'Shipping and Returns',
+  privacyPolicy:   isNl ? 'Privacybeleid'             : 'Privacy Policy',
+  copyright:       isNl ? '© 2026 Creative Solace. Gemaakt met 💎 in Nederland.' : '© 2026 Creative Solace. Made with 💎 in the Netherlands.',
+};
+
+const tabs = {
+  home:      isNl ? 'Home'      : 'Home',
+  kits:      isNl ? 'Kits'      : 'Kits',
+  workshops: isNl ? 'Workshops' : 'Workshops',
+  events:    isNl ? 'Events'    : 'Events',
+  b2b:       isNl ? 'B2B'       : 'B2B',
+};
+
+const announcement = {
+  shipping:  isNl ? 'Gratis verzending op alle bestellingen in Nederland' : 'Free shipping on all orders in the Netherlands',
+  workshops: isNl ? 'Workshopplekken zijn beperkt, boek nu jouw plek'    : 'Workshop spots are limited, book yours now',
+  corporate: isNl ? 'Maatwerk voor bedrijven mogelijk'                   : 'Custom corporate events available',
+};
+---
+<!DOCTYPE html>
+<html lang={lang}>
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>{title}</title>
+<meta name="description" content={description}/>
+<link rel="canonical" href={canonical}/>
+{hreflangEn && <link rel="alternate" hreflang="en" href={hreflangEn}/>}
+{hreflangNl && <link rel="alternate" hreflang="nl" href={hreflangNl}/>}
+{ogTitle && <meta property="og:title" content={ogTitle}/>}
+{ogDescription && <meta property="og:description" content={ogDescription}/>}
+<meta property="og:type" content="website"/>
+{ogUrl && <meta property="og:url" content={ogUrl}/>}
+<slot name="head"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --pink:        #FF6B9D;
+  --pink-light:  #FFB3CF;
+  --pink-pale:   #FFF0F5;
+  --yellow:      #FFD166;
+  --yellow-warm: #FFBC42;
+  --cream:       #FFF8F0;
+  --dark:        #1A0A14;
+  --mid:         #5C3049;
+  --text:        #3D1A2C;
+  --white:       #FFFFFF;
+  --grad-main:   linear-gradient(135deg,#FFD166 0%,#FF9EC4 50%,#C084FC 100%);
+  --grad-pink:   linear-gradient(135deg,#FF6B9D,#FFBC42);
+  --shadow-soft: 0 8px 40px rgba(255,107,157,.18);
+  --shadow-card: 0 4px 24px rgba(60,20,40,.10);
+  --radius:      20px;
+  --radius-sm:   12px;
+  --nav-h:       60px;
+  --tab-h:       64px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  overflow-x: hidden;
+  padding-bottom: var(--tab-h);
+}
+.announcement {
+  background: var(--grad-main);
+  color: var(--dark);
+  text-align: center;
+  padding: 9px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .4px;
+  position: relative;
+  z-index: 100;
+  line-height: 1.4;
+}
+.announcement .sep { margin: 0 6px; opacity: .35; }
+.desktop-nav { display: none; }
+.mobile-nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(255,248,240,.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,107,157,.12);
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+.nav-logo { display: inline-flex; align-items: center; text-decoration: none; flex-shrink: 0; }
+.nav-logo img { height: 40px; width: auto; display: block; object-fit: contain; }
+.mobile-nav-actions { display: flex; align-items: center; gap: 12px; }
+.btn-cart-mobile {
+  background: var(--grad-pink);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 8px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+.lang-toggle {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mid);
+  text-decoration: none;
+  border: 1px solid rgba(92,48,73,.2);
+  border-radius: 50px;
+  padding: 4px 10px;
+  transition: color .2s, border-color .2s;
+}
+.lang-toggle:hover { color: var(--pink); border-color: var(--pink); }
+.page-hero {
+  background: var(--dark);
+  padding: 52px 20px 48px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+.page-hero::before {
+  content: '';
+  position: absolute;
+  top: -100px; left: 50%;
+  transform: translateX(-50%);
+  width: 500px; height: 300px;
+  background: var(--grad-main);
+  opacity: .07;
+  border-radius: 50%;
+  filter: blur(60px);
+}
+.page-hero-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+.page-hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 8vw, 56px);
+  font-weight: 900;
+  color: white;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+.page-hero h1 em {
+  font-style: italic;
+  background: var(--grad-pink);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.page-hero-sub {
+  font-size: 15px;
+  line-height: 1.65;
+  color: rgba(255,255,255,.6);
+  max-width: 540px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  font-weight: 300;
+}
+.breadcrumb {
+  padding: 14px 20px;
+  font-size: 12px;
+  color: var(--mid);
+  border-bottom: 1px solid rgba(60,20,40,.07);
+  background: white;
+}
+.breadcrumb a { color: var(--pink); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+footer {
+  background: var(--dark);
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding: 48px 20px 24px;
+}
+.footer-brand { margin-bottom: 36px; }
+.footer-brand .nav-logo { display: block; margin-bottom: 14px; }
+.footer-tagline { font-size: 13px; line-height: 1.65; color: rgba(255,255,255,.45); margin-bottom: 20px; }
+.footer-social { display: flex; gap: 10px; }
+.social-btn {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.07);
+  border: none;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, transform .2s;
+  color: white;
+  text-decoration: none;
+}
+.social-btn:hover { background: var(--pink); transform: translateY(-3px); }
+.footer-cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-bottom: 32px; }
+.footer-col-title { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 14px; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a { text-decoration: none; font-size: 13px; color: rgba(255,255,255,.55); transition: color .2s; }
+.footer-links a:hover { color: var(--pink); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,.06); padding-top: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 11px; color: rgba(255,255,255,.3); }
+.bottom-tab-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: var(--tab-h);
+  background: rgba(255,248,240,.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255,107,157,.12);
+  display: flex;
+  align-items: stretch;
+  z-index: 300;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.tab-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 4px;
+  text-decoration: none;
+  color: var(--mid);
+  -webkit-tap-highlight-color: transparent;
+}
+.tab-icon { font-size: 20px; line-height: 1; }
+.tab-label { font-size: 9px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; font-family: 'DM Sans', sans-serif; }
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity .55s ease, transform .55s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.btn-primary {
+  background: var(--dark);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 13px 28px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background .2s, transform .2s;
+}
+.btn-primary:hover { background: var(--pink); transform: translateY(-2px); }
+@media (min-width: 1024px) {
+  body { padding-bottom: 0; }
+  .mobile-nav { display: none; }
+  .bottom-tab-bar { display: none; }
+  .desktop-nav {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    background: rgba(255,248,240,.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,107,157,.12);
+    padding: 0 60px;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+  }
+  .desktop-nav .nav-logo img { height: 44px; }
+  .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
+  .nav-links a { text-decoration: none; color: var(--text); font-size: 14px; font-weight: 500; position: relative; transition: color .2s; }
+  .nav-links a::after { content: ''; position: absolute; bottom: -3px; left: 0; right: 0; height: 2px; background: var(--grad-pink); border-radius: 2px; transform: scaleX(0); transition: transform .25s; }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-links a:hover { color: var(--pink); }
+  .nav-actions { display: flex; align-items: center; gap: 16px; }
+  .btn-cart-desktop { background: var(--grad-pink); color: white; border: none; border-radius: 50px; padding: 9px 22px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; box-shadow: 0 4px 16px rgba(255,107,157,.3); text-decoration: none; }
+  .announcement { font-size: 13px; padding: 10px 20px; }
+  .page-hero { padding: 80px 40px 72px; }
+  .page-hero-sub { font-size: 17px; }
+  .breadcrumb { padding: 14px 80px; }
+  footer { padding: 60px 80px 30px; }
+  .footer-brand { margin-bottom: 0; }
+  .footer-brand .nav-logo img { height: 48px; }
+  .footer-grid { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+  .footer-cols { display: contents; }
+  .footer-bottom { flex-direction: row; }
+}
+</style>
+</head>
+<body>
+
+<div class="announcement">
+  ✨ {announcement.shipping}
+  <span class="sep">|</span>
+  🎉 {announcement.workshops}
+  <span class="sep">|</span>
+  💌 {announcement.corporate}
+</div>
+
+<nav class="desktop-nav">
+  <a href={`${base}/`} class="nav-logo">
+    <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/>
+  </a>
+  <ul class="nav-links">
+    <li><a href={`${base}/`}>{nav.home}</a></li>
+    <li><a href={`${base}/#kits`}>{nav.kits}</a></li>
+    <li><a href={`${base}/#workshops`}>{nav.workshops}</a></li>
+    <li><a href={`${base}/#events`}>{nav.events}</a></li>
+    <li><a href={`${base}/#b2b`}>{nav.b2b}</a></li>
+    <li><a href={`${base}/services`} style={activePage === 'services' ? 'color:var(--pink)' : ''}>{nav.services}</a></li>
+    {hreflangEn && hreflangNl && (
+      <li><a href={isNl ? hreflangEn : hreflangNl} class="lang-toggle">{isNl ? 'EN' : 'NL'}</a></li>
+    )}
+  </ul>
+  <div class="nav-actions">
+    <a href={`${base}/#kits`} class="btn-cart-desktop">{nav.shopKits} ✨</a>
+  </div>
+</nav>
+
+<nav class="mobile-nav">
+  <a href={`${base}/`} class="nav-logo">
+    <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/>
+  </a>
+  <div class="mobile-nav-actions">
+    {hreflangEn && hreflangNl && (
+      <a href={isNl ? hreflangEn : hreflangNl} class="lang-toggle">{isNl ? 'EN' : 'NL'}</a>
+    )}
+    <a href={`${base}/#kits`} class="btn-cart-mobile">{nav.shopKits} ✨</a>
+  </div>
+</nav>
+
+<slot/>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href={`${base}/`} class="nav-logo">
+        <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/>
+      </a>
+      <p class="footer-tagline">{footer.tagline}</p>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/creativesolace__/" target="_blank" rel="noopener" class="social-btn" title="Instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@creativesolace_" target="_blank" rel="noopener" class="social-btn" title="TikTok">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
+        </a>
+        <a href="https://www.facebook.com/creativesolace/" target="_blank" rel="noopener" class="social-btn" title="Facebook">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/creative-solace/" target="_blank" rel="noopener" class="social-btn" title="LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <div class="footer-col-title">{footer.shop}</div>
+        <ul class="footer-links">
+          <li><a href={`${base}/#kits`}>{footer.allKits}</a></li>
+          <li><a href={`${base}/services`}>{footer.ourServices}</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">{footer.experiences}</div>
+        <ul class="footer-links">
+          <li><a href={`${base}/#workshops`}>{footer.paintAndSip}</a></li>
+          <li><a href={`${base}/#workshops`}>{footer.bedazzleAndSip}</a></li>
+          <li><a href={`${base}/#workshops`}>{footer.privateEvents}</a></li>
+          <li><a href={`${base}/#b2b`}>{footer.corporateB2b}</a></li>
+          <li><a href={`${base}/#events`}>{footer.upcomingEvents}</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">{footer.help}</div>
+        <ul class="footer-links">
+          <li><a href="mailto:hello@creativesolace.com">{footer.contactUs}</a></li>
+          <li><a href={`${base}/faq`}>{footer.faq}</a></li>
+          <li><a href={`${base}/shipping`}>{footer.shippingReturns}</a></li>
+          <li><a href={`${base}/privacy`}>{footer.privacyPolicy}</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>{footer.copyright}</span>
+    <span>KVK: 93777337 &nbsp;·&nbsp; hello@creativesolace.com</span>
+  </div>
+</footer>
+
+<nav class="bottom-tab-bar">
+  <a href={`${base}/`} class="tab-item"><span class="tab-icon">🏠</span><span class="tab-label">{tabs.home}</span></a>
+  <a href={`${base}/#kits`} class="tab-item"><span class="tab-icon">💎</span><span class="tab-label">{tabs.kits}</span></a>
+  <a href={`${base}/#workshops`} class="tab-item"><span class="tab-icon">🎨</span><span class="tab-label">{tabs.workshops}</span></a>
+  <a href={`${base}/#events`} class="tab-item"><span class="tab-icon">📍</span><span class="tab-label">{tabs.events}</span></a>
+  <a href={`${base}/#b2b`} class="tab-item"><span class="tab-icon">🤝</span><span class="tab-label">{tabs.b2b}</span></a>
+</nav>
+
+<slot name="scripts"/>
+
+</body>
+</html>
