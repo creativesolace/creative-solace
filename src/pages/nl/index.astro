@@ -1,0 +1,3028 @@
+---
+export const prerender = true;
+// NL homepage — Dutch version of index.astro
+
+import { getCollection } from 'astro:content';
+
+// Load CMS content with fallbacks
+let events = [], workshops = [], products = [], testimonials = [];
+try { events = (await getCollection('events')).filter(e => e.data.featured).sort((a,b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime()); } catch(e) {}
+const _today = new Date(); _today.setHours(0,0,0,0);
+const upcomingEvents = events.filter(e => new Date(e.data.date) >= _today);
+const pastEvents = events.filter(e => new Date(e.data.date) < _today);
+try { workshops = await getCollection('workshops'); } catch(e) {}
+try { products = (await getCollection('products')).filter(p => p.data.available); } catch(e) {}
+try { testimonials = (await getCollection('testimonials')).filter(t => t.data.featured); } catch(e) {}
+let galleryItems = [];
+try { galleryItems = (await getCollection('gallery')).filter(g => g.data.visible).sort((a,b) => a.data.order - b.data.order); } catch(e) {}
+
+const STRIPE_PK = import.meta.env.STRIPE_PUBLISHABLE_KEY || 'pk_live_51TVx4IC1ZOnsxU8kBY7mcTOIMKBzTMoK4OA1sjAl77HFEobLC1BMznlWoHele1Y8yN1fbM6i3da1yQr02yxbbF5u00pbTwj2VU';
+
+function fmtDate(d) {
+  if (!d) return '';
+  try { return new Date(d).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' }); } catch { return String(d); }
+}
+
+function typeLabel(t) {
+  const map = { festival: 'Festival', market: 'Thrift Market', workshop: 'Workshop Night', popup: 'Pop-up' };
+  return map[t] || t;
+}
+---
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Creative Solace | Rhinestone Kits & Creatieve Workshops in Nederland</title>
+<meta name="description" content="Bestel een DIY rhinestone canvas kit of boek een paint and sip of bedazzle workshop door heel Nederland. Perfect voor meidenuitjes, verjaardagen, vrijgezellenfeesten en bedrijfsuitjes. Gratis verzending in NL."/>
+<meta name="keywords" content="rhinestone kit Nederland, DIY rhinestone canvas, bedazzle workshop Nederland, paint and sip Rotterdam, creatieve workshop Netherlands, rhinestone kit kopen, diamond painting kit Nederland"/>
+<meta property="og:title" content="Creative Solace | Rhinestone Kits & Creative Workshops in the Netherlands"/>
+<meta property="og:description" content="DIY rhinestone canvas kits en creatieve workshops waaronder paint and sip en bedazzle events door heel Nederland. Gratis verzending in NL."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://creativesolace.com/nl"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Creative Solace | Rhinestone Kits & Creative Workshops in the Netherlands"/>
+<meta name="twitter:description" content="DIY rhinestone canvas kits and creative workshops across the Netherlands. Free shipping in NL."/>
+<link rel="canonical" href="https://creativesolace.com/nl"/>
+<link rel="alternate" hreflang="en" href="https://creativesolace.com/"/>
+<link rel="alternate" hreflang="nl" href="https://creativesolace.com/nl/"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Creative Solace",
+  "description": "DIY rhinestone canvas kits and creative workshops including paint and sip and bedazzle events across the Netherlands.",
+  "url": "https://creativesolace.com/nl",
+  "email": "hello@creativesolace.com",
+  "areaServed": { "@type": "Country", "name": "Netherlands" },
+  "inLanguage": "nl",
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Rhinestone Kits and Creative Workshops",
+    "itemListElement": [
+      {"@type": "Offer", "itemOffered": {"@type": "Product", "name": "DIY Rhinestone Canvas Kits"}},
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Paint and Sip Workshop"}},
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Bedazzle and Sip Workshop"}},
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Corporate Creative Events"}}
+    ]
+  }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Dancing+Script:wght@700&display=swap" rel="stylesheet"/>
+
+<style>
+/* ─────────────────────────────────────────
+   TOKENS
+───────────────────────────────────────── */
+:root {
+  --pink:        #FF6B9D;
+  --pink-light:  #FFB3CF;
+  --pink-pale:   #FFF0F5;
+  --yellow:      #FFD166;
+  --yellow-warm: #FFBC42;
+  --cream:       #FFF8F0;
+  --dark:        #1A0A14;
+  --mid:         #5C3049;
+  --text:        #3D1A2C;
+  --white:       #FFFFFF;
+  --grad-main:   linear-gradient(135deg,#FFD166 0%,#FF9EC4 50%,#C084FC 100%);
+  --grad-pink:   linear-gradient(135deg,#FF6B9D,#FFBC42);
+  --grad-hero:   linear-gradient(135deg,#FFF0A0 0%,#FFB3CF 40%,#D09FFF 80%,#A78BFA 100%);
+  --shadow-soft: 0 8px 40px rgba(255,107,157,.18);
+  --shadow-card: 0 4px 24px rgba(60,20,40,.10);
+  --radius:      20px;
+  --radius-sm:   12px;
+  --nav-h:       60px;
+  --tab-h:       64px;
+}
+
+/* ─────────────────────────────────────────
+   RESET
+───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  overflow-x: hidden;
+  padding-bottom: var(--tab-h);
+}
+
+/* ─────────────────────────────────────────
+   ANNOUNCEMENT BAR
+───────────────────────────────────────── */
+.announcement {
+  background: var(--grad-main);
+  color: var(--dark);
+  text-align: center;
+  padding: 9px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .4px;
+  position: relative;
+  z-index: 100;
+  line-height: 1.4;
+}
+.announcement .sep { margin: 0 6px; opacity: .35; }
+
+/* ─────────────────────────────────────────
+   DESKTOP NAV (hidden on mobile)
+───────────────────────────────────────── */
+.desktop-nav {
+  display: none;
+}
+
+/* ─────────────────────────────────────────
+   MOBILE NAV (top bar)
+───────────────────────────────────────── */
+.mobile-nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(255,248,240,.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,107,157,.12);
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.nav-logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nav-logo img {
+  height: 40px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.mobile-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: var(--text);
+  transition: color .2s;
+  padding: 4px;
+}
+.nav-icon:hover { color: var(--pink); }
+
+.btn-cart-mobile {
+  background: var(--grad-pink);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 8px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+  box-shadow: 0 4px 16px rgba(255,107,157,.3);
+  white-space: nowrap;
+}
+.btn-cart-mobile:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255,107,157,.4); }
+
+/* ─────────────────────────────────────────
+   MOBILE BOTTOM TAB BAR
+───────────────────────────────────────── */
+.bottom-tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--tab-h);
+  background: rgba(255,248,240,.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255,107,157,.12);
+  display: flex;
+  align-items: stretch;
+  z-index: 300;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.tab-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 4px;
+  text-decoration: none;
+  transition: color .2s;
+  color: var(--mid);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tab-item.active { color: var(--pink); }
+
+.tab-icon { font-size: 20px; line-height: 1; }
+.tab-label { font-size: 9px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; font-family: 'DM Sans', sans-serif; }
+
+/* ─────────────────────────────────────────
+   HERO - MOBILE FIRST
+───────────────────────────────────────── */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 36px 20px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--grad-hero);
+  opacity: .35;
+  z-index: 0;
+}
+
+.hero-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  z-index: 0;
+  pointer-events: none;
+}
+.blob1 { width: 320px; height: 320px; background: #FFD166; opacity: .4; top: -80px; right: -80px; }
+.blob2 { width: 260px; height: 260px; background: #FF6B9D; opacity: .3; bottom: -60px; left: 20%; }
+.blob3 { width: 200px; height: 200px; background: #C084FC; opacity: .3; top: 30%; left: -60px; }
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  animation: fadeUp .8s ease both;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: rgba(255,255,255,.75);
+  border: 1px solid rgba(255,107,157,.3);
+  border-radius: 50px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--pink);
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  backdrop-filter: blur(8px);
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(40px, 10vw, 72px);
+  line-height: 1.05;
+  color: var(--dark);
+  margin-bottom: 16px;
+}
+
+.hero h1 em {
+  font-style: italic;
+  background: var(--grad-pink);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--mid);
+  margin-bottom: 28px;
+  font-weight: 300;
+}
+
+.hero-ctas {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-primary {
+  background: var(--dark);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 15px 28px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s, background .2s;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+.btn-primary:hover { background: var(--pink); transform: translateY(-2px); box-shadow: var(--shadow-soft); }
+
+.btn-outline {
+  background: rgba(255,255,255,.7);
+  color: var(--dark);
+  border: 1.5px solid rgba(60,20,40,.2);
+  border-radius: 50px;
+  padding: 14px 28px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all .2s;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  backdrop-filter: blur(8px);
+}
+.btn-outline:hover { border-color: var(--pink); color: var(--pink); transform: translateY(-2px); }
+
+.hero-trust {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--mid);
+  flex-wrap: wrap;
+}
+.stars { color: var(--yellow-warm); font-size: 15px; letter-spacing: 1px; }
+
+.hero-visual {
+  position: relative;
+  z-index: 1;
+  animation: fadeUp .8s .15s ease both;
+}
+
+.hero-image-stack {
+  position: relative;
+}
+
+.hero-main-img {
+  width: 100%;
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(60,20,40,.2);
+  object-fit: cover;
+  aspect-ratio: 4/5;
+  display: block;
+}
+
+.hero-float-card {
+  position: absolute;
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(12px);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(255,255,255,.8);
+  animation: float 4s ease-in-out infinite;
+}
+
+.hero-float-card.card-1 {
+  bottom: 20px;
+  left: -12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-float-card.card-2 {
+  top: 20px;
+  right: -12px;
+  text-align: center;
+  animation-delay: -2s;
+}
+
+.float-emoji { font-size: 22px; }
+.float-label { font-size: 11px; font-weight: 600; color: var(--text); }
+.float-sub { font-size: 10px; color: var(--mid); margin-top: 1px; }
+.float-num { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: var(--pink); }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─────────────────────────────────────────
+   PREVIOUSLY SEEN AT - ANIMATED
+───────────────────────────────────────── */
+.seen-at-section {
+  background: var(--dark);
+  padding: 0;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  overflow: hidden;
+}
+
+.seen-at-track-wrap {
+  display: flex;
+  align-items: center;
+  height: 52px;
+  overflow: hidden;
+}
+
+.seen-at-label-fixed {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: 0 20px 0 20px;
+  border-right: 1px solid rgba(255,255,255,.1);
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.seen-at-marquee {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.seen-at-track {
+  display: inline-flex;
+  animation: seenAtScroll 22s linear infinite;
+  white-space: nowrap;
+}
+
+.seen-at-track:hover { animation-play-state: paused; }
+
+.seen-at-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 28px;
+}
+
+.seen-at-dot-anim { color: var(--pink); font-size: 8px; }
+
+.seen-at-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,.55);
+  text-decoration: none;
+  transition: color .2s;
+  white-space: nowrap;
+}
+.seen-at-name:hover { color: var(--pink); }
+
+@keyframes seenAtScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ─────────────────────────────────────────
+   BADGES ROW
+───────────────────────────────────────── */
+.badges-section {
+  background: white;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border-bottom: 1px solid rgba(60,20,40,.06);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.badges-section::-webkit-scrollbar { display: none; }
+
+.badge-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--mid);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 0 16px;
+  border-right: 1px solid rgba(60,20,40,.08);
+  flex-shrink: 0;
+}
+.badge-item:first-child { padding-left: 0; }
+.badge-item:last-child { border-right: none; }
+.badge-icon { font-size: 20px; }
+
+/* ─────────────────────────────────────────
+   SECTION COMMON
+───────────────────────────────────────── */
+section { padding: 56px 20px; }
+
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--pink);
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 7vw, 48px);
+  line-height: 1.15;
+  color: var(--dark);
+  margin-bottom: 14px;
+}
+
+.section-title em {
+  font-style: italic;
+  background: var(--grad-pink);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-sub {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--mid);
+  font-weight: 300;
+}
+
+/* ─────────────────────────────────────────
+   HOW IT WORKS
+───────────────────────────────────────── */
+.how-it-works { background: white; }
+
+.how-header { margin-bottom: 40px; text-align: center; }
+.how-header .section-sub { margin: 0 auto; }
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.step-card {
+  text-align: center;
+  padding: 20px 12px;
+  background: var(--cream);
+  border-radius: var(--radius-sm);
+}
+
+.step-icon { font-size: 28px; margin-bottom: 10px; }
+
+.step-num {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--grad-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 900;
+  color: white;
+  margin: 0 auto 12px;
+  box-shadow: 0 6px 20px rgba(255,107,157,.3);
+}
+
+.step-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+
+.step-desc {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--mid);
+}
+
+/* ─────────────────────────────────────────
+   PRODUCTS
+───────────────────────────────────────── */
+.products-section { background: var(--cream); }
+
+.products-header { margin-bottom: 28px; }
+.products-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.product-card {
+  background: white;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform .3s, box-shadow .3s;
+  cursor: pointer;
+  position: relative;
+}
+.product-card:active { transform: scale(.98); }
+
+.product-img-wrap {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4/5;
+  background: var(--pink-pale);
+}
+
+.product-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform .5s, opacity .4s;
+  display: block;
+  padding: 8px;
+  position: absolute;
+  top: 0; left: 0;
+}
+
+.product-img-design { opacity: 1; }
+.product-img-irl { opacity: 0; object-fit: cover; padding: 0; }
+.product-card:hover .product-img-design { opacity: 0; transform: scale(1.04); }
+.product-card:hover .product-img-irl { opacity: 1; transform: scale(1.06); }
+
+.product-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--dark);
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .4px;
+  padding: 3px 8px;
+  border-radius: 50px;
+}
+.product-badge.sale { background: var(--pink); }
+
+.product-quick-add {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  background: rgba(255,255,255,.95);
+  border: none;
+  border-radius: 50px;
+  padding: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .25s, transform .25s;
+  color: var(--dark);
+}
+.product-card:hover .product-quick-add { opacity: 1; transform: translateY(0); }
+
+.product-info { padding: 12px 12px 14px; }
+
+.product-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 4px;
+}
+
+.product-desc {
+  font-size: 11px;
+  color: var(--mid);
+  margin-bottom: 8px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-meta-row {
+  font-size: 10px;
+  color: var(--mid);
+  margin-bottom: 6px;
+  letter-spacing: .2px;
+}
+
+.product-price { display: flex; align-items: center; gap: 6px; }
+.price-now { font-weight: 700; font-size: 15px; color: var(--pink); }
+.price-old { font-size: 11px; color: #aaa; text-decoration: line-through; }
+
+/* ─────────────────────────────────────────
+   GALLERY STRIP
+───────────────────────────────────────── */
+.gallery-section { background: white; padding: 56px 0 56px; }
+.gallery-header { padding: 0 20px 24px; }
+
+.gallery-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 0 20px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.gallery-scroll::-webkit-scrollbar { display: none; }
+
+.gallery-item {
+  flex-shrink: 0;
+  width: 160px;
+  height: 200px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
+
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+.gallery-item:hover img { transform: scale(1.08); }
+
+.gallery-item-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(26,10,20,.6) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity .3s;
+  display: flex;
+  align-items: flex-end;
+  padding: 12px;
+}
+.gallery-item:hover .gallery-item-overlay { opacity: 1; }
+
+.gallery-tag {
+  background: white;
+  border-radius: 50px;
+  padding: 4px 10px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--pink);
+}
+
+/* ─────────────────────────────────────────
+   WORKSHOPS
+───────────────────────────────────────── */
+.workshops-section {
+  background: var(--dark);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.workshops-section::before {
+  content: '';
+  position: absolute;
+  top: -150px; right: -150px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle,rgba(255,107,157,.15) 0%,transparent 70%);
+  border-radius: 50%;
+}
+
+.workshops-header .section-title { color: white; }
+.workshops-header .section-sub { color: rgba(255,255,255,.6); }
+.workshops-header { margin-bottom: 32px; position: relative; z-index: 1; }
+
+.workshops-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.workshop-card {
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  transition: all .3s;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.workshop-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--grad-main);
+  opacity: 0;
+  transition: opacity .3s;
+}
+
+.workshop-card:hover { background: rgba(255,255,255,.08); border-color: rgba(255,107,157,.3); }
+.workshop-card:hover::before { opacity: 1; }
+
+.workshop-emoji { font-size: 36px; margin-bottom: 14px; }
+
+.workshop-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--yellow);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.workshop-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 12px;
+}
+
+.workshop-desc {
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(255,255,255,.6);
+  margin-bottom: 20px;
+}
+
+.workshop-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: rgba(255,255,255,.5);
+}
+.meta-item span:first-child { font-size: 14px; }
+
+.btn-workshop {
+  background: var(--grad-pink);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 24px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all .2s;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-workshop:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,107,157,.4); }
+
+.workshop-large { display: flex; flex-direction: column; gap: 24px; }
+.workshop-large .workshop-img {
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  aspect-ratio: 16/9;
+  background: rgba(255,255,255,.05);
+}
+.workshop-large .workshop-img img { width: 100%; height: 100%; object-fit: cover; opacity: .8; }
+
+/* ─────────────────────────────────────────
+   EVENTS
+───────────────────────────────────────── */
+.events-section { background: white; }
+
+.event-ticket-price {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: var(--dark);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 50px;
+  letter-spacing: 0.5px;
+}
+
+.btn-ticket {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  background: var(--grad-pink);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 11px 20px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .2s;
+  text-align: center;
+}
+.btn-ticket:hover { transform: translateY(-2px); box-shadow: var(--shadow-soft); }
+
+.events-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.event-card {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform .3s, box-shadow .3s;
+  cursor: pointer;
+  background: var(--cream);
+}
+.event-card:active { transform: scale(.98); }
+
+.event-img {
+  overflow: hidden;
+  background: var(--pink-pale);
+  position: relative;
+  width: 100%;
+  padding-top: 75%; /* 4:3 ratio */
+}
+
+.event-img-slider {
+  display: flex;
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  transition: transform .4s ease;
+  will-change: transform;
+}
+
+.event-img-slide {
+  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.event-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; display: block; }
+.event-card:hover .event-img img { transform: scale(1.06); }
+
+.event-img-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+  z-index: 2;
+}
+
+.event-img-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.5);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background .2s;
+}
+.event-img-dot.active { background: white; }
+
+.event-img-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,.88);
+  border: none;
+  border-radius: 50%;
+  width: 28px; height: 28px;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+  transition: opacity .2s;
+  z-index: 2;
+}
+.event-img-nav.prev { left: 8px; }
+.event-img-nav.next { right: 8px; }
+.event-card:hover .event-img-nav { opacity: 1; }
+
+.event-type-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: white;
+  border-radius: 50px;
+  padding: 4px 12px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--pink);
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  box-shadow: var(--shadow-card);
+}
+
+.event-content { padding: 20px; }
+
+.event-date {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--pink);
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.event-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+
+.event-location {
+  font-size: 12px;
+  color: var(--mid);
+  margin-bottom: 10px;
+}
+
+.event-desc {
+  font-size: 12px;
+  color: var(--mid);
+  line-height: 1.5;
+}
+
+.coming-soon-events {
+  margin-top: 24px;
+  background: var(--pink-pale);
+  border: 1.5px dashed rgba(255,107,157,.3);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+}
+
+.coming-soon-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.coming-soon-icon { font-size: 28px; }
+
+.coming-soon-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.coming-soon-sub { font-size: 13px; color: var(--mid); }
+
+/* ─────────────────────────────────────────
+   B2B
+───────────────────────────────────────── */
+.b2b-section {
+  background: linear-gradient(135deg,#FFF5E6 0%,#FFE8F0 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.b2b-grid { display: flex; flex-direction: column; gap: 40px; }
+
+.b2b-perks {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.perk {
+  background: white;
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  box-shadow: var(--shadow-card);
+}
+
+.perk-icon { font-size: 24px; margin-bottom: 8px; }
+.perk-title { font-weight: 600; font-size: 13px; color: var(--dark); margin-bottom: 4px; }
+.perk-desc { font-size: 11px; color: var(--mid); line-height: 1.5; }
+
+.b2b-form {
+  background: white;
+  border-radius: var(--radius);
+  padding: 28px 20px;
+  box-shadow: var(--shadow-soft);
+}
+
+.form-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 4px;
+}
+
+.form-sub { font-size: 13px; color: var(--mid); margin-bottom: 24px; }
+
+.form-group { margin-bottom: 16px; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .5px;
+  color: var(--text);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  border: 1.5px solid rgba(60,20,40,.12);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--cream);
+  transition: border-color .2s, box-shadow .2s;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--pink);
+  box-shadow: 0 0 0 3px rgba(255,107,157,.12);
+}
+
+.form-textarea { resize: vertical; min-height: 90px; }
+
+.btn-submit {
+  width: 100%;
+  background: var(--grad-pink);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 15px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all .2s;
+  margin-top: 8px;
+}
+.btn-submit:hover { transform: translateY(-2px); box-shadow: var(--shadow-soft); }
+
+/* ─────────────────────────────────────────
+   REVIEWS
+───────────────────────────────────────── */
+.testimonials-section { background: var(--cream); text-align: center; }
+.testimonials-header { margin-bottom: 40px; }
+
+.reviews-empty { padding: 40px 20px; }
+.reviews-empty-icon { font-size: 48px; margin-bottom: 16px; }
+.reviews-empty-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 10px;
+}
+.reviews-empty-sub { font-size: 14px; color: var(--mid); line-height: 1.65; }
+
+.star-rating { display: flex; gap: 6px; justify-content: flex-start; }
+.star-btn {
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: #ddd;
+  cursor: pointer;
+  transition: color .15s, transform .15s;
+  padding: 0;
+  line-height: 1;
+}
+.star-btn.active { color: var(--yellow-warm); }
+.star-btn:hover { transform: scale(1.15); }
+
+.testimonials-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+
+.testimonial-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+}
+
+.testimonial-quote {
+  font-size: 48px;
+  line-height: 0.7;
+  color: var(--pink-light);
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  margin-bottom: 12px;
+}
+
+.testimonial-text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text);
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.testimonial-author { display: flex; align-items: center; gap: 10px; }
+.author-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--grad-main);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.author-name { font-weight: 600; font-size: 13px; color: var(--dark); }
+.author-handle { font-size: 11px; color: var(--mid); }
+.testimonial-stars { color: var(--yellow-warm); font-size: 13px; margin-bottom: 10px; }
+
+/* ─────────────────────────────────────────
+   NEWSLETTER
+───────────────────────────────────────── */
+.newsletter-section {
+  background: var(--dark);
+  padding: 56px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.newsletter-section::before {
+  content: '';
+  position: absolute;
+  width: 400px; height: 200px;
+  background: var(--grad-main);
+  opacity: .07;
+  top: -60px; left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  filter: blur(40px);
+}
+.newsletter-section .section-title { color: white; position: relative; z-index: 1; }
+.newsletter-section .section-sub { color: rgba(255,255,255,.55); margin: 0 auto 28px; position: relative; z-index: 1; }
+
+.newsletter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.newsletter-input {
+  width: 100%;
+  background: rgba(255,255,255,.08);
+  border: 1.5px solid rgba(255,255,255,.15);
+  border-radius: 50px;
+  padding: 14px 20px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: white;
+  outline: none;
+  transition: border-color .2s;
+}
+.newsletter-input::placeholder { color: rgba(255,255,255,.35); }
+.newsletter-input:focus { border-color: rgba(255,107,157,.6); }
+
+/* ─────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────── */
+footer {
+  background: var(--dark);
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding: 48px 20px 24px;
+}
+
+.footer-brand { margin-bottom: 36px; }
+.footer-brand .nav-logo { display: block; margin-bottom: 14px; }
+
+.footer-tagline {
+  font-size: 13px;
+  line-height: 1.65;
+  color: rgba(255,255,255,.45);
+  margin-bottom: 20px;
+}
+
+.footer-social { display: flex; gap: 10px; }
+
+.social-btn {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.07);
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, transform .2s;
+  color: white;
+  text-decoration: none;
+}
+.social-btn:hover { background: var(--pink); transform: translateY(-3px); }
+
+.footer-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.footer-col-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+  margin-bottom: 14px;
+}
+
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a {
+  text-decoration: none;
+  font-size: 13px;
+  color: rgba(255,255,255,.55);
+  transition: color .2s;
+}
+.footer-links a:hover { color: var(--pink); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 11px;
+  color: rgba(255,255,255,.3);
+}
+
+/* ─────────────────────────────────────────
+   CART DRAWER
+───────────────────────────────────────── */
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  max-width: 380px;
+  height: 100vh;
+  background: white;
+  z-index: 500;
+  box-shadow: -20px 0 60px rgba(60,20,40,.15);
+  transition: right .35s cubic-bezier(.4,0,.2,1);
+  display: flex;
+  flex-direction: column;
+}
+.cart-drawer.open { right: 0; }
+
+.cart-header {
+  padding: 20px;
+  border-bottom: 1px solid rgba(60,20,40,.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cart-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--dark); }
+.cart-items { flex: 1; overflow-y: auto; padding: 20px; }
+
+.cart-empty { text-align: center; padding: 48px 16px; color: var(--mid); }
+.cart-empty-emoji { font-size: 48px; margin-bottom: 14px; }
+.cart-empty p { font-size: 14px; }
+
+.cart-footer { padding: 20px; border-top: 1px solid rgba(60,20,40,.08); }
+.cart-total { display: flex; justify-content: space-between; font-weight: 600; font-size: 15px; color: var(--dark); margin-bottom: 14px; }
+
+.cart-overlay-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26,10,20,.4);
+  z-index: 499;
+  backdrop-filter: blur(4px);
+}
+.cart-overlay-bg.active { display: block; }
+
+/* ─────────────────────────────────────────
+   MODALS
+───────────────────────────────────────── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26,10,20,.7);
+  z-index: 600;
+  backdrop-filter: blur(8px);
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+}
+.modal-overlay.active { display: flex; }
+
+.modal {
+  background: white;
+  border-radius: var(--radius) var(--radius) 0 0;
+  padding: 32px 20px;
+  width: 100%;
+  position: relative;
+  animation: slideUp .3s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(60px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--mid);
+  transition: color .2s;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-close:hover { color: var(--pink); background: var(--pink-pale); }
+
+.modal-pill {
+  width: 40px; height: 4px;
+  background: rgba(60,20,40,.15);
+  border-radius: 2px;
+  margin: 0 auto 20px;
+}
+
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+.modal-sub { font-size: 13px; color: var(--mid); margin-bottom: 24px; }
+
+/* ─────────────────────────────────────────
+   SCROLL REVEAL
+───────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .55s ease, transform .55s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ─────────────────────────────────────────
+   UTILITIES
+───────────────────────────────────────── */
+.text-center { text-align: center; }
+.mt-4 { margin-top: 16px; }
+.mt-6 { margin-top: 24px; }
+
+/* ═════════════════════════════════════════
+   DESKTOP OVERRIDES (min-width: 1024px)
+═════════════════════════════════════════ */
+@media (min-width: 1024px) {
+  body { padding-bottom: 0; }
+
+  .mobile-nav  { display: none; }
+  .bottom-tab-bar { display: none; }
+
+  .desktop-nav {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    background: rgba(255,248,240,.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,107,157,.12);
+    padding: 0 60px;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+  }
+
+  .desktop-nav .nav-logo img { height: 44px; }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+    align-items: center;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 500;
+    position: relative;
+    transition: color .2s;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 0; right: 0;
+    height: 2px;
+    background: var(--grad-pink);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transition: transform .25s;
+  }
+
+  .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+  .nav-links a:hover, .nav-links a.active { color: var(--pink); }
+
+  .nav-actions { display: flex; align-items: center; gap: 16px; }
+
+  .btn-cart-desktop {
+    background: var(--grad-pink);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 9px 22px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 4px 16px rgba(255,107,157,.3);
+  }
+  .btn-cart-desktop:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,107,157,.4); }
+
+  .announcement { font-size: 13px; padding: 10px 20px; }
+
+  .seen-at-label-fixed { padding: 0 32px 0 40px; font-size: 11px; }
+  .seen-at-item { padding: 0 36px; }
+  .seen-at-name { font-size: 14px; }
+
+  .badges-section {
+    padding: 32px 60px;
+    justify-content: center;
+    gap: 0;
+    overflow-x: visible;
+  }
+  .badge-item { font-size: 14px; padding: 0 40px; }
+  .badge-icon { font-size: 24px; }
+
+  section { padding: 90px 80px; }
+
+  .hero {
+    min-height: 90vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 60px 80px;
+    gap: 40px;
+    flex-direction: unset;
+  }
+
+  .blob1 { width: 500px; height: 500px; top: -100px; right: -100px; }
+  .blob2 { width: 400px; height: 400px; bottom: -80px; left: 40%; }
+  .blob3 { width: 300px; height: 300px; top: 20%; left: -80px; }
+
+  .hero-sub { font-size: 18px; max-width: 460px; }
+  .hero-ctas { flex-direction: row; }
+
+  .hero-main-img { max-width: 520px; border-radius: 30px; aspect-ratio: 4/5; }
+
+  .hero-float-card.card-1 { bottom: 60px; left: -30px; }
+  .hero-float-card.card-2 { top: 40px; right: -30px; }
+  .float-emoji { font-size: 28px; }
+  .float-label { font-size: 12px; }
+  .float-sub { font-size: 11px; }
+  .float-num { font-size: 26px; }
+
+  .steps-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+
+  .step-card {
+    background: transparent;
+    padding: 0;
+    position: relative;
+  }
+
+  .step-card::after {
+    content: '→';
+    position: absolute;
+    right: -20px;
+    top: 22px;
+    font-size: 24px;
+    color: var(--pink-light);
+  }
+  .step-card:last-child::after { display: none; }
+
+  .step-num { width: 60px; height: 60px; font-size: 24px; }
+  .step-icon { font-size: 36px; }
+  .step-title { font-size: 18px; }
+  .step-desc { font-size: 14px; }
+
+  .products-grid { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .product-name { font-size: 17px; }
+  .product-desc { font-size: 12px; -webkit-line-clamp: unset; }
+  .product-info { padding: 18px 18px 20px; }
+
+  .gallery-section { padding: 0 0 90px; }
+  .gallery-header { padding: 90px 80px 32px; }
+  .gallery-scroll { padding: 0 80px; }
+  .gallery-item { width: 220px; height: 280px; }
+
+  .workshops-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .workshop-large {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+    align-items: center;
+    flex-direction: unset;
+  }
+
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 52px;
+  }
+
+  .coming-soon-inner { flex-direction: row; text-align: left; }
+  .coming-soon-inner .btn-outline { margin-left: auto; }
+
+  .b2b-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; flex-direction: unset; }
+  .b2b-form { padding: 40px; }
+  .b2b-section::before {
+    content: '✦';
+    position: absolute;
+    font-size: 200px;
+    color: rgba(255,107,157,.06);
+    right: 60px;
+    top: 20px;
+    font-family: serif;
+  }
+
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+
+  .newsletter-section { padding: 80px; }
+  .newsletter-form { flex-direction: row; max-width: 440px; margin: 0 auto; }
+  .newsletter-input { flex: 1; width: auto; }
+
+  footer { padding: 60px 80px 30px; }
+
+  .footer-brand { margin-bottom: 0; }
+
+  .footer-brand .nav-logo img { height: 48px; }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+
+  .footer-cols { display: contents; }
+
+  .footer-bottom { flex-direction: row; }
+
+  .modal-overlay {
+    align-items: center;
+    padding: 20px;
+  }
+
+  .modal {
+    border-radius: var(--radius);
+    max-width: 520px;
+    padding: 48px;
+    animation: fadeUp .3s ease;
+  }
+
+  .modal-pill { display: none; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="announcement">
+  ✨ Free shipping on all orders in the Netherlands
+  <span class="sep">|</span>
+  🎉 Workshop spots are limited, book yours now
+  <span class="sep">|</span>
+  💌 Custom corporate events available
+</div>
+
+<!-- DESKTOP NAV -->
+<nav class="desktop-nav">
+  <a href="/nl" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
+  <ul class="nav-links">
+    <li><a href="/nl" class="active" onclick="scrollTo(0,0);return false;">Home</a></li>
+    <li><a href="/nl#kits" onclick="scrollToSection('kits');return false;">Kits</a></li>
+    <li><a href="/nl#workshops" onclick="scrollToSection('workshops');return false;">Workshops</a></li>
+    <li><a href="/nl#events" onclick="scrollToSection('events');return false;">Events</a></li>
+    <li><a href="/nl#b2b" onclick="scrollToSection('b2b');return false;">B2B</a></li>
+    <li><a href="#" onclick="openBooking('contact');return false;">Contact</a></li>
+    <li><a href="/nl/services">Ons Aanbod</a></li>
+    <li><a href="/" style="font-size:12px;font-weight:600;color:var(--mid);text-decoration:none;border:1px solid rgba(92,48,73,.2);border-radius:50px;padding:4px 10px;">EN</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn-cart-desktop" onclick="toggleCart()">🛒 Cart (<span class="cart-count">0</span>)</button>
+  </div>
+</nav>
+
+<!-- MOBILE NAV (top bar) -->
+<nav class="mobile-nav">
+  <a href="/nl" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
+  <div class="mobile-nav-actions">
+    <a href="/" style="font-size:12px;font-weight:600;color:var(--mid);text-decoration:none;border:1px solid rgba(92,48,73,.2);border-radius:50px;padding:4px 10px;">EN</a>
+    <button class="nav-icon" onclick="toggleCart()" title="Cart">🛒</button>
+    <button class="btn-cart-mobile" onclick="toggleCart()">Cart (<span class="cart-count">0</span>)</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-blob blob1"></div>
+  <div class="hero-blob blob2"></div>
+  <div class="hero-blob blob3"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">✦ Rhinestone Kits en Creatieve Workshops door heel Nederland</div>
+    <h1>Glitter is jouw<br><em>superkracht.</em></h1>
+    <p class="hero-sub">DIY rhinestone canvas kits, paint and sip avonden, bedazzle workshops en onvergetelijke events voor iedereen die gelooft dat het leven beter is met een beetje glitter. Gevestigd in Nederland, landelijk verzonden.</p>
+    <div class="hero-ctas">
+      <a href="/nl#kits" class="btn-primary" onclick="scrollToSection('kits');return false;">Bekijk de kits ✨</a>
+      <a href="/nl#workshops" class="btn-outline" onclick="scrollToSection('workshops');return false;">Boek een workshop →</a>
+    </div>
+    <div class="hero-trust">
+      <div class="stars">★★★★★</div>
+      <div><strong>200+</strong> tevreden makers &nbsp;·&nbsp; <strong>50+</strong> workshops door heel Nederland</div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-image-stack">
+      <img class="hero-main-img"
+           src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_HERO.jpg"
+           alt="Creative Solace rhinestone canvas art workshop"
+           onerror="this.src='https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80'"/>
+      <div class="hero-float-card card-1">
+        <div class="float-emoji">💎</div>
+        <div>
+          <div class="float-label">Rhinestone Kits</div>
+          <div class="float-sub">Verzonden in 1-2 dagen</div>
+        </div>
+      </div>
+      <div class="hero-float-card card-2">
+        <div class="float-num">50+</div>
+        <div class="float-label">Workshops</div>
+        <div class="float-sub">gegeven met liefde</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREVIOUSLY SEEN AT - ANIMATED -->
+<div class="seen-at-section">
+  <div class="seen-at-track-wrap">
+    <span class="seen-at-label-fixed">Eerder gezien bij</span>
+    <div class="seen-at-marquee">
+      <div class="seen-at-track">
+        <div class="seen-at-item"><span class="seen-at-dot-anim">✦</span><a href="https://www.foodhallen.nl/en" target="_blank" rel="noopener" class="seen-at-name">Foodhallen</a></div>
+        <div class="seen-at-item"><span class="seen-at-dot-anim">✦</span><a href="https://thegreyspace.net" target="_blank" rel="noopener" class="seen-at-name">The Grey Space in the Middle</a></div>
+        <div class="seen-at-item"><span class="seen-at-dot-anim">✦</span><a href="https://cafecremers.nl" target="_blank" rel="noopener" class="seen-at-name">Cafe Cremers</a></div>
+        <div class="seen-at-item"><span class="seen-at-dot-anim">✦</span><a href="https://thriftpark.nl" target="_blank" rel="noopener" class="seen-at-name">ThriftPark Amsterdam</a></div>
+        <div class="seen-at-item"><span class="seen-at-dot-anim">✦</span><a href="https://4pmentertainment.com" target="_blank" rel="noopener" class="seen-at-name">Kingsland Festival</a></div>
+        <div class="seen-at-item"><span class="seen-at-dot-anim">✦</span><a href="https://wearefirst.nl/" target="_blank" rel="noopener" class="seen-at-name">First x Kruidvat</a></div>
+        <div class="seen-at-item"><span class="seen-at-dot-anim">✦</span><a href="https://www.foodhallen.nl/en" target="_blank" rel="noopener" class="seen-at-name">Foodhallen</a></div>
+        <div class="seen-at-item"><span class="seen-at-dot-anim">✦</span><a href="https://thegreyspace.net" target="_blank" rel="noopener" class="seen-at-name">The Grey Space in the Middle</a></div>
+        <div class="seen-at-item"><span class="seen-at-dot-anim">✦</span><a href="https://cafecremers.nl" target="_blank" rel="noopener" class="seen-at-name">Cafe Cremers</a></div>
+        <div class="seen-at-item"><span class="seen-at-dot-anim">✦</span><a href="https://thriftpark.nl" target="_blank" rel="noopener" class="seen-at-name">ThriftPark Amsterdam</a></div>
+        <div class="seen-at-item"><span class="seen-at-dot-anim">✦</span><a href="https://4pmentertainment.com" target="_blank" rel="noopener" class="seen-at-name">Kingsland Festival</a></div>
+        <div class="seen-at-item"><span class="seen-at-dot-anim">✦</span><a href="https://wearefirst.nl/" target="_blank" rel="noopener" class="seen-at-name">First x Kruidvat</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BADGES -->
+<div class="badges-section">
+  <div class="badge-item"><span class="badge-icon">🚚</span> Gratis NL-verzending</div>
+  <div class="badge-item"><span class="badge-icon">💎</span> Premium kwaliteit</div>
+  <div class="badge-item"><span class="badge-icon">🎨</span> Geschikt voor beginners</div>
+  <div class="badge-item"><span class="badge-icon">🌟</span> Workshop experts</div>
+  <div class="badge-item"><span class="badge-icon">💌</span> Maatwerk B2B</div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how-it-works">
+  <div class="how-header reveal">
+    <div class="section-label">Hoe het werkt</div>
+    <h2 class="section-title">Van doos tot <em>meesterwerk</em></h2>
+    <p class="section-sub">Onze kits zijn zo ontworpen dat iedereen, ook een absolute beginner, iets prachtigs kan maken.</p>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card reveal">
+      <div class="step-icon">📦</div>
+      <div class="step-num">1</div>
+      <div class="step-title">Open je kit</div>
+      <p class="step-desc">In je Creative Solace doos: een premium 20x30cm canvas, hoogglans rhinestones, een precisiepen, een wasplaatje, speciale B7000-lijm en een stap-voor-stap handleiding. Je bent er klaar voor.</p>
+    </div>
+    <div class="step-card reveal" style="transition-delay:.1s">
+      <div class="step-icon">🖊️</div>
+      <div class="step-num">2</div>
+      <div class="step-title">Laad je pen</div>
+      <p class="step-desc">Dip de punt van je precisiepen in het wasplaatje. Zo pikt hij elke rhinestone schoon op. Geen pincet nodig, geen gedoe.</p>
+    </div>
+    <div class="step-card reveal" style="transition-delay:.2s">
+      <div class="step-icon">💎</div>
+      <div class="step-num">3</div>
+      <div class="step-title">Zet je steentjes vast</div>
+      <p class="step-desc">Breng een klein beetje B7000-lijm aan op het gedeelte waar je mee bezig bent. Gebruik je pen om elk steentje op te pakken en stevig vast te drukken. Werk sectie voor sectie en zie je ontwerp tot leven komen.</p>
+    </div>
+    <div class="step-card reveal" style="transition-delay:.3s">
+      <div class="step-icon">🖼️</div>
+      <div class="step-num">4</div>
+      <div class="step-title">Hang en geniet</div>
+      <p class="step-desc">Laat je werk uitharden en hang het op, geef het cadeau of pronk ermee. Tag ons als je klaar bent. We vinden het echt geweldig om ze allemaal te zien.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products-section" id="kits">
+  <div class="products-header">
+    <div class="reveal">
+      <div class="section-label">Rhinestone Kits</div>
+      <h2 class="section-title">De <em>Collectie</em></h2>
+    </div>
+    <div class="products-header-row">
+      <p class="section-sub reveal">Alle kits bevatten rhinestones, canvas, precisiepen, wasplaatje en B7000-lijm. Verzonden in 1 tot 2 werkdagen.</p>
+      <a href="/nl#kits" onclick="scrollToSection('kits');return false;" class="btn-outline reveal" style="white-space:nowrap;flex-shrink:0;">Bekijk alles →</a>
+    </div>
+  </div>
+
+  <div class="products-grid">
+    {products.length > 0 ? products.map((p, i) => (
+      <div class="product-card reveal" style={i > 0 ? `transition-delay:${i * 0.1}s` : ''} onclick={`addToCart('${p.data.title.replace(/'/g, "\\'")}',${p.data.price},'${p.data.stripePriceId || ''}')`}>
+        <div class="product-img-wrap">
+          {p.data.badge && <span class={`product-badge${p.data.badge.toLowerCase() === 'sale' ? ' sale' : ''}`}>{p.data.badge}</span>}
+          <img class="product-img-design" src={p.data.image} alt={`${p.data.title} DIY rhinestone canvas kit`} onerror="this.src='https://images.unsplash.com/photo-1490750967868-88df5691cc5f?w=600&q=80'"/>
+          {p.data.imageIRL && <img class="product-img-irl" src={p.data.imageIRL} alt={`${p.data.title} on wall`}/>}
+          <button class="product-quick-add">+ Voeg toe</button>
+        </div>
+        <div class="product-info">
+          <div class="product-name">{p.data.title}</div>
+          <div class="product-desc">{p.data.description}</div>
+          <div class="product-meta-row">20x30cm · Beginnersvriendelijk</div>
+          <div class="product-price">
+            <span class="price-now">€{p.data.price.toFixed(2).replace('.', ',')}</span>
+            {p.data.originalPrice && <span class="price-old">€{p.data.originalPrice.toFixed(2).replace('.', ',')}</span>}
+          </div>
+        </div>
+      </div>
+    )) : (
+      <>
+        <div class="product-card reveal" onclick="addToCart('Bouquet of Kisses',44.99)">
+          <div class="product-img-wrap">
+            <span class="product-badge sale">Bestseller</span>
+            <img class="product-img-design" src="/images/Bouquet_of_Kisses.webp" alt="Bouquet of Kisses DIY rhinestone canvas kit" onerror="this.src='https://images.unsplash.com/photo-1490750967868-88df5691cc5f?w=600&q=80'"/>
+            <button class="product-quick-add">+ Quick Add</button>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Bouquet of Kisses</div>
+            <div class="product-desc">Zeg het met kusjes. Dit stoere rhinestone canvas maakt van een boeket lipafdrukken een glanzend statement piece. Brutaal, romantisch en totaal uniek.</div>
+            <div class="product-meta-row">20x30cm · Beginner</div>
+            <div class="product-price"><span class="price-now">€44,99</span><span class="price-old">€69,00</span></div>
+          </div>
+        </div>
+        <div class="product-card reveal" style="transition-delay:.1s" onclick="addToCart('Chanel Lipstick',44.99)">
+          <div class="product-img-wrap">
+            <span class="product-badge sale">Fan Favourite</span>
+            <img class="product-img-design" src="/images/Chanel_Lipstick.webp" alt="Chanel Lipstick DIY rhinestone canvas kit" onerror="this.src='https://images.unsplash.com/photo-1586495777744-4e6232bf2b18?w=600&q=80'"/>
+            <button class="product-quick-add">+ Quick Add</button>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Chanel Lipstick</div>
+            <div class="product-desc">Het dubbele C-logo. Een klassieke rode lippenstift. Pop-art meets high fashion in dit opvallende rhinestone canvas.</div>
+            <div class="product-meta-row">20x30cm · Beginner</div>
+            <div class="product-price"><span class="price-now">€44,99</span><span class="price-old">€69,00</span></div>
+          </div>
+        </div>
+        <div class="product-card reveal" style="transition-delay:.2s" onclick="addToCart('Dior Heels',44.99)">
+          <div class="product-img-wrap">
+            <span class="product-badge sale">Limited</span>
+            <img class="product-img-design" src="/images/Dior_Heels.webp" alt="Dior Heels DIY rhinestone canvas kit" onerror="this.src='https://images.unsplash.com/photo-1515347619252-60a4bf4fff4f?w=600&q=80'"/>
+            <button class="product-quick-add">+ Quick Add</button>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Dior Heels</div>
+            <div class="product-desc">Luipaardprint bandjes, schakelketting details, het Dior-logo. Pure luxe mode-energie, steentje voor steentje.</div>
+            <div class="product-meta-row">20x30cm · Beginner</div>
+            <div class="product-price"><span class="price-now">€44,99</span><span class="price-old">€69,00</span></div>
+          </div>
+        </div>
+        <div class="product-card reveal" style="transition-delay:.3s" onclick="addToCart('Lucky 777',44.99)">
+          <div class="product-img-wrap">
+            <span class="product-badge sale">New In</span>
+            <img class="product-img-design" src="/images/Lucky_777.webp" alt="Lucky 777 DIY rhinestone canvas kit" onerror="this.src='https://images.unsplash.com/photo-1612187765456-db7a38bdb20d?w=600&q=80'"/>
+            <button class="product-quick-add">+ Quick Add</button>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Lucky 777</div>
+            <div class="product-desc">Driedubbele zevens, vol liefde. Drie roze dobbelstenen bezaaid met hartjes. Speels, Y2K-vibes en een publiekslieveling.</div>
+            <div class="product-meta-row">20x30cm · Beginner</div>
+            <div class="product-price"><span class="price-now">€44,99</span><span class="price-old">€69,00</span></div>
+          </div>
+        </div>
+      </>
+    )}
+  </div>
+</section>
+
+<!-- GALLERY STRIP -->
+<section class="gallery-section">
+  <div class="gallery-header">
+    <div class="section-label reveal">Gemaakt door onze community</div>
+    <h2 class="section-title reveal">Jouw creaties <em>IRL</em></h2>
+  </div>
+  <div class="gallery-scroll">
+    {galleryItems.length > 0 ? galleryItems.map(item => (
+      <div class="gallery-item">
+        <img src={item.data.image} alt={`Creative Solace — ${item.data.tag}`} />
+        <div class="gallery-item-overlay"><span class="gallery-tag">{item.data.tag}</span></div>
+      </div>
+    )) : (
+      <>
+        <div class="gallery-item">
+          <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSbuffalo/event-buffalo-1.png" alt="Creative Solace at Mr Buffalo"/>
+          <div class="gallery-item-overlay"><span class="gallery-tag">Mr Buffalo</span></div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSgreyspace/event-greyspace-1.png" alt="Creative Solace at The Grey Space"/>
+          <div class="gallery-item-overlay"><span class="gallery-tag">The Grey Space</span></div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/group-kit.png" alt="Creative Solace rhinestone kits"/>
+          <div class="gallery-item-overlay"><span class="gallery-tag">DIY Kits</span></div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSfoodhallen/event-foodhallen-1.png" alt="Creative Solace at Foodhallen"/>
+          <div class="gallery-item-overlay"><span class="gallery-tag">Foodhallen</span></div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CSthriftpark/event-thriftpark-4.png" alt="Creative Solace at ThriftPark"/>
+          <div class="gallery-item-overlay"><span class="gallery-tag">ThriftPark</span></div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS3house/event-3house-1.png" alt="Creative Solace at 3House"/>
+          <div class="gallery-item-overlay"><span class="gallery-tag">3House</span></div>
+        </div>
+      </>
+    )}
+  </div>
+</section>
+
+<!-- WORKSHOPS -->
+<section class="workshops-section" id="workshops">
+  <div class="workshops-header reveal">
+    <div class="section-label" style="color:var(--yellow)">Ervaringen</div>
+    <h2 class="section-title">Workshops die <em style="background:var(--grad-pink);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">bijblijven</em></h2>
+    <p class="section-sub">Of het nu gaat om een meidenuitje in Rotterdam, een verjaardagsfeestje, een vrijgezellenfeest of een bedrijfsuitje door heel Nederland — wij hebben de perfecte creatieve ervaring voor jou.</p>
+  </div>
+
+  <div class="workshops-grid">
+    {workshops.length > 0 ? workshops.map((w, i) => (
+      <div class={`workshop-card${w.data.title === 'Bachelorette & Birthday Packages' || w.data.title === 'Bachelorette and Birthday Packages' ? ' workshop-large' : ''} reveal`} style={i > 0 ? `transition-delay:${i * 0.1}s` : ''} onclick={`openQuote('${w.data.title.replace(/'/g, "\\'")}')`}>
+        <div>
+          <div class="workshop-emoji">{w.data.emoji}</div>
+          <div class="workshop-label">{w.data.tagline}</div>
+          <h3 class="workshop-title">{w.data.title}</h3>
+          <p class="workshop-desc">{w.data.description}</p>
+          <div class="workshop-meta">
+            {w.data.duration && <div class="meta-item"><span>⏱</span> {w.data.duration}</div>}
+            {w.data.groupSize && <div class="meta-item"><span>👥</span> {w.data.groupSize}</div>}
+            {w.data.location && <div class="meta-item"><span>📍</span> {w.data.location}</div>}
+          </div>
+          <a href="#" class="btn-workshop" onclick={`event.preventDefault();openQuote('${w.data.title.replace(/'/g, "\\'")}')`}>Vraag een offerte aan</a>
+        </div>
+        {(w.data.title === 'Bachelorette & Birthday Packages' || w.data.title === 'Bachelorette and Birthday Packages') && (
+          <div class="workshop-img">
+            <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/event-private.png" alt="Private workshop event"/>
+          </div>
+        )}
+      </div>
+    )) : (
+      <>
+        <div class="workshop-card reveal" onclick="openQuote('Paint and Sip')">
+          <div class="workshop-emoji">🎨</div>
+          <div class="workshop-label">Meest Populair</div>
+          <h3 class="workshop-title">Paint and Sip</h3>
+          <p class="workshop-desc">Pak een glas wijn (of bubbels!) en schilder je weg naar een meesterwerk. Geen ervaring nodig, alleen goede energie en gezelschap.</p>
+          <div class="workshop-meta">
+            <div class="meta-item"><span>⏱</span> 2 tot 3 uur</div>
+            <div class="meta-item"><span>👥</span> 6 tot 25 personen</div>
+            <div class="meta-item"><span>📍</span> Jouw locatie of de onze</div>
+          </div>
+          <a href="#" class="btn-workshop" onclick="event.preventDefault();openQuote('Paint and Sip')">Request a quote</a>
+        </div>
+        <div class="workshop-card reveal" style="transition-delay:.1s" onclick="openQuote('Bedazzle and Sip')">
+          <div class="workshop-emoji">💎</div>
+          <div class="workshop-label">Nieuw en Trending</div>
+          <h3 class="workshop-title">Bedazzle and Sip</h3>
+          <p class="workshop-desc">Rhinestone-magie meets cocktail-uur. Kies je kit-ontwerp, nip aan je drankje en maak samen iets schitterends met je vriendinnen.</p>
+          <div class="workshop-meta">
+            <div class="meta-item"><span>⏱</span> 2 tot 3 uur</div>
+            <div class="meta-item"><span>👥</span> 6 tot 20 personen</div>
+            <div class="meta-item"><span>📍</span> Wij komen naar jou</div>
+          </div>
+          <a href="#" class="btn-workshop" onclick="event.preventDefault();openQuote('Bedazzle and Sip')">Request a quote</a>
+        </div>
+        <div class="workshop-card workshop-large reveal">
+          <div>
+            <div class="workshop-emoji">🥂</div>
+            <div class="workshop-label">Privé-events</div>
+            <h3 class="workshop-title">Vrijgezellenfeest en Verjaardagspakketten</h3>
+            <p class="workshop-desc">Maak jouw speciale gelegenheid echt onvergetelijk. Wij regelen alles: materialen, opbouw, begeleiding en goede energie — jij focust op het plezier.</p>
+            <div class="workshop-meta">
+              <div class="meta-item"><span>✨</span> Volledig aanpasbaar</div>
+              <div class="meta-item"><span>🎁</span> Kunstwerk om mee naar huis te nemen</div>
+              <div class="meta-item"><span>💬</span> Planning via WhatsApp</div>
+            </div>
+            <a href="#" class="btn-workshop" onclick="event.preventDefault();openQuote('Private Event')">Plan mijn event</a>
+          </div>
+          <div class="workshop-img">
+            <img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/event-private.png" alt="Private workshop event"/>
+          </div>
+        </div>
+      </>
+    )}
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section class="events-section" id="events">
+
+  {upcomingEvents.length > 0 && (
+    <div style="margin-bottom:64px;">
+      <div class="reveal">
+        <div class="section-label">Binnenkort</div>
+        <h2 class="section-title">Aankomende <em>events</em></h2>
+        <p class="section-sub">Koop je ticket en kom ons ontmoeten in het echt — materialen inbegrepen.</p>
+      </div>
+      <div class="events-grid" style="margin-top:40px;">
+        {upcomingEvents.map((ev, i) => (
+          <div class="event-card reveal" style={i > 0 ? `transition-delay:${i * 0.1}s` : ''}>
+            <div class="event-img" data-slider>
+              <div class="event-img-slider">
+                <img class="event-img-slide" src={ev.data.image} alt={ev.data.title} onerror="this.src='https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80'"/>
+              </div>
+              <div class="event-type-badge">{typeLabel(ev.data.type)}</div>
+              {ev.data.ticketPrice && <div class="event-ticket-price">€{ev.data.ticketPrice}</div>}
+            </div>
+            <div class="event-content">
+              <div class="event-date">{fmtDate(ev.data.date)}</div>
+              <h3 class="event-title">{ev.data.title}</h3>
+              <div class="event-location">📍 {ev.data.location}{ev.data.city ? `, ${ev.data.city}` : ''}</div>
+              {ev.data.ticketPrice ? (
+                <button class="btn-ticket" onclick={`buyTicket('${ev.id}', ${ev.data.ticketPrice})`}>
+                  Tickets kopen — €{ev.data.ticketPrice} ✨
+                </button>
+              ) : ev.data.ticketUrl ? (
+                <a href={ev.data.ticketUrl} target="_blank" rel="noopener" class="event-cta">More info →</a>
+              ) : (
+                <span class="event-cta" style="color:var(--mid);cursor:default;">Free entry</span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <div class="reveal">
+    <div class="section-label">Vind ons IRL</div>
+    <h2 class="section-title">Waar we <em>zijn geweest</em></h2>
+    <p class="section-sub">Van thrift markets tot festivals en bedrijfsevents — wij staan door heel Nederland met onze kits, energie en glitter.</p>
+  </div>
+
+  <div class="events-grid" style="margin-top:40px;">
+    {pastEvents.length > 0 ? pastEvents.map((ev, i) => (
+      <div class="event-card reveal" style={i > 0 ? `transition-delay:${i * 0.1}s` : ''} onclick={`window.location.href='/nl/events/${ev.id}'`} style="cursor:pointer">
+        <div class="event-img" data-slider>
+          <div class="event-img-slider">
+            <img class="event-img-slide" src={ev.data.image} alt={ev.data.title} onerror="this.src='https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80'"/>
+          </div>
+          <div class="event-type-badge">{typeLabel(ev.data.type)}</div>
+          <button class="event-img-nav prev" onclick="slideEvent(event,-1)">‹</button>
+          <button class="event-img-nav next" onclick="slideEvent(event,1)">›</button>
+          <div class="event-img-dots"></div>
+        </div>
+        <div class="event-content">
+          <div class="event-date">{fmtDate(ev.data.date)}</div>
+          <h3 class="event-title">{ev.data.title}</h3>
+          <div class="event-location">📍 {ev.data.location}{ev.data.city ? `, ${ev.data.city}` : ''}</div>
+        </div>
+      </div>
+    )) : (
+      <>
+        <div class="event-card reveal">
+          <div class="event-img" data-slider>
+            <div class="event-img-slider">
+              <img class="event-img-slide" src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80" alt="Kingsland Festival"/>
+            </div>
+            <div class="event-type-badge">Festival</div>
+          </div>
+          <div class="event-content">
+            <div class="event-date">Kingsland Festival 2024</div>
+            <h3 class="event-title">Kingsland Festival</h3>
+            <div class="event-location">📍 Netherlands</div>
+          </div>
+        </div>
+        <div class="event-card reveal" style="transition-delay:.1s">
+          <div class="event-img" data-slider>
+            <div class="event-img-slider">
+              <img class="event-img-slide" src="https://images.unsplash.com/photo-1551818255-e6e10975bc17?w=600&q=80" alt="ThriftPark Amsterdam"/>
+            </div>
+            <div class="event-type-badge">Thrift Market</div>
+          </div>
+          <div class="event-content">
+            <div class="event-date">ThriftPark Amsterdam</div>
+            <h3 class="event-title">ThriftPark Amsterdam</h3>
+            <div class="event-location">📍 Amsterdam</div>
+          </div>
+        </div>
+        <div class="event-card reveal" style="transition-delay:.2s">
+          <div class="event-img" data-slider>
+            <div class="event-img-slider">
+              <img class="event-img-slide" src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80" alt="Foodhallen Den Haag"/>
+            </div>
+            <div class="event-type-badge">Pop-up</div>
+          </div>
+          <div class="event-content">
+            <div class="event-date">Foodhallen Den Haag</div>
+            <h3 class="event-title">Foodhallen Den Haag</h3>
+            <div class="event-location">📍 Den Haag</div>
+          </div>
+        </div>
+      </>
+    )}
+  </div>
+
+  <div class="coming-soon-events reveal">
+    <div class="coming-soon-inner">
+      <span class="coming-soon-icon">📅</span>
+      <div>
+        <div class="coming-soon-title">Binnenkort meer events</div>
+        <div class="coming-soon-sub">Volg ons op Instagram voor onze volgende pop-up bij jou in de buurt.</div>
+      </div>
+      <a href="https://www.instagram.com/creativesolace__/" target="_blank" rel="noopener" class="btn-outline">Volg ons ✨</a>
+    </div>
+  </div>
+</section>
+
+<!-- B2B -->
+<section class="b2b-section" id="b2b">
+  <div class="b2b-grid">
+    <div class="reveal">
+      <div class="section-label">Voor merken en bedrijven</div>
+      <h2 class="section-title">Laten we iets <em>op maat</em> maken</h2>
+      <p class="section-sub">Of het nu gaat om een teambuilding, branded merchandise, een eventstand of een samenwerking — wij bouwen graag unieke creatieve ervaringen voor bedrijven.</p>
+
+      <div class="b2b-perks">
+        <div class="perk">
+          <div class="perk-icon">🎯</div>
+          <div class="perk-title">Corporate teamevents</div>
+          <p class="perk-desc">Creatieve workshops die je team echt samenbrengen. Geen verplichte teambuildingoefeningen.</p>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">🏪</div>
+          <div class="perk-title">Festival- en marktstandjes</div>
+          <p class="perk-desc">Wij zetten een branded stand op en brengen de glitter naar jouw event.</p>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">🎁</div>
+          <div class="perk-title">Custom branded kits</div>
+          <p class="perk-desc">White-label rhinestone kits met jouw branding, perfect als cadeau.</p>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">✨</div>
+          <div class="perk-title">Maatwerk kunstwerken</div>
+          <p class="perk-desc">Laat unieke rhinestone kunstwerken maken voor jouw merk of ruimte.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="b2b-form reveal" id="contact">
+      <div class="form-title">Vertel ons over jouw project</div>
+      <p class="form-sub">Vul het formulier in en wij nemen binnen 24 uur contact met je op.</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Voornaam</label>
+          <input class="form-input" type="text" placeholder="Sophie"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Achternaam</label>
+          <input class="form-input" type="text" placeholder="de Boer"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">E-mailadres *</label>
+        <input class="form-input" type="email" placeholder="sophie@bedrijf.nl"/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Type event *</label>
+        <select class="form-select">
+          <option value="">Selecteer een optie...</option>
+          <option>Corporate teamevent</option>
+          <option>Festival / marktstand</option>
+          <option>Custom branded kits</option>
+          <option>Maatwerk kunstwerk</option>
+          <option>Anders</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Gewenste datum</label>
+          <input class="form-input" type="date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Aantal gasten</label>
+          <input class="form-input" type="number" placeholder="bijv. 20"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Bericht</label>
+        <textarea class="form-textarea" placeholder="Vertel ons meer over wat je in gedachten hebt..."></textarea>
+      </div>
+
+      <button class="btn-submit" onclick="handleFormSubmit(event)">Verstuur mijn aanvraag ✨</button>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="testimonials-section">
+  <div class="testimonials-header reveal">
+    <div class="section-label">Reacties uit de community</div>
+    <h2 class="section-title">Ze zijn <em>verslaafd</em></h2>
+    <p class="section-sub">Echte reviews van echte glitter-enthousiastelingen door heel Nederland.</p>
+  </div>
+
+  <div id="reviewsContainer">
+    <div class="reviews-empty reveal">
+      <div class="reviews-empty-icon">💎</div>
+      <h3 class="reviews-empty-title">Wees een van de eersten die een review schrijft</h3>
+      <p class="reviews-empty-sub">We zijn net begonnen. Als je een kit hebt geprobeerd of een workshop hebt bijgewoond, horen we graag van je.</p>
+      <button class="btn-primary" onclick="openReviewModal()" style="margin-top:24px;">Schrijf een review ✨</button>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter-section">
+  <div class="section-label" style="color:var(--yellow);position:relative;z-index:1">Blijf op de hoogte</div>
+  <h2 class="section-title" style="margin-bottom:12px">Als eerste toegang tot <em style="background:var(--grad-pink);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">nieuwe drops</em></h2>
+  <p class="section-sub">Nieuwe kit-ontwerpen, workshopdata, festivaloptredens, direct in je inbox. Geen spam, alleen glitter.</p>
+  <div class="newsletter-form">
+    <input class="newsletter-input" type="email" placeholder="jouw@email.nl"/>
+    <button class="btn-cart-mobile" onclick="handleNewsletter(event)">Aanmelden ✨</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="/nl" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
+      <p class="footer-tagline">Wij brengen glitter, creativiteit en goede energie naar workshops, markten, festivals en woonkamers door heel Nederland en daarbuiten.</p>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/creativesolace__/" target="_blank" rel="noopener" class="social-btn" title="Instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@creativesolace_" target="_blank" rel="noopener" class="social-btn" title="TikTok">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
+        </a>
+        <a href="https://www.facebook.com/creativesolace/" target="_blank" rel="noopener" class="social-btn" title="Facebook">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/creative-solace/" target="_blank" rel="noopener" class="social-btn" title="LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <div class="footer-col-title">Shop</div>
+        <ul class="footer-links">
+          <li><a href="/nl#kits">Alle kits</a></li>
+          <li><a href="/nl/services">Ons aanbod</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Ervaringen</div>
+        <ul class="footer-links">
+          <li><a href="/nl#workshops">Paint and Sip</a></li>
+          <li><a href="/nl#workshops">Bedazzle and Sip</a></li>
+          <li><a href="/nl#workshops">Privé-events</a></li>
+          <li><a href="/nl#b2b">Corporate B2B</a></li>
+          <li><a href="/nl#events">Aankomende events</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Hulp</div>
+        <ul class="footer-links">
+          <li><a href="mailto:hello@creativesolace.com">Neem contact op</a></li>
+          <li><a href="/nl/faq">Veelgestelde vragen</a></li>
+          <li><a href="/nl/shipping">Verzending en retourneren</a></li>
+          <li><a href="/nl/privacy">Privacybeleid</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 Creative Solace. Gemaakt met 💎 in Nederland.</span>
+    <span>KVK: 93777337 &nbsp;·&nbsp; hello@creativesolace.com</span>
+  </div>
+</footer>
+
+<!-- MOBILE BOTTOM TAB BAR -->
+<nav class="bottom-tab-bar">
+  <a href="#" class="tab-item active" onclick="scrollTo(0,0);setActiveTab(this);return false;">
+    <span class="tab-icon">🏠</span>
+    <span class="tab-label">Home</span>
+  </a>
+  <a href="/nl#kits" class="tab-item" onclick="scrollToSection('kits');setActiveTab(this);return false;">
+    <span class="tab-icon">💎</span>
+    <span class="tab-label">Kits</span>
+  </a>
+  <a href="/nl#workshops" class="tab-item" onclick="scrollToSection('workshops');setActiveTab(this);return false;">
+    <span class="tab-icon">🎨</span>
+    <span class="tab-label">Workshops</span>
+  </a>
+  <a href="/nl#events" class="tab-item" onclick="scrollToSection('events');setActiveTab(this);return false;">
+    <span class="tab-icon">📍</span>
+    <span class="tab-label">Events</span>
+  </a>
+  <a href="/nl#b2b" class="tab-item" onclick="scrollToSection('b2b');setActiveTab(this);return false;">
+    <span class="tab-icon">🤝</span>
+    <span class="tab-label">B2B</span>
+  </a>
+</nav>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay-bg" id="cartOverlay" onclick="toggleCart()"></div>
+
+<!-- CART DRAWER -->
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <div class="cart-title">Jouw winkelwagen 🛒</div>
+    <button class="modal-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">
+      <div class="cart-empty-emoji">✨</div>
+      <p>Je winkelwagen is leeg. Tijd om te schitteren!</p>
+      <br/>
+      <button class="btn-primary" onclick="toggleCart();scrollToSection('kits')" style="margin-top:12px;">Bekijk kits →</button>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total">
+      <span>Total</span>
+      <span id="cartTotalAmt">€0,00</span>
+    </div>
+    <button class="btn-submit" onclick="handleCheckout()">Afrekenen →</button>
+  </div>
+</div>
+
+<!-- WORKSHOP QUOTE MODAL -->
+<div class="modal-overlay" id="quoteModal" onclick="if(event.target===this)closeQuote()">
+  <div class="modal">
+    <div class="modal-pill"></div>
+    <button class="modal-close" onclick="closeQuote()">✕</button>
+    <div class="modal-title" id="quoteTitle">Offerte aanvragen ✨</div>
+    <p class="modal-sub">Vertel ons wat je in gedachten hebt en wij sturen je binnen 24 uur een voorstel op maat.</p>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Voornaam *</label>
+        <input class="form-input" id="quoteName" type="text" placeholder="Sophie"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Achternaam</label>
+        <input class="form-input" type="text" placeholder="de Boer"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">E-mailadres *</label>
+      <input class="form-input" id="quoteEmail" type="email" placeholder="sophie@email.nl"/>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Type boeking *</label>
+      <select class="form-select" id="quoteType">
+        <option value="">Selecteer een optie...</option>
+        <option>Privé-event (vriendinnen, verjaardag, vrijgezellenfeest)</option>
+        <option>Locatie of horecaboeking</option>
+        <option>Corporate teamevent</option>
+        <option>Festival of marktstand</option>
+        <option>Anders</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Gewenste datum</label>
+        <input class="form-input" id="quoteDate" type="date"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Aantal gasten</label>
+        <input class="form-input" id="quoteGuests" type="number" placeholder="bijv. 15"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Overige wensen?</label>
+      <textarea class="form-textarea" id="quoteMessage" placeholder="Locatievoorkeuren, thema-ideeën, dieetwensen..."></textarea>
+    </div>
+
+    <button class="btn-submit" id="quoteSubmitBtn" onclick="handleQuoteSubmit(event)">Verstuur mijn aanvraag ✨</button>
+  </div>
+</div>
+
+<!-- B2C ENQUIRY MODAL -->
+<div class="modal-overlay" id="bookingModal" onclick="if(event.target===this)closeBooking()">
+  <div class="modal">
+    <div class="modal-pill"></div>
+    <button class="modal-close" onclick="closeBooking()">✕</button>
+    <div class="modal-title" id="bookingTitle">Neem contact op 💌</div>
+    <p class="modal-sub">Vragen over een kit of iets speciaals in de planning? Wij reageren binnen 24 uur.</p>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">First Name *</label>
+        <input class="form-input" type="text" placeholder="Sophie"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Last Name</label>
+        <input class="form-input" type="text" placeholder="de Boer"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Email *</label>
+      <input class="form-input" type="email" placeholder="sophie@email.com"/>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Waarmee kunnen we je helpen? *</label>
+      <select class="form-select" id="workshopType">
+        <option value="">Selecteer een optie...</option>
+        <option>Vraag over een product</option>
+        <option>Privé-workshop boeken</option>
+        <option>Vrijgezellenfeest of verjaardag</option>
+        <option>Iets anders</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Jouw bericht</label>
+      <textarea class="form-textarea" placeholder="Vertel ons wat je in gedachten hebt..."></textarea>
+    </div>
+
+    <button class="btn-submit" onclick="handleBookingSubmit(event)">Verstuur mijn bericht ✨</button>
+  </div>
+</div>
+
+<!-- REVIEW MODAL -->
+<div class="modal-overlay" id="reviewModal" onclick="if(event.target===this)closeReviewModal()">
+  <div class="modal">
+    <div class="modal-pill"></div>
+    <button class="modal-close" onclick="closeReviewModal()">✕</button>
+    <div class="modal-title">Deel jouw ervaring 💎</div>
+    <p class="modal-sub">Jouw review verschijnt op de site na goedkeuring. We lezen elke review persoonlijk.</p>
+
+    <div class="form-group">
+      <label class="form-label">Jouw naam *</label>
+      <input class="form-input" id="reviewName" type="text" placeholder="Sophie"/>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Jouw stad</label>
+      <input class="form-input" id="reviewCity" type="text" placeholder="Rotterdam"/>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Welke kit of workshop? *</label>
+      <select class="form-select" id="reviewProduct">
+        <option value="">Selecteer een optie...</option>
+        <option>Bouquet of Kisses kit</option>
+        <option>Chanel Lipstick kit</option>
+        <option>Dior Heels kit</option>
+        <option>Lucky 777 kit</option>
+        <option>Paint and Sip workshop</option>
+        <option>Bedazzle and Sip workshop</option>
+        <option>Privé-event</option>
+        <option>Bedrijfsevent</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Jouw beoordeling *</label>
+      <div class="star-rating" id="starRating">
+        <button class="star-btn" onclick="setRating(1)">★</button>
+        <button class="star-btn" onclick="setRating(2)">★</button>
+        <button class="star-btn" onclick="setRating(3)">★</button>
+        <button class="star-btn" onclick="setRating(4)">★</button>
+        <button class="star-btn" onclick="setRating(5)">★</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Jouw review *</label>
+      <textarea class="form-textarea" id="reviewText" placeholder="Vertel ons wat je er zo leuk aan vond..."></textarea>
+    </div>
+
+    <button class="btn-submit" onclick="handleReviewSubmit(event)">Verstuur mijn review ✨</button>
+  </div>
+</div>
+
+<script is:inline>
+// ── CART ──
+let cart = [];
+let cartOpen = false;
+
+function toggleCart() {
+  cartOpen = !cartOpen;
+  document.getElementById('cartDrawer').classList.toggle('open', cartOpen);
+  document.getElementById('cartOverlay').classList.toggle('active', cartOpen);
+  document.body.style.overflow = cartOpen ? 'hidden' : '';
+}
+
+async function buyTicket(eventSlug, ticketPrice) {
+  const btn = event.target;
+  btn.textContent = 'Bezig met doorsturen naar Stripe...';
+  btn.disabled = true;
+  try {
+    const res = await fetch('/api/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: [{ priceId: 'ticket_' + eventSlug, qty: 1 }], eventSlug, isTicket: true, ticketPrice })
+    });
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      alert('Er is iets misgegaan. Probeer het opnieuw of neem contact op via hello@creativesolace.com');
+      btn.textContent = 'Tickets kopen — €' + ticketPrice + ' ✨';
+      btn.disabled = false;
+    }
+  } catch(e) {
+    alert('Something went wrong. Please try again or contact us at hello@creativesolace.com');
+    btn.textContent = 'Get tickets — €' + ticketPrice + ' ✨';
+    btn.disabled = false;
+  }
+}
+
+async function handleCheckout() {
+  const btn = document.querySelector('#cartFooter .btn-submit');
+  if (!btn) return;
+
+  const itemsWithPrice = cart.filter(i => i.priceId);
+  if (itemsWithPrice.length === 0) {
+    alert('Checkout is not available for this item yet. Please contact us at hello@creativesolace.com');
+    return;
+  }
+
+  btn.textContent = 'Redirecting to Stripe...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: itemsWithPrice.map(i => ({ priceId: i.priceId, qty: i.qty })) })
+    });
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      alert('Er is iets misgegaan. Probeer het opnieuw of neem contact op.');
+      btn.textContent = 'Afrekenen →';
+      btn.disabled = false;
+    }
+  } catch (e) {
+    alert('Something went wrong. Please try again or contact us.');
+    btn.textContent = 'Checkout →';
+    btn.disabled = false;
+  }
+}
+
+function addToCart(name, price, priceId) {
+  const existing = cart.find(i => i.name === name);
+  if (existing) { existing.qty++; } else { cart.push({ name, price, priceId: priceId || '', qty: 1 }); }
+  renderCart();
+  if (!cartOpen) toggleCart();
+}
+
+function renderCart() {
+  const itemsEl = document.getElementById('cartItems');
+  const footerEl = document.getElementById('cartFooter');
+  const counts = document.querySelectorAll('.cart-count');
+
+  if (cart.length === 0) {
+    itemsEl.innerHTML = `<div class="cart-empty"><div class="cart-empty-emoji">✨</div><p>Your cart is empty. Time to sparkle!</p><br/><button class="btn-primary" onclick="toggleCart();scrollToSection('kits')" style="margin-top:12px;">Shop kits →</button></div>`;
+    footerEl.style.display = 'none';
+  } else {
+    itemsEl.innerHTML = cart.map((item, i) => `
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid rgba(60,20,40,.07);">
+        <div style="width:52px;height:52px;border-radius:10px;background:var(--pink-pale);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">💎</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:600;font-size:13px;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.name}</div>
+          <div style="font-size:12px;color:var(--pink);font-weight:700;margin-top:3px;">€${item.price.toFixed(2).replace('.',',')}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <button onclick="changeQty(${i},-1)" style="width:26px;height:26px;border-radius:50%;border:1.5px solid rgba(60,20,40,.15);background:none;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;">−</button>
+          <span style="font-weight:600;min-width:18px;text-align:center;font-size:13px;">${item.qty}</span>
+          <button onclick="changeQty(${i},1)" style="width:26px;height:26px;border-radius:50%;border:1.5px solid rgba(60,20,40,.15);background:none;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;">+</button>
+        </div>
+      </div>`).join('');
+    footerEl.style.display = 'block';
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    document.getElementById('cartTotalAmt').textContent = '€' + total.toFixed(2).replace('.', ',');
+  }
+
+  const totalQty = cart.reduce((s, i) => s + i.qty, 0);
+  counts.forEach(el => el.textContent = totalQty);
+}
+
+function changeQty(index, delta) {
+  cart[index].qty += delta;
+  if (cart[index].qty <= 0) cart.splice(index, 1);
+  renderCart();
+}
+
+// ── BOTTOM TAB ──
+function setActiveTab(el) {
+  document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ── QUOTE MODAL (workshops) ──
+function openQuote(type) {
+  document.getElementById('quoteTitle').textContent = 'Offerte aanvragen: ' + type + ' ✨';
+  const sel = document.getElementById('quoteType');
+  sel.value = '';
+  document.getElementById('quoteModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeQuote() {
+  document.getElementById('quoteModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+async function handleQuoteSubmit(e) {
+  const btn = e.target;
+  const name = document.getElementById('quoteName').value.trim();
+  const email = document.getElementById('quoteEmail').value.trim();
+  const type = document.getElementById('quoteType').value;
+
+  if (!name || !email || !type) {
+    btn.textContent = 'Vul alle verplichte velden in';
+    btn.style.background = '#e57373';
+    setTimeout(() => { btn.textContent = 'Send my request ✨'; btn.style.background = ''; }, 2000);
+    return;
+  }
+
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+
+  try {
+    await fetch('/api/booking', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        email,
+        workshopType: type,
+        preferredDate: document.getElementById('quoteDate').value,
+        guests: document.getElementById('quoteGuests').value,
+        message: document.getElementById('quoteMessage').value.trim()
+      })
+    });
+  } catch { /* graceful fallback */ }
+
+  btn.textContent = '✅ Aanvraag verstuurd! We nemen binnen 24 uur contact op.';
+  btn.style.background = 'linear-gradient(135deg,#34d399,#10b981)';
+  setTimeout(() => {
+    closeQuote();
+    btn.textContent = 'Send my request ✨';
+    btn.style.background = '';
+    btn.disabled = false;
+  }, 2400);
+}
+
+// ── B2C CONTACT MODAL ──
+function openBooking(type) {
+  document.getElementById('bookingTitle').textContent = 'Get in touch 💌';
+  document.getElementById('workshopType').value = '';
+  document.getElementById('bookingModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeBooking() {
+  document.getElementById('bookingModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+async function handleBookingSubmit(e) {
+  const btn = e.target;
+  const nameEl = btn.closest('.modal').querySelector('input[type="text"]');
+  const emailEl = btn.closest('.modal').querySelector('input[type="email"]');
+  const typeEl = document.getElementById('workshopType');
+
+  if (!nameEl.value.trim() || !emailEl.value.trim() || !typeEl.value) {
+    btn.textContent = 'Vul alle verplichte velden in';
+    btn.style.background = '#e57373';
+    setTimeout(() => { btn.textContent = 'Send my message ✨'; btn.style.background = ''; }, 2000);
+    return;
+  }
+
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+
+  try {
+    await fetch('/api/enquiry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: nameEl.value.trim(),
+        email: emailEl.value.trim(),
+        enquiryType: typeEl.value,
+        message: btn.closest('.modal').querySelector('textarea')?.value.trim()
+      })
+    });
+  } catch { /* graceful fallback */ }
+
+  btn.textContent = '✅ Bericht verstuurd! We nemen snel contact op.';
+  btn.style.background = 'linear-gradient(135deg,#34d399,#10b981)';
+  setTimeout(() => {
+    closeBooking();
+    btn.textContent = 'Send my message ✨';
+    btn.style.background = '';
+    btn.disabled = false;
+  }, 2000);
+}
+
+// ── REVIEW MODAL ──
+let selectedRating = 0;
+
+function openReviewModal() {
+  document.getElementById('reviewModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeReviewModal() {
+  document.getElementById('reviewModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function setRating(val) {
+  selectedRating = val;
+  document.querySelectorAll('.star-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i < val);
+  });
+}
+
+async function handleReviewSubmit(e) {
+  const btn = e.target;
+  const name = document.getElementById('reviewName').value.trim();
+  const product = document.getElementById('reviewProduct').value;
+  const text = document.getElementById('reviewText').value.trim();
+
+  if (!name || !product || !text || selectedRating === 0) {
+    btn.textContent = 'Please fill in all required fields';
+    btn.style.background = '#e57373';
+    setTimeout(() => { btn.textContent = 'Submit my review ✨'; btn.style.background = ''; }, 2000);
+    return;
+  }
+
+  btn.textContent = 'Submitting...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/review', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        city: document.getElementById('reviewCity').value.trim(),
+        product,
+        rating: selectedRating,
+        text
+      })
+    });
+    if (!res.ok) throw new Error();
+  } catch { /* graceful fallback */ }
+
+  btn.textContent = '✅ Bedankt! We bekijken jouw inzending zo snel mogelijk.';
+  btn.style.background = 'linear-gradient(135deg,#34d399,#10b981)';
+  setTimeout(() => {
+    closeReviewModal();
+    btn.textContent = 'Submit my review ✨';
+    btn.style.background = '';
+    btn.disabled = false;
+    selectedRating = 0;
+    setRating(0);
+  }, 2400);
+}
+
+// ── B2B FORM ──
+async function handleFormSubmit(e) {
+  const btn = e.target;
+  const form = btn.closest('.b2b-form');
+  const email = form.querySelector('input[type="email"]').value.trim();
+  const eventType = form.querySelector('select').value;
+
+  if (!email || !eventType) {
+    btn.textContent = 'Vul jouw e-mailadres en type event in';
+    btn.style.background = '#e57373';
+    setTimeout(() => { btn.textContent = 'Send my enquiry ✨'; btn.style.background = ''; }, 2000);
+    return;
+  }
+
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+
+  try {
+    await fetch('/api/enquiry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: form.querySelectorAll('input[type="text"]')[0]?.value.trim(),
+        email,
+        eventType,
+        preferredDate: form.querySelector('input[type="date"]')?.value,
+        guests: form.querySelector('input[type="number"]')?.value,
+        message: form.querySelector('textarea')?.value.trim()
+      })
+    });
+  } catch { /* graceful fallback */ }
+
+  btn.textContent = "✅ Aanvraag verstuurd! We nemen snel contact op.";
+  btn.style.background = 'linear-gradient(135deg,#34d399,#10b981)';
+  setTimeout(() => {
+    btn.textContent = 'Send my enquiry ✨';
+    btn.style.background = '';
+    btn.disabled = false;
+  }, 3000);
+}
+
+// ── NEWSLETTER ──
+function handleNewsletter(e) {
+  const btn = e.target;
+  btn.textContent = '🎉 Welkom bij de club!';
+  setTimeout(() => { btn.textContent = 'Subscribe ✨'; }, 3000);
+}
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── SMOOTH SCROLL ──
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── EVENT GALLERY SLIDERS ──
+function initEventSliders() {
+  document.querySelectorAll('.event-img[data-slider]').forEach(container => {
+    const slider = container.querySelector('.event-img-slider');
+    const slides = container.querySelectorAll('.event-img-slide');
+    const dotsEl = container.querySelector('.event-img-dots');
+    if (!slider || slides.length === 0) return;
+
+    let current = 0;
+
+    if (slides.length > 1) {
+      slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'event-img-dot' + (i === 0 ? ' active' : '');
+        dot.onclick = (e) => { e.stopPropagation(); goTo(i); };
+        dotsEl.appendChild(dot);
+      });
+    }
+
+    function goTo(n) {
+      current = (n + slides.length) % slides.length;
+      slider.style.transform = `translateX(-${current * 100}%)`;
+      container.querySelectorAll('.event-img-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === current);
+      });
+    }
+
+    container._slideEvent = (dir) => goTo(current + dir);
+
+    if (slides.length <= 1) {
+      container.querySelectorAll('.event-img-nav').forEach(b => b.style.display = 'none');
+      if (dotsEl) dotsEl.style.display = 'none';
+    }
+  });
+}
+
+function slideEvent(e, dir) {
+  e.stopPropagation();
+  const container = e.target.closest('.event-img[data-slider]');
+  if (container && container._slideEvent) container._slideEvent(dir);
+}
+
+document.addEventListener('DOMContentLoaded', initEventSliders);
+initEventSliders();
+
+// ── DESKTOP NAV ACTIVE ON SCROLL ──
+const sections = ['kits','workshops','events','b2b'];
+const navLinks = document.querySelectorAll('.nav-links a');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - 120) current = id;
+  });
+  navLinks.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === `#${current}`) a.classList.add('active');
+  });
+  if (window.scrollY < 200) navLinks[0].classList.add('active');
+});
+</script>
+</body>
+</html>
