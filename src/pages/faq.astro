@@ -1,507 +1,165 @@
 ---
 export const prerender = true;
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>FAQ | Creative Solace | Rhinestone Kits and Workshops</title>
-<meta name="description" content="Answers to common questions about Creative Solace rhinestone canvas kits, B7000 adhesive, workshop bookings, shipping, returns, and events in the Netherlands."/>
-<link rel="canonical" href="https://creativesolace.com/faq"/>
-<meta property="og:title" content="FAQ | Creative Solace"/>
-<meta property="og:description" content="Everything you need to know about our rhinestone kits, workshops, shipping, and returns."/>
-<meta property="og:type" content="website"/>
-<meta property="og:url" content="https://creativesolace.com/faq"/>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "What comes in the rhinestone kit?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Every kit includes a premium printed canvas with 4 cm gallery-wrap border, all the rhinestones you need to complete the design, an applicator pen, a wax tray, and a tube of B7000 professional adhesive. Everything is included. You do not need to buy anything extra."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Why do your kits use B7000 glue instead of a sticky canvas?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "B7000 creates a permanent bond. Once the glue cures (24 to 48 hours), the stones are fixed for good. A sticky canvas can lose its grip over time, especially in warm rooms. The precision tip on the B7000 tube also lets you be more deliberate with your placement."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is this suitable for beginners?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. That is exactly who it is designed for. If you can hold a pen, you can do this. No creative experience is needed at all."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How quickly do you ship?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Orders are packed and shipped within 1 to 3 business days. You will receive a shipping confirmation email with a track and trace link once your order is on its way."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is shipping free in the Netherlands?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. Shipping is free on all orders within the Netherlands. For international orders, shipping costs are calculated at checkout."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can I return my kit?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. You have 14 days from the date of delivery to return an unused kit in its original condition with the B7000 seal intact. Return shipping costs are your responsibility. Email hello@creativesolace.com with your order number to start a return."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do I need experience to join a workshop?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "None at all. Our workshops are designed for people who have never painted or bedazzled before. We guide you through everything step by step."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How do I book a workshop?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Click the Book a Workshop button on our website and fill in the short form. We will get back to you within 24 hours to confirm availability and details."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Where do workshops take place?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "We can come to your home, your venue, or a location of your choice. For some open public workshops we host at our own venue in the Netherlands. The location is always confirmed during the booking process."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "My order arrived damaged. What do I do?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Take a photo of the damage and email it to hello@creativesolace.com within 72 hours of delivery. Include your order number. We will sort it out for you."
-      }
-    }
-  ]
-}
-</script>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet"/>
-<style>
-:root {
-  --pink:        #FF6B9D;
-  --pink-light:  #FFB3CF;
-  --pink-pale:   #FFF0F5;
-  --yellow:      #FFD166;
-  --cream:       #FFF8F0;
-  --dark:        #1A0A14;
-  --mid:         #5C3049;
-  --text:        #3D1A2C;
-  --grad-main:   linear-gradient(135deg,#FFD166 0%,#FF9EC4 50%,#C084FC 100%);
-  --grad-pink:   linear-gradient(135deg,#FF6B9D,#FFBC42);
-  --shadow-soft: 0 8px 40px rgba(255,107,157,.18);
-  --shadow-card: 0 4px 24px rgba(60,20,40,.10);
-  --radius:      20px;
-  --radius-sm:   12px;
-  --nav-h:       60px;
-  --tab-h:       64px;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; padding-bottom: var(--tab-h); }
-.announcement { background: var(--grad-main); color: var(--dark); text-align: center; padding: 9px 16px; font-size: 12px; font-weight: 500; letter-spacing: .4px; position: relative; z-index: 100; }
-.announcement .sep { margin: 0 6px; opacity: .35; }
-.desktop-nav { display: none; }
-.mobile-nav { position: sticky; top: 0; z-index: 200; background: rgba(255,248,240,.94); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,107,157,.12); height: var(--nav-h); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
-.nav-logo { display: inline-flex; align-items: center; text-decoration: none; flex-shrink: 0; }
-.nav-logo img { height: 40px; width: auto; display: block; object-fit: contain; }
-.mobile-nav-actions { display: flex; align-items: center; gap: 12px; }
-.btn-cart-mobile { background: var(--grad-pink); color: white; border: none; border-radius: 50px; padding: 8px 16px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; text-decoration: none; display: inline-block; }
-/* PAGE HERO */
-.page-hero { background: var(--dark); padding: 52px 20px 48px; position: relative; overflow: hidden; text-align: center; }
-.page-hero::before { content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 500px; height: 300px; background: var(--grad-main); opacity: .07; border-radius: 50%; filter: blur(60px); }
-.page-hero-label { font-size: 10px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--yellow); margin-bottom: 12px; position: relative; z-index: 1; }
-.page-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(32px,8vw,56px); font-weight: 900; color: white; line-height: 1.1; margin-bottom: 16px; position: relative; z-index: 1; }
-.page-hero h1 em { font-style: italic; background: var(--grad-pink); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.page-hero-sub { font-size: 15px; line-height: 1.65; color: rgba(255,255,255,.6); max-width: 540px; margin: 0 auto; position: relative; z-index: 1; font-weight: 300; }
-.breadcrumb { padding: 14px 20px; font-size: 12px; color: var(--mid); border-bottom: 1px solid rgba(60,20,40,.07); background: white; }
-.breadcrumb a { color: var(--pink); text-decoration: none; }
-.breadcrumb a:hover { text-decoration: underline; }
-/* FAQ */
+<style is:global>
 .faq-wrap { max-width: 760px; margin: 0 auto; padding: 48px 20px 80px; }
 .faq-section-title { font-family: 'Playfair Display', serif; font-size: clamp(20px,4vw,26px); font-weight: 700; color: var(--dark); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--pink-pale); }
 .faq-group { margin-bottom: 52px; }
-details {
-  background: white;
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-card);
-  margin-bottom: 10px;
-  overflow: hidden;
-}
+details { background: white; border-radius: var(--radius-sm); box-shadow: var(--shadow-card); margin-bottom: 10px; overflow: hidden; }
 details[open] { box-shadow: 0 4px 32px rgba(255,107,157,.12); }
-summary {
-  padding: 20px 20px;
-  font-weight: 600;
-  font-size: 15px;
-  color: var(--dark);
-  cursor: pointer;
-  list-style: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  -webkit-tap-highlight-color: transparent;
-}
+summary { padding: 20px; font-weight: 600; font-size: 15px; color: var(--dark); cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 12px; -webkit-tap-highlight-color: transparent; }
 summary::-webkit-details-marker { display: none; }
 summary::after { content: '+'; font-size: 22px; font-weight: 300; color: var(--pink); flex-shrink: 0; line-height: 1; transition: transform .25s; }
 details[open] summary::after { transform: rotate(45deg); }
 summary:hover { color: var(--pink); }
-.faq-answer {
-  padding: 0 20px 20px;
-  font-size: 14px;
-  line-height: 1.75;
-  color: var(--mid);
-  font-weight: 300;
-}
+.faq-answer { padding: 0 20px 20px; font-size: 14px; line-height: 1.75; color: var(--mid); font-weight: 300; }
 .faq-answer p { margin-bottom: 10px; }
 .faq-answer p:last-child { margin-bottom: 0; }
 .faq-answer a { color: var(--pink); }
 .faq-contact-strip { background: var(--pink-pale); border: 1.5px solid rgba(255,107,157,.2); border-radius: var(--radius); padding: 28px 24px; text-align: center; margin-top: 56px; }
 .faq-contact-strip p { font-size: 15px; color: var(--mid); margin-bottom: 16px; }
-.btn-primary { background: var(--dark); color: white; border: none; border-radius: 50px; padding: 13px 28px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; text-decoration: none; display: inline-block; transition: background .2s, transform .2s; }
-.btn-primary:hover { background: var(--pink); transform: translateY(-2px); }
-/* BOTTOM TAB */
-.bottom-tab-bar { position: fixed; bottom: 0; left: 0; right: 0; height: var(--tab-h); background: rgba(255,248,240,.96); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid rgba(255,107,157,.12); display: flex; align-items: stretch; z-index: 300; padding-bottom: env(safe-area-inset-bottom); }
-.tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; background: none; border: none; cursor: pointer; padding: 6px 4px; text-decoration: none; color: var(--mid); -webkit-tap-highlight-color: transparent; }
-.tab-icon { font-size: 20px; line-height: 1; }
-.tab-label { font-size: 9px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; font-family: 'DM Sans', sans-serif; }
-/* FOOTER */
-footer { background: var(--dark); border-top: 1px solid rgba(255,255,255,.06); padding: 48px 20px 24px; }
-.footer-brand { margin-bottom: 36px; }
-.footer-brand .nav-logo { display: block; margin-bottom: 14px; }
-.footer-tagline { font-size: 13px; line-height: 1.65; color: rgba(255,255,255,.45); margin-bottom: 20px; }
-.footer-social { display: flex; gap: 10px; }
-.social-btn { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,.07); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s, transform .2s; color: white; text-decoration: none; }
-.social-btn:hover { background: var(--pink); transform: translateY(-3px); }
-.footer-cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-bottom: 32px; }
-.footer-col-title { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 14px; }
-.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-.footer-links a { text-decoration: none; font-size: 13px; color: rgba(255,255,255,.55); transition: color .2s; }
-.footer-links a:hover { color: var(--pink); }
-.footer-bottom { border-top: 1px solid rgba(255,255,255,.06); padding-top: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 11px; color: rgba(255,255,255,.3); }
 @media (min-width: 1024px) {
-  body { padding-bottom: 0; }
-  .mobile-nav { display: none; }
-  .bottom-tab-bar { display: none; }
-  .desktop-nav { display: flex; position: sticky; top: 0; z-index: 200; background: rgba(255,248,240,.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,107,157,.12); padding: 0 60px; align-items: center; justify-content: space-between; height: 70px; }
-  .desktop-nav .nav-logo img { height: 44px; }
-  .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
-  .nav-links a { text-decoration: none; color: var(--text); font-size: 14px; font-weight: 500; position: relative; transition: color .2s; }
-  .nav-links a::after { content: ''; position: absolute; bottom: -3px; left: 0; right: 0; height: 2px; background: var(--grad-pink); border-radius: 2px; transform: scaleX(0); transition: transform .25s; }
-  .nav-links a:hover::after { transform: scaleX(1); }
-  .nav-links a:hover { color: var(--pink); }
-  .nav-actions { display: flex; align-items: center; gap: 16px; }
-  .btn-cart-desktop { background: var(--grad-pink); color: white; border: none; border-radius: 50px; padding: 9px 22px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; box-shadow: 0 4px 16px rgba(255,107,157,.3); text-decoration: none; }
-  .page-hero { padding: 80px 40px 72px; }
-  .page-hero-sub { font-size: 17px; }
-  .breadcrumb { padding: 14px 80px; }
   .faq-wrap { padding: 64px 40px 100px; }
   summary { padding: 22px 24px; font-size: 16px; }
   .faq-answer { padding: 0 24px 24px; font-size: 15px; }
-  footer { padding: 60px 80px 30px; }
-  .footer-brand { margin-bottom: 0; }
-  .footer-brand .nav-logo img { height: 48px; }
-  .footer-grid { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
-  .footer-cols { display: contents; }
-  .footer-bottom { flex-direction: row; }
 }
 </style>
-</head>
-<body>
 
-<div class="announcement">
-  ✨ Free shipping on all orders in the Netherlands
-  <span class="sep">|</span>
-  🎉 Workshop spots are limited, book yours now
-  <span class="sep">|</span>
-  💌 Custom corporate events available
-</div>
+<BaseLayout
+  lang="en"
+  title="FAQ | Creative Solace | Rhinestone Kits and Workshops"
+  description="Answers to common questions about Creative Solace rhinestone canvas kits, B7000 adhesive, workshop bookings, shipping, returns, and events in the Netherlands."
+  canonical="https://creativesolace.com/faq"
+  ogTitle="FAQ | Creative Solace"
+  ogDescription="Everything you need to know about our rhinestone kits, workshops, shipping, and returns."
+  ogUrl="https://creativesolace.com/faq"
+  hreflangEn="https://creativesolace.com/faq"
+  hreflangNl="https://creativesolace.com/nl/faq"
+  heroLabel="Help"
+  heroTitle="Frequently asked"
+  heroTitleEm="questions"
+  heroSub="Everything you need to know about our kits, workshops, orders, and returns. Can not find your answer? Email us at hello@creativesolace.com."
+  breadcrumb="FAQ"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json">{JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "What comes in the rhinestone kit?", "acceptedAnswer": { "@type": "Answer", "text": "Every kit includes a premium printed canvas with 4 cm gallery-wrap border, all the rhinestones you need to complete the design, an applicator pen, a wax tray, and a tube of B7000 professional adhesive. Everything is included. You do not need to buy anything extra." } },
+        { "@type": "Question", "name": "Why do your kits use B7000 glue instead of a sticky canvas?", "acceptedAnswer": { "@type": "Answer", "text": "B7000 creates a permanent bond. Once the glue cures (24 to 48 hours), the stones are fixed for good. A sticky canvas can lose its grip over time, especially in warm rooms." } },
+        { "@type": "Question", "name": "Is this suitable for beginners?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. That is exactly who it is designed for. If you can hold a pen, you can do this. No creative experience is needed at all." } },
+        { "@type": "Question", "name": "How quickly do you ship?", "acceptedAnswer": { "@type": "Answer", "text": "Orders are packed and shipped within 1 to 3 business days. You will receive a shipping confirmation email with a track and trace link once your order is on its way." } },
+        { "@type": "Question", "name": "Is shipping free in the Netherlands?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Shipping is free on all orders within the Netherlands. For international orders, shipping costs are calculated at checkout." } },
+        { "@type": "Question", "name": "Can I return my kit?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. You have 14 days from the date of delivery to return an unused kit in its original condition with the B7000 seal intact. Return shipping costs are your responsibility." } },
+        { "@type": "Question", "name": "Do I need experience to join a workshop?", "acceptedAnswer": { "@type": "Answer", "text": "None at all. Our workshops are designed for people who have never painted or bedazzled before. We guide you through everything step by step." } },
+        { "@type": "Question", "name": "How do I book a workshop?", "acceptedAnswer": { "@type": "Answer", "text": "Click the Book a Workshop button on our website and fill in the short form. We will get back to you within 24 hours to confirm availability and details." } },
+        { "@type": "Question", "name": "Where do workshops take place?", "acceptedAnswer": { "@type": "Answer", "text": "We can come to your home, your venue, or a location of your choice. The location is always confirmed during the booking process." } },
+        { "@type": "Question", "name": "My order arrived damaged. What do I do?", "acceptedAnswer": { "@type": "Answer", "text": "Take a photo of the damage and email it to hello@creativesolace.com within 72 hours of delivery. Include your order number. We will sort it out for you." } }
+      ]
+    })}</script>
+  </Fragment>
 
-<nav class="desktop-nav">
-  <a href="/" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
-  <ul class="nav-links">
-    <li><a href="/">Home</a></li>
-    <li><a href="/#kits">Kits</a></li>
-    <li><a href="/#workshops">Workshops</a></li>
-    <li><a href="/#events">Events</a></li>
-    <li><a href="/#b2b">B2B</a></li>
-    <li><a href="/services">Our Services</a></li>
-  </ul>
-  <div class="nav-actions">
-    <a href="/#kits" class="btn-cart-desktop">Shop Kits ✨</a>
-  </div>
-</nav>
+  <div class="faq-wrap">
 
-<nav class="mobile-nav">
-  <a href="/" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
-  <div class="mobile-nav-actions">
-    <a href="/#kits" class="btn-cart-mobile">Shop Kits ✨</a>
-  </div>
-</nav>
-
-<div class="page-hero">
-  <div class="page-hero-label">Help</div>
-  <h1>Frequently asked <em>questions</em></h1>
-  <p class="page-hero-sub">Everything you need to know about our kits, workshops, orders, and returns. Can not find your answer? Email us at hello@creativesolace.com.</p>
-</div>
-
-<div class="breadcrumb">
-  <a href="/">Home</a> &rsaquo; FAQ
-</div>
-
-<div class="faq-wrap">
-
-  <div class="faq-group">
-    <h2 class="faq-section-title">About the Kits</h2>
-
-    <details>
-      <summary>What comes in the kit?</summary>
-      <div class="faq-answer">
-        <p>Every kit includes a premium printed canvas with a 4 cm gallery-wrap border (ready to hang without a frame), all the rhinestones you need to complete the design, an applicator pen, a wax tray, and a tube of B7000 professional adhesive. Everything is included. You do not need to buy anything extra.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>Is this the same as diamond painting?</summary>
-      <div class="faq-answer">
-        <p>Similar but not the same. Classic diamond painting uses a sticky canvas with a pre-set grid. Our kits use a freestyle approach with B7000 adhesive, so you have more control over where you place each stone. The result looks bolder, more textured, and more like real wall art.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>Why B7000 glue and not a sticky canvas?</summary>
-      <div class="faq-answer">
-        <p>B7000 creates a permanent bond. Once the glue cures (24 to 48 hours), the stones are fixed for good. A sticky canvas can lose its grip over time, especially in warm rooms. The precision tip on the B7000 tube also lets you be more deliberate and accurate with your placement.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>Do I need to frame it?</summary>
-      <div class="faq-answer">
-        <p>No. The canvas has a 4 cm gallery-wrap border, which means the edges are clean and finished. It looks great hung directly on the wall without a frame.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>How long does it take to complete?</summary>
-      <div class="faq-answer">
-        <p>Most people finish in 3 to 6 hours spread over a few sessions. It is a relaxing activity, not a race. Many people do it while watching TV or listening to a podcast.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>Is it suitable for beginners?</summary>
-      <div class="faq-answer">
-        <p>Yes. That is exactly who it is designed for. If you can hold a pen, you can do this. No creative experience is needed.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>How do I look after the finished piece?</summary>
-      <div class="faq-answer">
-        <p>After the glue has fully cured (24 to 48 hours), the stones are very secure. If the canvas needs cleaning, use a soft dry brush or a lint-free cloth. Do not spray water or cleaning products directly on the surface.</p>
-      </div>
-    </details>
-  </div>
-
-  <div class="faq-group">
-    <h2 class="faq-section-title">Orders and Shipping</h2>
-
-    <details>
-      <summary>How quickly do you ship?</summary>
-      <div class="faq-answer">
-        <p>Orders are packed and shipped within 1 to 3 business days of payment. You will receive a confirmation email with a track and trace link once your order is dispatched.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>Is shipping free in the Netherlands?</summary>
-      <div class="faq-answer">
-        <p>Yes. Shipping is free on all orders within the Netherlands. For orders to Belgium, Germany, or the rest of Europe, shipping costs are calculated at checkout before you pay.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>Can I change or cancel my order?</summary>
-      <div class="faq-answer">
-        <p>You have 24 hours from the time of purchase to request a change or cancellation. After that, your order will already be in processing. Email us at <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a> as quickly as possible if you need to make a change.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>What if I entered the wrong shipping address?</summary>
-      <div class="faq-answer">
-        <p>Contact us at <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a> within 24 hours of placing your order. If your package has already been shipped, we are not able to redirect it.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>My order arrived damaged. What do I do?</summary>
-      <div class="faq-answer">
-        <p>Take a photo of the damage and email it to <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a> within 72 hours of delivery. Include your order number. We will arrange a replacement or refund at no cost to you.</p>
-        <p>Note: minor dents to the outer box that do not affect the product inside do not qualify for replacement.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>Can I return my kit?</summary>
-      <div class="faq-answer">
-        <p>Yes. Under EU consumer law you have the right to return your purchase within 14 days of delivery, without giving a reason. The kit must be unused and in its original packaging with the B7000 seal intact. Return shipping costs are your responsibility.</p>
-        <p>Email <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a> with your order number to start a return. See our <a href="/shipping">Shipping and Returns page</a> for full details.</p>
-      </div>
-    </details>
-  </div>
-
-  <div class="faq-group">
-    <h2 class="faq-section-title">Workshops and Events</h2>
-
-    <details>
-      <summary>Do I need experience to join a workshop?</summary>
-      <div class="faq-answer">
-        <p>None at all. Our workshops are designed for people who have never painted or bedazzled before. We guide you through everything step by step.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>How do I book a workshop?</summary>
-      <div class="faq-answer">
-        <p>Click the Book a Workshop button on our website and fill in the short form. We will get back to you within 24 hours to confirm availability and details.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>Can I book a private workshop for my group?</summary>
-      <div class="faq-answer">
-        <p>Yes. We specialise in private events for birthdays, bachelorette parties, and corporate team sessions. Fill in the quote form or email us at <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a> and we will put together a custom package.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>Where do workshops take place?</summary>
-      <div class="faq-answer">
-        <p>We can come to your home, your venue, or a location of your choice anywhere in the Netherlands. For some open public workshops we host at our own venue. The exact location is always confirmed when you book.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>How many people can join a workshop?</summary>
-      <div class="faq-answer">
-        <p>Paint and Sip: 6 to 25 people. Bedazzle and Sip: 6 to 20 people. Private events and corporate sessions can be customised based on your group size. Contact us for larger groups.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>I bought a ticket for an event. Where do I find it?</summary>
-      <div class="faq-answer">
-        <p>Your ticket is sent to your email address immediately after purchase. It includes a unique code and a QR code. Bring it on your phone or print it out. We scan it at the door.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>Are workshop tickets refundable?</summary>
-      <div class="faq-answer">
-        <p>Workshop and event tickets are non-refundable once purchased, unless the event is cancelled by Creative Solace. If we cancel, you will receive a full refund within 14 days.</p>
-        <p>If you booked via our quote form and can no longer attend, email us as soon as possible and we will do our best to find an alternative date.</p>
-      </div>
-    </details>
-  </div>
-
-  <div class="faq-contact-strip">
-    <p>Still have a question? We are happy to help.</p>
-    <a href="mailto:hello@creativesolace.com" class="btn-primary">Email us at hello@creativesolace.com</a>
-  </div>
-
-</div>
-
-<footer>
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <a href="/" class="nav-logo"><img src="https://pub-6faae82249d24e62b02dd40b5cc74d40.r2.dev/CS_LOGO.png" alt="Creative Solace"/></a>
-      <p class="footer-tagline">Bringing sparkle, creativity, and good vibes to workshops, markets, festivals, and living rooms across the Netherlands and beyond.</p>
-      <div class="footer-social">
-        <a href="https://www.instagram.com/creativesolace__/" target="_blank" rel="noopener" class="social-btn" title="Instagram">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-        </a>
-        <a href="https://www.tiktok.com/@creativesolace_" target="_blank" rel="noopener" class="social-btn" title="TikTok">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
-        </a>
-        <a href="https://www.facebook.com/creativesolace/" target="_blank" rel="noopener" class="social-btn" title="Facebook">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-        </a>
-        <a href="https://www.linkedin.com/company/creative-solace/" target="_blank" rel="noopener" class="social-btn" title="LinkedIn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
-        </a>
-      </div>
+    <div class="faq-group">
+      <h2 class="faq-section-title">About the Kits</h2>
+      <details>
+        <summary>What comes in the kit?</summary>
+        <div class="faq-answer"><p>Every kit includes a premium printed canvas with a 4 cm gallery-wrap border (ready to hang without a frame), all the rhinestones you need to complete the design, an applicator pen, a wax tray, and a tube of B7000 professional adhesive. Everything is included. You do not need to buy anything extra.</p></div>
+      </details>
+      <details>
+        <summary>Is this the same as diamond painting?</summary>
+        <div class="faq-answer"><p>Similar but not the same. Classic diamond painting uses a sticky canvas with a pre-set grid. Our kits use a freestyle approach with B7000 adhesive, so you have more control over where you place each stone. The result looks bolder, more textured, and more like real wall art.</p></div>
+      </details>
+      <details>
+        <summary>Why B7000 glue and not a sticky canvas?</summary>
+        <div class="faq-answer"><p>B7000 creates a permanent bond. Once the glue cures (24 to 48 hours), the stones are fixed for good. A sticky canvas can lose its grip over time, especially in warm rooms. The precision tip on the B7000 tube also lets you be more deliberate and accurate with your placement.</p></div>
+      </details>
+      <details>
+        <summary>Do I need to frame it?</summary>
+        <div class="faq-answer"><p>No. The canvas has a 4 cm gallery-wrap border, which means the edges are clean and finished. It looks great hung directly on the wall without a frame.</p></div>
+      </details>
+      <details>
+        <summary>How long does it take to complete?</summary>
+        <div class="faq-answer"><p>Most people finish in 3 to 6 hours spread over a few sessions. It is a relaxing activity, not a race. Many people do it while watching TV or listening to a podcast.</p></div>
+      </details>
+      <details>
+        <summary>Is it suitable for beginners?</summary>
+        <div class="faq-answer"><p>Yes. That is exactly who it is designed for. If you can hold a pen, you can do this. No creative experience is needed.</p></div>
+      </details>
+      <details>
+        <summary>How do I look after the finished piece?</summary>
+        <div class="faq-answer"><p>After the glue has fully cured (24 to 48 hours), the stones are very secure. If the canvas needs cleaning, use a soft dry brush or a lint-free cloth. Do not spray water or cleaning products directly on the surface.</p></div>
+      </details>
     </div>
-    <div class="footer-cols">
-      <div>
-        <div class="footer-col-title">Shop</div>
-        <ul class="footer-links">
-          <li><a href="/#kits">All Kits</a></li>
-          <li><a href="/services">Our Services</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-col-title">Experiences</div>
-        <ul class="footer-links">
-          <li><a href="/#workshops">Paint and Sip</a></li>
-          <li><a href="/#workshops">Bedazzle and Sip</a></li>
-          <li><a href="/#workshops">Private Events</a></li>
-          <li><a href="/#b2b">Corporate B2B</a></li>
-          <li><a href="/#events">Upcoming Events</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-col-title">Help</div>
-        <ul class="footer-links">
-          <li><a href="mailto:hello@creativesolace.com">Contact Us</a></li>
-          <li><a href="/faq">FAQ</a></li>
-          <li><a href="/shipping">Shipping and Returns</a></li>
-          <li><a href="/privacy">Privacy Policy</a></li>
-        </ul>
-      </div>
+
+    <div class="faq-group">
+      <h2 class="faq-section-title">Orders and Shipping</h2>
+      <details>
+        <summary>How quickly do you ship?</summary>
+        <div class="faq-answer"><p>Orders are packed and shipped within 1 to 3 business days of payment. You will receive a confirmation email with a track and trace link once your order is dispatched.</p></div>
+      </details>
+      <details>
+        <summary>Is shipping free in the Netherlands?</summary>
+        <div class="faq-answer"><p>Yes. Shipping is free on all orders within the Netherlands. For orders to Belgium, Germany, or the rest of Europe, shipping costs are calculated at checkout before you pay.</p></div>
+      </details>
+      <details>
+        <summary>Can I change or cancel my order?</summary>
+        <div class="faq-answer"><p>You have 24 hours from the time of purchase to request a change or cancellation. After that, your order will already be in processing. Email us at <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a> as quickly as possible if you need to make a change.</p></div>
+      </details>
+      <details>
+        <summary>What if I entered the wrong shipping address?</summary>
+        <div class="faq-answer"><p>Contact us at <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a> within 24 hours of placing your order. If your package has already been shipped, we are not able to redirect it.</p></div>
+      </details>
+      <details>
+        <summary>My order arrived damaged. What do I do?</summary>
+        <div class="faq-answer"><p>Take a photo of the damage and email it to <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a> within 72 hours of delivery. Include your order number. We will arrange a replacement or refund at no cost to you.</p><p>Note: minor dents to the outer box that do not affect the product inside do not qualify for replacement.</p></div>
+      </details>
+      <details>
+        <summary>Can I return my kit?</summary>
+        <div class="faq-answer"><p>Yes. Under EU consumer law you have the right to return your purchase within 14 days of delivery, without giving a reason. The kit must be unused and in its original packaging with the B7000 seal intact. Return shipping costs are your responsibility.</p><p>Email <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a> with your order number to start a return. See our <a href="/shipping">Shipping and Returns page</a> for full details.</p></div>
+      </details>
     </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2026 Creative Solace. Made with 💎 in the Netherlands.</span>
-    <span>KVK: 93777337 &nbsp;·&nbsp; hello@creativesolace.com</span>
-  </div>
-</footer>
 
-<nav class="bottom-tab-bar">
-  <a href="/" class="tab-item"><span class="tab-icon">🏠</span><span class="tab-label">Home</span></a>
-  <a href="/#kits" class="tab-item"><span class="tab-icon">💎</span><span class="tab-label">Kits</span></a>
-  <a href="/#workshops" class="tab-item"><span class="tab-icon">🎨</span><span class="tab-label">Workshops</span></a>
-  <a href="/#events" class="tab-item"><span class="tab-icon">📍</span><span class="tab-label">Events</span></a>
-  <a href="/#b2b" class="tab-item"><span class="tab-icon">🤝</span><span class="tab-label">B2B</span></a>
-</nav>
+    <div class="faq-group">
+      <h2 class="faq-section-title">Workshops and Events</h2>
+      <details>
+        <summary>Do I need experience to join a workshop?</summary>
+        <div class="faq-answer"><p>None at all. Our workshops are designed for people who have never painted or bedazzled before. We guide you through everything step by step.</p></div>
+      </details>
+      <details>
+        <summary>How do I book a workshop?</summary>
+        <div class="faq-answer"><p>Click the Book a Workshop button on our website and fill in the short form. We will get back to you within 24 hours to confirm availability and details.</p></div>
+      </details>
+      <details>
+        <summary>Can I book a private workshop for my group?</summary>
+        <div class="faq-answer"><p>Yes. We specialise in private events for birthdays, bachelorette parties, and corporate team sessions. Fill in the quote form or email us at <a href="mailto:hello@creativesolace.com">hello@creativesolace.com</a> and we will put together a custom package.</p></div>
+      </details>
+      <details>
+        <summary>Where do workshops take place?</summary>
+        <div class="faq-answer"><p>We can come to your home, your venue, or a location of your choice anywhere in the Netherlands. For some open public workshops we host at our own venue. The exact location is always confirmed when you book.</p></div>
+      </details>
+      <details>
+        <summary>How many people can join a workshop?</summary>
+        <div class="faq-answer"><p>Paint and Sip: 6 to 25 people. Bedazzle and Sip: 6 to 20 people. Private events and corporate sessions can be customised based on your group size. Contact us for larger groups.</p></div>
+      </details>
+      <details>
+        <summary>I bought a ticket for an event. Where do I find it?</summary>
+        <div class="faq-answer"><p>Your ticket is sent to your email address immediately after purchase. It includes a unique code and a QR code. Bring it on your phone or print it out. We scan it at the door.</p></div>
+      </details>
+      <details>
+        <summary>Are workshop tickets refundable?</summary>
+        <div class="faq-answer"><p>Workshop and event tickets are non-refundable once purchased, unless the event is cancelled by Creative Solace. If we cancel, you will receive a full refund within 14 days.</p><p>If you booked via our quote form and can no longer attend, email us as soon as possible and we will do our best to find an alternative date.</p></div>
+      </details>
+    </div>
 
-</body>
-</html>
+    <div class="faq-contact-strip">
+      <p>Still have a question? We are happy to help.</p>
+      <a href="mailto:hello@creativesolace.com" class="btn-primary">Email us at hello@creativesolace.com</a>
+    </div>
+
+  </div>
+
+</BaseLayout>
