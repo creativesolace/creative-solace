@@ -78,6 +78,8 @@ export async function GET({ request, locals }: APIContext) {
       client: inv.customer_name,
       date: inv.date,
       total: Math.round((parseFloat(inv.total) || 0) * 100),
+      tax_total: Math.round((parseFloat(inv.tax_total) || 0) * 100),
+      subtotal: Math.round((parseFloat(inv.sub_total) || 0) * 100),
       status: inv.status,
     })),
   }), { status: 200 });

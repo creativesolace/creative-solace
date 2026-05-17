@@ -244,12 +244,27 @@ export const prerender = false;
     <!-- REVIEWS -->
     <div id="panel-reviews" class="panel">
       <div class="stats" id="review-stats"></div>
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">Pending Reviews</span>
-          <span class="card-meta" id="reviews-card-meta"></span>
+      <div class="sub-tabs">
+        <button class="sub-tab active" onclick="switchSubTab('reviews-pending', this)">Pending</button>
+        <button class="sub-tab" onclick="switchSubTab('reviews-approved', this)">Approved</button>
+      </div>
+      <div id="sub-reviews-pending" class="sub-panel active">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Pending Reviews</span>
+            <span class="card-meta" id="reviews-card-meta"></span>
+          </div>
+          <div id="reviews-table-container"></div>
         </div>
-        <div id="reviews-table-container"></div>
+      </div>
+      <div id="sub-reviews-approved" class="sub-panel">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Approved Reviews</span>
+            <span class="card-meta" id="reviews-approved-meta"></span>
+          </div>
+          <div id="reviews-approved-container"></div>
+        </div>
       </div>
     </div>
 
@@ -452,6 +467,8 @@ export const prerender = false;
   // ── REVIEWS ──
   function renderReviewStats(reviews) {
     fetch('/api/review?password='+encodeURIComponent(pw)+'&status=approved').then(r=>r.json()).then(approved=>{
+      renderApprovedReviews(approved);
+      const approvedMeta=document.getElementById('reviews-approved-meta'); if(approvedMeta) approvedMeta.textContent=approved.length+' approved';
       fetch('/api/review?password='+encodeURIComponent(pw)+'&status=rejected').then(r=>r.json()).then(rejected=>{
         document.getElementById('review-stats').innerHTML=stat(reviews.length,'Pending')+stat(approved.length,'Approved')+stat(rejected.length,'Rejected')+stat(approved.length+reviews.length+rejected.length,'Total');
       });
@@ -463,6 +480,14 @@ export const prerender = false;
     if(!reviews.length){document.getElementById('reviews-table-container').innerHTML='<div class="empty">No pending reviews \u2014 all caught up \u2728</div>';return;}
     const rows=reviews.map(r=>{const date=new Date(r.created_at).toLocaleDateString('nl-NL',{day:'2-digit',month:'short',year:'numeric'});const stars=r.rating?'\u2605'.repeat(r.rating)+'\u2606'.repeat(5-r.rating):'\u2014';return'<tr id="review-row-'+r.id+'"><td class="date-text">'+date+'</td><td><div class="customer-name">'+r.name+'</div><div class="review-meta">'+(r.city||'')+(r.city&&r.product?' \u00b7 ':'')+(r.product||'')+'</div></td><td><span class="stars">'+stars+'</span></td><td><div class="review-text">'+r.text+'</div></td><td><button class="approve-btn" onclick="approveReview('+r.id+')">\u2713 Approve</button><button class="reject-btn" onclick="rejectReview('+r.id+')">\u00d7 Reject</button></td></tr>';}).join('');
     document.getElementById('reviews-table-container').innerHTML='<table><thead><tr><th>Date</th><th>Customer</th><th>Rating</th><th>Review</th><th>Action</th></tr></thead><tbody>'+rows+'</tbody></table>';
+  }
+
+  function renderApprovedReviews(reviews) {
+    const container=document.getElementById('reviews-approved-container'); if(!container) return;
+    if(!reviews.length){container.innerHTML='<div class="empty">No approved reviews yet</div>';return;}
+    const EMOJIS=['\u{1F338}','\u2728','\u{1F48E}','\u{1F31F}','\u{1F4AB}'];
+    const rows=reviews.map((r,i)=>{const date=new Date(r.created_at).toLocaleDateString('nl-NL',{day:'2-digit',month:'short',year:'numeric'});const stars=r.rating?'\u2605'.repeat(r.rating)+'\u2606'.repeat(5-r.rating):'\u2014';return'<tr><td class="date-text">'+date+'</td><td><div class="customer-name">'+r.name+'</div><div class="review-meta">'+( r.city||'')+( r.city&&r.product?' \u00b7 ':'')+( r.product||'')+'</div></td><td><span class="stars">'+stars+'</span></td><td><div class="review-text">'+r.text+'</div></td><td><button class="reject-btn" onclick="rejectReview('+r.id+')">Unapprove</button></td></tr>';}).join('');
+    container.innerHTML='<table><thead><tr><th>Date</th><th>Customer</th><th>Rating</th><th>Review</th><th>Action</th></tr></thead><tbody>'+rows+'</tbody></table>';
   }
 
   async function approveReview(id) { const r=document.getElementById('review-row-'+id); if(r) r.style.opacity='0.4'; await fetch('/api/review?password='+encodeURIComponent(pw),{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,action:'approve'})}); loadAll(); }
@@ -595,10 +620,10 @@ export const prerender = false;
   function renderCustomersTable(customers) {
     if(!customers.length){document.getElementById('customers-table-container').innerHTML='<div class="empty">No customers yet</div>';return;}
     const rows=customers.map(c=>{
-      const total=(c.kit_spend||0)+(c.ticket_spend||0);
+      const total=(c.kit_spend||0)+(c.ticket_spend||0)+(c.b2b_spend||0);
       const typeBadges=c.types.map(t=>'<span class="badge badge-'+t+'">'+{kit:'Kit',ticket:'Ticket',b2b:'B2B'}[t]+'</span>').join(' ');
       const last=c.last_activity?new Date(c.last_activity).toLocaleDateString('nl-NL',{day:'2-digit',month:'short',year:'numeric'}):'\u2014';
-      return'<tr><td><div class="customer-name">'+(c.name||'\u2014')+'</div><div class="customer-email">'+(c.email||'')+'</div></td><td>'+typeBadges+'</td><td class="amount">'+fmt(total)+'</td><td class="date-text">'+last+'</td><td class="date-text">'+(c.order_count||0)+' orders, '+(c.ticket_count||0)+' tickets</td></tr>';
+      const nameDisplay=c.company&&c.types.includes('b2b')?c.company:(c.name||'\u2014');return'<tr><td><div class="customer-name">'+nameDisplay+'</div><div class="customer-email">'+(c.email||'')+'</div></td><td>'+typeBadges+'</td><td class="amount">'+fmt(total)+'</td><td class="date-text">'+last+'</td><td class="date-text">'+(c.order_count||0)+' orders, '+(c.ticket_count||0)+' tickets'+(c.b2b_spend?', '+fmt(c.b2b_spend)+' B2B':'')+'</td></tr>';
     }).join('');
     document.getElementById('customers-table-container').innerHTML='<table><thead><tr><th>Customer</th><th>Type</th><th>Total spend</th><th>Last activity</th><th>Activity</th></tr></thead><tbody>'+rows+'</tbody></table>';
   }
@@ -635,8 +660,8 @@ export const prerender = false;
     document.getElementById('finance-stats').innerHTML=stat(fmt((d.b2cTotal||0)+(d.b2bTotal||0)),'Total revenue')+stat(fmt(d.b2cTotal||0),'B2C (Stripe)')+stat(fmt(d.b2bTotal||0),'B2B (Zoho)')+stat(fmt(d.vatB2C||0),'VAT collected (B2C)')+stat(d.outstandingCount||0,'Outstanding invoices');
     const stripeRows=(d.stripePayments||[]).map(p=>'<tr><td class="date-text">'+p.date+'</td><td><div class="customer-name">'+(p.customer||'\u2014')+'</div><div class="customer-email">'+(p.description||'')+'</div></td><td class="amount">'+fmt(p.amount||0)+'</td><td><span class="badge badge-valid">Paid</span></td></tr>').join('');
     document.getElementById('stripe-table').innerHTML=stripeRows?'<table><thead><tr><th>Date</th><th>Customer</th><th>Amount</th><th>Status</th></tr></thead><tbody>'+stripeRows+'</tbody></table>':'<div class="empty">No Stripe payments in this period</div>';
-    const zohoRows=(d.zohoInvoices||[]).map(inv=>'<tr><td class="date-text">'+inv.date+'</td><td class="date-text">'+inv.number+'</td><td><div class="customer-name">'+inv.client+'</div></td><td class="amount">'+fmt(inv.total||0)+'</td><td><span class="badge badge-'+inv.status+'">'+inv.status+'</span></td></tr>').join('');
-    document.getElementById('zoho-table').innerHTML=zohoRows?'<table><thead><tr><th>Date</th><th>Invoice #</th><th>Client</th><th>Amount</th><th>Status</th></tr></thead><tbody>'+zohoRows+'</tbody></table>':'<div class="empty">No Zoho invoices in this period</div>';
+    const zohoRows=(d.zohoInvoices||[]).map(inv=>'<tr><td class="date-text">'+inv.date+'</td><td class="date-text">'+inv.number+'</td><td><div class="customer-name">'+inv.client+'</div></td><td class="amount">'+fmt(inv.subtotal||0)+'</td><td class="amount">'+fmt(inv.tax_total||0)+'</td><td class="amount">'+fmt(inv.total||0)+'</td><td><span class="badge badge-'+inv.status+'">'+inv.status+'</span></td></tr>').join('');
+    document.getElementById('zoho-table').innerHTML=zohoRows?'<table><thead><tr><th>Date</th><th>Invoice #</th><th>Client</th><th>Subtotal</th><th>VAT</th><th>Total</th><th>Status</th></tr></thead><tbody>'+zohoRows+'</tbody></table>':'<div class="empty">No Zoho invoices in this period</div>';
   }
 </script>
 </body>
