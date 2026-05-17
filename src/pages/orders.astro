@@ -139,7 +139,6 @@ export const prerender = false;
         <button class="tab active" onclick="switchTab('orders', this)">Orders</button>
         <button class="tab" onclick="switchTab('tickets', this)">Tickets</button>
         <button class="tab" onclick="switchTab('reviews', this)">Reviews</button>
-        <button class="tab" onclick="switchTab('reviews', this)">Reviews</button>
       </div>
       <button class="refresh-btn" onclick="loadAll()">↻ Refresh</button>
       <span class="last-updated" id="last-updated"></span>
@@ -162,17 +161,6 @@ export const prerender = false;
           <span class="card-title" id="orders-title">All Orders</span>
         </div>
         <div id="orders-table-container"></div>
-      </div>
-    </div>
-
-    <div id="panel-reviews" class="panel">
-      <div class="stats" id="review-stats"></div>
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">Pending Reviews</span>
-          <span class="card-meta" id="reviews-card-meta"></span>
-        </div>
-        <div id="reviews-table-container"></div>
       </div>
     </div>
 
@@ -526,5 +514,6 @@ export const prerender = false;
     loadAll();
   }
 
+</script>
 </body>
 </html>
