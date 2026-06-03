@@ -4,6 +4,9 @@
   "location": "Foodhallen",
   "city": "The Hague",
   "type": "festival",
+  "image": "/images/events/creative-solace-x-foodhallen/image.png",
   "featured": true,
-  "image": "/images/events/creative-solace-x-foodhallen/image.png"
+  "photo1": "/images/events/creative-solace-x-foodhallen/photo1.jpg",
+  "photo2": "/images/events/creative-solace-x-foodhallen/photo2.jpg",
+  "photo3": "/images/events/creative-solace-x-foodhallen/photo3.HEIC"
 }
