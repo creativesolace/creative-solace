@@ -4,10 +4,8 @@
   "location": "Krudivat Studio ",
   "city": "Veenendaal",
   "type": "workshop",
-  "image": "/images/events/creative-solace-x-krudivat/image.heic",
   "featured": true,
-  "photo1": "/images/events/creative-solace-x-krudivat/photo1.heic",
-  "photo2": "/images/events/creative-solace-x-krudivat/photo2.heic",
-  "photo3": "/images/events/creative-solace-x-krudivat/photo3.heic",
+  "photo2": "/images/events/creative-solace-x-krudivat/photo2.png",
+  "photo3": "/images/events/creative-solace-x-krudivat/photo3.png",
   "photo4": "/images/events/creative-solace-x-krudivat/photo4.png"
 }
